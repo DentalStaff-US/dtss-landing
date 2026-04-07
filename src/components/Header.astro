@@ -1,9 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
+import logo from "../assets/dtss-logo.png"
 ---
 
 <header
-  class="w-full py-4 px-4 border-b border-gray-200 bg-white sticky top-0 z-50"
+  class="w-full py-4 px-4  bg-[#2a93d1] sticky top-0 z-50 shadow-md"
   role="banner"
 >
   <nav
@@ -15,13 +16,13 @@ import { Icon } from "astro-icon/components";
       class="text-2xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
       aria-label="Astro Base - Home"
     >
-      Astro Base
+      <img src={logo.src} class="h-12 grayscale-100 brightness-1000"/>
     </a>
     
     <!-- Mobile menu button -->
     <button
       type="button"
-      class="md:hidden p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded-lg"
+      class="md:hidden p-2 text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded-lg"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -34,26 +35,26 @@ import { Icon } from "astro-icon/components";
     <ul class="hidden md:flex items-center gap-6" role="list">
       <li>
         <a
-          href="/features"
-          class="text-gray-600 hover:text-gray-900 transition-colors"
+          href="/#features"
+          class="text-white hover:text-gray-300 transition-colors"
           aria-current={Astro.url.pathname === '/features' ? 'page' : undefined}
         >
           Features
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a
           href="/about"
-          class="text-gray-600 hover:text-gray-900 transition-colors"
+          class="text-white hover:text-gray-300 transition-colors"
           aria-current={Astro.url.pathname === '/about' ? 'page' : undefined}
         >
           About
         </a>
-      </li>
+      </li> -->
       <li>
         <a
-          href="/contact"
-          class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+          href="/#contact"
+          class="px-4 py-2 bg-white text-[#2a93d1] rounded-lg hover:bg-gray-100 transition-colors"
           aria-current={Astro.url.pathname === '/contact' ? 'page' : undefined}
         >
           Contact
@@ -72,7 +73,7 @@ import { Icon } from "astro-icon/components";
     <ul class="flex flex-col py-4" role="list">
       <li>
         <a
-          href="/features"
+          href="/#features"
           class="block px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
           role="menuitem"
           aria-current={Astro.url.pathname === '/features' ? 'page' : undefined}
@@ -80,7 +81,7 @@ import { Icon } from "astro-icon/components";
           Features
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a
           href="/about"
           class="block px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
@@ -89,10 +90,10 @@ import { Icon } from "astro-icon/components";
         >
           About
         </a>
-      </li>
+      </li> -->
       <li>
         <a
-          href="/contact"
+          href="/#contact"
           class="block px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
           role="menuitem"
           aria-current={Astro.url.pathname === '/contact' ? 'page' : undefined}
