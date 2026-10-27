@@ -1,0 +1,161 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/ui/Container.astro";
+import JobDetail from "@/components/jobs/JobDetail.astro";
+import JobCard from "@/components/jobs/JobCard.astro";
+import JobIntentScript from "@/components/jobs/JobIntentScript.astro";
+import { SITE } from "@/config/site.mjs";
+import { getJob, isPublicId, jobPlace, jobTitle, listJobs } from "@/lib/jobs";
+import { appLink } from "@/lib/links";
+
+const id = Astro.params.publicId;
+if (!isPublicId(id)) return Astro.rewrite("/404");
+
+const res = await getJob(id);
+if (!res.ok && res.status === 404) return Astro.rewrite("/404");
+
+const job = res.ok ? res.data.job : null;
+// 410 Gone tells search engines to drop filled/closed jobs promptly.
+if (!job) Astro.response.status = res.ok ? 200 : res.status === 410 ? 410 : 503;
+
+const similarRes = await listJobs(
+	job ? { state: job.state ?? undefined, type: job.type } : {},
+	4
+);
+const similar = similarRes.ok
+	? similarRes.data.jobs.filter((j) => j.publicId !== id).slice(0, 3)
+	: [];
+
+const title = job
+	? `${jobTitle(job)} in ${jobPlace(job)}`
+	: "Job no longer available";
+
+// Google for Jobs. hiringOrganization is DTSS as the staffing agency — the
+// practice's identity is never published.
+const jobLd = job && {
+	"@context": "https://schema.org",
+	"@type": "JobPosting",
+	title: jobTitle(job),
+	description: `<p>${job.summary}</p>${job.descriptionTeaser ? `<p>${job.descriptionTeaser}</p>` : ""}`,
+	datePosted: job.postedAt,
+	...(job.schedule.permanent
+		? {}
+		: { validThrough: job.schedule.nextDates.at(-1)?.date }),
+	employmentType: job.type === "perm" ? "FULL_TIME" : ["TEMPORARY", "PER_DIEM"],
+	hiringOrganization: {
+		"@type": "Organization",
+		name: SITE.legalName,
+		sameAs: SITE.url,
+		logo: `${SITE.url}/logo.png`,
+	},
+	jobLocation: {
+		"@type": "Place",
+		address: {
+			"@type": "PostalAddress",
+			addressLocality: job.city,
+			addressRegion: job.state,
+			addressCountry: "US",
+		},
+	},
+	...(job.payRate
+		? {
+				baseSalary: {
+					"@type": "MonetaryAmount",
+					currency: "USD",
+					value: {
+						"@type": "QuantitativeValue",
+						value: job.payRate,
+						unitText: "HOUR",
+					},
+				},
+			}
+		: {}),
+	directApply: false,
+	identifier: {
+		"@type": "PropertyValue",
+		name: SITE.name,
+		value: job.publicId,
+	},
+};
+---
+
+<Layout
+	title={title}
+	description={job
+		? job.summary
+		: "This dental job has been filled or closed. Browse other open temp shifts and permanent positions."}
+	noindex={!job}
+	breadcrumbs={[
+		{ name: "Jobs", href: "/jobs" },
+		{ name: job ? jobTitle(job) : "Closed job", href: `/jobs/${id}` },
+	]}
+	jsonLd={jobLd ? [jobLd] : []}
+>
+	<section class="bg-gradient-to-br from-teal-50 via-white to-sky-50">
+		<Container size="narrow" class="py-10 sm:py-14">
+			<a
+				href="/jobs"
+				class="inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground"
+			>
+				<Icon name="tabler:arrow-left" class="size-4" aria-hidden="true" /> All jobs
+			</a>
+			<div
+				class="mt-6 rounded-2xl border bg-white p-6 shadow-xl shadow-teal-900/5 sm:p-10"
+			>
+				{
+					job ? (
+						<JobDetail job={job} />
+					) : (
+						<div class="py-8 text-center">
+							<span class="inline-flex size-14 items-center justify-center rounded-2xl bg-pro/10 text-pro">
+								<Icon
+									name="tabler:calendar-off"
+									class="size-7"
+									aria-hidden="true"
+								/>
+							</span>
+							<h1 class="mt-4 text-3xl font-extrabold">
+								This job is no longer available
+							</h1>
+							<p class="mx-auto mt-3 max-w-md text-muted-foreground">
+								It's been filled or closed — they go fast! Create a free profile
+								and you'll hear about new openings first.
+							</p>
+							<div class="mt-6 flex flex-wrap justify-center gap-3">
+								<a
+									href={appLink("pro", "sign-up")}
+									class="inline-flex h-11 items-center rounded-md bg-pro px-6 font-bold text-white hover:bg-pro-dark"
+								>
+									Create your free profile
+								</a>
+								<a
+									href="/jobs"
+									class="inline-flex h-11 items-center rounded-md border px-6 font-bold hover:bg-accent"
+								>
+									Browse open jobs
+								</a>
+							</div>
+						</div>
+					)
+				}
+			</div>
+		</Container>
+	</section>
+
+	{
+		similar.length > 0 && (
+			<section class="py-14">
+				<Container>
+					<h2 class="text-2xl font-extrabold">Similar jobs</h2>
+					<ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+						{similar.map((j) => (
+							<JobCard job={j} />
+						))}
+					</ul>
+				</Container>
+			</section>
+		)
+	}
+	<JobIntentScript />
+</Layout>

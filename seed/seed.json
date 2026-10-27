@@ -1,0 +1,3364 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "DTSS marketing site",
+		"description": "Collections and starter content for www.dtstaffingsolutions.com",
+		"author": "Extensibl Media"
+	},
+	"settings": {
+		"title": "Dental Temps Staffing Solutions",
+		"tagline": "You do dentistry. We do talent."
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Blog Posts",
+			"labelSingular": "Blog Post",
+			"description": "Articles for practices and dental professionals.",
+			"icon": "newspaper",
+			"sortOrder": 1,
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"urlPattern": "/blog/{slug}",
+			"dateField": "published_at",
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"searchable": true,
+					"validation": {
+						"maxLength": 320
+					}
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "audience",
+					"label": "Primarily for",
+					"type": "select",
+					"defaultValue": "general",
+					"validation": {
+						"options": [
+							"general",
+							"practice",
+							"professional"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "faqs",
+			"label": "FAQs",
+			"labelSingular": "FAQ",
+			"description": "Questions and answers. Audience controls which page each appears on.",
+			"icon": "question",
+			"sortOrder": 2,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"titleField": "question",
+			"fields": [
+				{
+					"slug": "question",
+					"label": "Question",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "answer",
+					"label": "Answer",
+					"type": "portableText",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "audience",
+					"label": "Audience",
+					"type": "select",
+					"required": true,
+					"defaultValue": "general",
+					"validation": {
+						"options": [
+							"general",
+							"practice",
+							"professional",
+							"affiliate"
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 100
+				}
+			]
+		},
+		{
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"labelSingular": "Testimonial",
+			"icon": "chat-centered-text",
+			"sortOrder": 3,
+			"routable": false,
+			"supports": [
+				"drafts"
+			],
+			"titleField": "name",
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "role",
+					"label": "Role / credentials",
+					"type": "string"
+				},
+				{
+					"slug": "organization",
+					"label": "Practice / organization",
+					"type": "string"
+				},
+				{
+					"slug": "quote",
+					"label": "Quote",
+					"type": "text",
+					"required": true
+				},
+				{
+					"slug": "audience",
+					"label": "Who said it",
+					"type": "select",
+					"defaultValue": "practice",
+					"validation": {
+						"options": [
+							"practice",
+							"professional"
+						]
+					}
+				},
+				{
+					"slug": "rating",
+					"label": "Star rating (1–5)",
+					"type": "integer",
+					"validation": {
+						"min": 1,
+						"max": 5
+					}
+				},
+				{
+					"slug": "featured",
+					"label": "Show on home page",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 100
+				}
+			]
+		},
+		{
+			"slug": "team",
+			"label": "Team",
+			"labelSingular": "Team member",
+			"icon": "users",
+			"sortOrder": 4,
+			"routable": false,
+			"supports": [
+				"drafts"
+			],
+			"titleField": "name",
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "role",
+					"label": "Job title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "photo",
+					"label": "Photo",
+					"type": "image"
+				},
+				{
+					"slug": "bio",
+					"label": "Bio",
+					"type": "text"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 100
+				}
+			]
+		},
+		{
+			"slug": "locations",
+			"label": "Locations",
+			"labelSingular": "Location",
+			"description": "Service areas and the local contact for each.",
+			"icon": "map-pin",
+			"sortOrder": 5,
+			"routable": false,
+			"supports": [
+				"drafts"
+			],
+			"titleField": "region",
+			"fields": [
+				{
+					"slug": "region",
+					"label": "Region",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "state",
+					"label": "State (2-letter)",
+					"type": "string",
+					"required": true,
+					"validation": {
+						"pattern": "^[A-Z]{2}$"
+					}
+				},
+				{
+					"slug": "cities",
+					"label": "Cities covered",
+					"type": "string"
+				},
+				{
+					"slug": "contact_name",
+					"label": "Contact name",
+					"type": "string"
+				},
+				{
+					"slug": "extension",
+					"label": "Phone extension",
+					"type": "string"
+				},
+				{
+					"slug": "sms",
+					"label": "SMS number",
+					"type": "string"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 100
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"description": "Simple text pages such as the privacy policy and terms.",
+			"icon": "file-text",
+			"sortOrder": 6,
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"urlPattern": "/{slug}",
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"required": true
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "hiring-tips",
+					"label": "Hiring Tips"
+				},
+				{
+					"slug": "perfecting-your-practice",
+					"label": "Perfecting Your Practice"
+				},
+				{
+					"slug": "career-advice",
+					"label": "Career Advice"
+				},
+				{
+					"slug": "news",
+					"label": "News"
+				}
+			]
+		}
+	],
+	"content": {
+		"faqs": [
+			{
+				"id": "faqs:1",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "What is Dental Temps Staffing Solutions?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k7i",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7j",
+									"text": "DTSS is a dental staffing company that pairs proprietary staffing software with a personal, small-town touch. We place ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k7k",
+									"text": "temporary",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k7l",
+									"text": " and ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k7m",
+									"text": "permanent",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k7n",
+									"text": " dental professionals — hygienists, assistants, front office, lab techs and dentists — with practices that need them.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "general",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "faqs:2",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Where do you operate?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k7o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7p",
+									"text": "We currently staff practices across Florida, Washington, Texas (Dallas/Ft. Worth) and Illinois (Chicago). See our ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k7r",
+									"text": "locations page",
+									"marks": [
+										"k7q"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k7s",
+									"text": " for the local contact in each area — and reach out if you're nearby, as we're growing.",
+									"marks": []
+								}
+							],
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "k7q",
+									"href": "/locations"
+								}
+							]
+						}
+					],
+					"audience": "general",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "faqs:3",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Is it free to create an account?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k7t",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7u",
+									"text": "Yes. Creating an account is free for both dental practices and dental professionals.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "general",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "faqs:4",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How quickly can you fill a shift?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k7v",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7w",
+									"text": "Post a request in the practice portal and qualified, available professionals nearby are notified right away. Many shifts are assigned within minutes — it's just that simple.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 40
+				}
+			},
+			{
+				"id": "faqs:5",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Who is the employer of the temporary staff you send?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k7x",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7y",
+									"text": "We are. Unlike referral services, DTSS is the ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k7z",
+									"text": "employer of record",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k80",
+									"text": " for the temporary professionals we place, handling payroll, workers' comp, payroll taxes, unemployment and the other employment burdens — no 1099 headaches for you.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 50
+				}
+			},
+			{
+				"id": "faqs:6",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How are your professionals screened?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k81",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k82",
+									"text": "Every professional completes an onboarding process that covers experience, résumé, licenses and certifications, and documents before they're approved to work. We also participate in ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k83",
+									"text": "E-Verify",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k84",
+									"text": " to confirm employment eligibility.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 60
+				}
+			},
+			{
+				"id": "faqs:7",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "What does it cost?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k85",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k86",
+									"text": "You set the hourly rate on each request. We invoice for approved hours worked plus a service fee, and you can pay by card or bank transfer. There's no cost to create a practice account.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 70
+				}
+			},
+			{
+				"id": "faqs:8",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Can you help us hire permanently?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k87",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k88",
+									"text": "Yes. Through ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k89",
+									"text": "direct placement",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k8a",
+									"text": " we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. With ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k8b",
+									"text": "temp-to-perm",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k8c",
+									"text": " you can try a professional on a temporary basis first, then hire them for an agreed fee.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 80
+				}
+			},
+			{
+				"id": "faqs:9",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How do timesheets and invoicing work?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8d",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8e",
+									"text": "Professionals submit their hours in the app, you review and approve the timesheet in your practice portal, and invoices are generated from approved time — so you only ever pay for hours you've signed off on.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "practice",
+					"sort_order": 90
+				}
+			},
+			{
+				"id": "faqs:10",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How do I get started?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8f",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8g",
+									"text": "Create a free profile, then complete onboarding: your experience, résumé, licenses and documents, and your availability. Once our team approves your profile you can start claiming shifts and applying for permanent roles.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "professional",
+					"sort_order": 100
+				}
+			},
+			{
+				"id": "faqs:11",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How and when do I get paid?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8h",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8i",
+									"text": "Weekly, by direct deposit. And because DTSS is your employer for temp work, you get ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k8j",
+									"text": "one W-2",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k8k",
+									"text": " at tax time — not one from every office you've worked in.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "professional",
+					"sort_order": 110
+				}
+			},
+			{
+				"id": "faqs:12",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Do I choose where and when I work?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8l",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8m",
+									"text": "Yes. You set your availability and pick the shifts and offices that suit you — one day, three days or five weeks. No early-morning calls begging you to get to an office ASAP.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "professional",
+					"sort_order": 120
+				}
+			},
+			{
+				"id": "faqs:13",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Can a temp job turn into a permanent position?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8n",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8o",
+									"text": "Absolutely. Many of our placements are temp-to-perm, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "professional",
+					"sort_order": 130
+				}
+			},
+			{
+				"id": "faqs:14",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "What roles do you staff?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8p",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8q",
+									"text": "Dental hygienists, dental assistants, floaters, front office and insurance billing staff, dental lab technicians and dentists.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "professional",
+					"sort_order": 140
+				}
+			},
+			{
+				"id": "faqs:15",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Can I see open jobs before I sign up?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8r",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8s",
+									"text": "Yes — browse current temp shifts and permanent positions on our ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k8u",
+									"text": "job board",
+									"marks": [
+										"k8t"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k8v",
+									"text": ". Practice details and exact locations are shared once you create a free account and are approved.",
+									"marks": []
+								}
+							],
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "k8t",
+									"href": "/jobs"
+								}
+							]
+						}
+					],
+					"audience": "professional",
+					"sort_order": 150
+				}
+			},
+			{
+				"id": "faqs:16",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Who can become a DTSS affiliate?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8w",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8x",
+									"text": "Practices and professionals who already work with us can join from the settings page in their own portal. Dental schools, suppliers, consultants and other outside partners can apply for a partner account — every application is reviewed by our team.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 160
+				}
+			},
+			{
+				"id": "faqs:17",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How do I earn?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k8y",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8z",
+									"text": "You earn a commission of ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k90",
+									"text": "2.5%",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k91",
+									"text": " of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. Overtime hours and permanent placement fees aren't included.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 170
+				}
+			},
+			{
+				"id": "faqs:18",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "How does a referral get credited to me?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k92",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k93",
+									"text": "Share your personal referral link. When someone clicks it we remember the referral for 90 days, so if they sign up within that window — as a practice or a professional — they're credited to you. If someone was referred by more than one partner, the first referral wins.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 180
+				}
+			},
+			{
+				"id": "faqs:19",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "When and how am I paid?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k94",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k95",
+									"text": "Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. The minimum payout is $25 — smaller balances roll over to the next cycle.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 190
+				}
+			},
+			{
+				"id": "faqs:20",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Can I refer myself?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k96",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k97",
+									"text": "No. Self-referrals aren't credited, including referrals to an email address that's a variation of your own.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 200
+				}
+			},
+			{
+				"id": "faqs:21",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"question": "Where do I track my referrals and earnings?",
+					"answer": [
+						{
+							"_type": "block",
+							"_key": "k98",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k99",
+									"text": "In the Partner Portal, where you can see your referrals, commission earned, and payout history in real time.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					],
+					"audience": "affiliate",
+					"sort_order": 210
+				}
+			}
+		],
+		"testimonials": [
+			{
+				"id": "testimonials:1",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Dr. Richard Calvo",
+					"role": "Dentist",
+					"audience": "practice",
+					"featured": true,
+					"rating": 5,
+					"quote": "I would like to give my gratitude and recommendation for DTSS. We found ourselves in need of a dental assistant during the busiest time of the dental year. Shannon at DTSS was great. She was both very professional and extremely knowledgeable. She knew exactly what to ask about the type of assistant we would need for the day. She and her team exceeded our expectations, and as a result our day ran perfectly. Shannon will be my first call in the future should we find we have a staffing need.",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "testimonials:2",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Vicki M.",
+					"role": "Hygienist of 26 years · 2014 Sunstar distinguished hygienist & past president of the WSDHA",
+					"audience": "professional",
+					"featured": true,
+					"rating": 5,
+					"quote": "I have worked with several agencies but the one I find to be the best is DTSS! Dental Temps Staffing Solutions allows me to be in control of my schedule and they direct deposit my earnings into my bank account weekly. Years ago I had over 40 W-2 forms to file my taxes with, now with DTSS, I have one. I pick what office I want to work in and the days. Also, NO early morning phone calls begging you to get up and be at an office ASAP.",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "testimonials:3",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Shelley L.",
+					"role": "Receptionist",
+					"audience": "practice",
+					"featured": true,
+					"rating": 5,
+					"quote": "Shannon goes above and beyond what is expected of her. She is amazing, and what she did to help us out when in a pinch was unbelievable. I have never seen another company do that. Top quality customer service for sure.",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "testimonials:4",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Marianne P.",
+					"role": "Dental Assistant of 19 years",
+					"audience": "professional",
+					"featured": true,
+					"rating": 5,
+					"quote": "This has been the best experience I have ever had with a temp agency. Shannon takes the time to meet you and thoroughly explain their process. You are paid exactly what you are owed and exactly when you are owed it. I absolutely love their platform! The software makes everything simple.",
+					"sort_order": 40
+				}
+			},
+			{
+				"id": "testimonials:5",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Dr. Katie Rowley",
+					"role": "Dentist",
+					"audience": "practice",
+					"featured": true,
+					"rating": 5,
+					"quote": "This is a fantastic way to fill staffing needs. Thanks for designing a better way to do this around here!",
+					"sort_order": 50
+				}
+			},
+			{
+				"id": "testimonials:6",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Carolyn H.",
+					"role": "RDH",
+					"audience": "professional",
+					"featured": true,
+					"rating": 5,
+					"quote": "Shannon has simplified the staffing process, which makes things easy for me. She kept me busy when I needed it most, and the best thing was, she paid me weekly via direct deposit, no hassles. I just love her and the others at DTSS.",
+					"sort_order": 60
+				}
+			},
+			{
+				"id": "testimonials:7",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Tara P.",
+					"role": "Office Manager",
+					"organization": "East Side Family & Cosmetic Dentistry",
+					"audience": "practice",
+					"featured": false,
+					"rating": 5,
+					"quote": "Shannon was an asset to our office during our transition. She provided a seamless switch for us, which was greatly appreciated.",
+					"sort_order": 70
+				}
+			},
+			{
+				"id": "testimonials:8",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Paul D.",
+					"role": "DMD",
+					"audience": "practice",
+					"featured": false,
+					"rating": 5,
+					"quote": "I have been using Dental Temps staffing for some time now. I would definitely recommend their services. They are very professional and always get back to you! 5 stars for me!",
+					"sort_order": 80
+				}
+			},
+			{
+				"id": "testimonials:9",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "MarieLisa",
+					"role": "Office Manager",
+					"audience": "practice",
+					"featured": false,
+					"rating": 5,
+					"quote": "I had such an awesome experience with DTSS starting the day I signed up with them. They made me feel so welcome! I'm truly excited with their company's vision in the future of dentistry!",
+					"sort_order": 90
+				}
+			},
+			{
+				"id": "testimonials:10",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "S.B.",
+					"role": "Dental Assistant",
+					"audience": "professional",
+					"featured": false,
+					"rating": 5,
+					"quote": "Dental Temps' friendly staff put me to work when I needed the extra money. I believe they will do well, and their IT platform is cool too.",
+					"sort_order": 100
+				}
+			},
+			{
+				"id": "testimonials:11",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Cheyanne K.",
+					"role": "Dental Professional",
+					"audience": "professional",
+					"featured": false,
+					"rating": 5,
+					"quote": "It has been great working for this company and I appreciate you and everyone keeping me so busy. Thank you so much! You are all so great!",
+					"sort_order": 110
+				}
+			}
+		],
+		"team": [
+			{
+				"id": "team:1",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Shannon Cole",
+					"role": "Co-Founder & Director of Staffing",
+					"bio": "Shannon began her dental career in Miami, Florida in 1981 and has worked with, and for, some of the best dentists in the industry. After completing her Bachelor of Science in Health Administration, she saw the unique staffing needs of the dental industry and built a company to meet them. Shannon has participated in courses at the Pankey Institute and The Nash Institute, and belongs to the American Dental Assistants Association and the National Association of Professional Women. Outside the office she enjoys the outdoors, advocating for nonprofits, traveling and time with her family.",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "team:2",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Brett Cole",
+					"role": "Co-Founder & CEO",
+					"bio": "Brett began serving his country at 17 and has spent most of his career in aerospace, ensuring compliance with industry, regulatory, contractual and technical requirements. After his wife Shannon started DTSS, Brett joined the venture and built the company's OnDemand Workforce Management platform — giving practices and professionals a premium experience that maximizes value, efficiency and quality of life.",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "team:3",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Kevin McGahey",
+					"role": "Chief Financial Officer",
+					"bio": "Kevin is an experienced CFO with a history across staffing, HR, PEO, employee leasing and healthcare companies including Snelling Staffing, Staff One, HealthSmart and QVL Holdings — with deep experience in multi-state operations, payroll, benefits administration, compliance and high-growth finance.",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "team:4",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"name": "Shannon Horton",
+					"role": "Area Manager — Southeast Florida",
+					"bio": "Shannon Horton brings 17 years of dental staffing experience. She began at her father's staffing company and owned her own staffing firm for seven years before joining DTSS. A South Florida resident for 24 years and a mother of four and grandmother of five, she loves time with family and friends.",
+					"sort_order": 40
+				}
+			}
+		],
+		"locations": [
+			{
+				"id": "locations:1",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Northern Florida",
+					"state": "FL",
+					"cities": "Jacksonville · Tallahassee",
+					"contact_name": "Shannon Cole",
+					"extension": "1001",
+					"sms": "360-654-6512",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "locations:2",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Southeast Florida",
+					"state": "FL",
+					"cities": "West Palm Beach to Miami",
+					"contact_name": "Shannon Horton",
+					"extension": "1002",
+					"sms": "954-228-2357",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "locations:3",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Central-West Florida",
+					"state": "FL",
+					"cities": "Tampa · Orlando",
+					"contact_name": "Jessica Dennis",
+					"extension": "1011",
+					"sms": "863-215-6700",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "locations:4",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Western Washington",
+					"state": "WA",
+					"cities": "Bellingham · Seattle · Olympia",
+					"contact_name": "Shannon Cole",
+					"extension": "1001",
+					"sms": "360-654-6512",
+					"sort_order": 40
+				}
+			},
+			{
+				"id": "locations:5",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Eastern Washington",
+					"state": "WA",
+					"cities": "Tri-Cities · Spokane",
+					"contact_name": "Shannon Cole",
+					"extension": "1001",
+					"sms": "360-654-6512",
+					"sort_order": 50
+				}
+			},
+			{
+				"id": "locations:6",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Dallas / Ft. Worth",
+					"state": "TX",
+					"cities": "Dallas · Fort Worth",
+					"contact_name": "Jessica Dennis",
+					"extension": "1011",
+					"sms": "863-215-6700",
+					"sort_order": 60
+				}
+			},
+			{
+				"id": "locations:7",
+				"slug": null,
+				"status": "published",
+				"data": {
+					"region": "Chicago",
+					"state": "IL",
+					"cities": "Chicago metro",
+					"contact_name": "Shannon Cole",
+					"extension": "1001",
+					"sms": "360-654-6512",
+					"sort_order": 70
+				}
+			}
+		],
+		"pages": [
+			{
+				"id": "pages:1",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy Policy",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1",
+									"text": "Dental Temps Staffing Solutions",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k2",
+									"text": " 3204 Smokey Pt. Dr., Suite 206 1-888-653-1657",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4",
+									"text": "It is Dental Temps Staffing Solutions's policy to respect your privacy regarding any information we may collect while operating our website. This Privacy Policy applies to ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k5",
+									"text": "dtstaffingsolutions.com",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k6",
+									"text": " (hereinafter, \"us\", \"we\", or \"dtstaffingsolutions.com\"). We respect your privacy and are committed to protecting personally identifiable information you may provide us through the Website. We have adopted this privacy policy (\"Privacy Policy\") to explain what information may be collected on our Website, how we use this information, and under what circumstances we may disclose the information to third parties. This Privacy Policy applies only to information we collect through the Website and does not apply to our collection of information from other sources.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8",
+									"text": "This Privacy Policy, together with the Terms and Conditions posted on our Website, set forth the general rules and policies governing your use of our Website. Depending on your activities when visiting our Website, you may be required to agree to additional terms and conditions.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k9",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ka",
+									"text": "Website Visitors",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kb",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kc",
+									"text": "Like most website operators, Dental Temps Staffing Solutions collects non-personally-identifying information of the sort that web browsers and servers typically make available, such as the browser type, language preference, referring site, and the date and time of each visitor request. Dental Temps Staffing Solutions's purpose in collecting non-personally identifying information is to better understand how Dental Temps Staffing Solutions's visitors use its website. From time to time, Dental Temps Staffing Solutions may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kd",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ke",
+									"text": "Dental Temps Staffing Solutions also collects potentially personally-identifying information like Internet Protocol (IP) addresses for logged in users and for users leaving comments on https://dtstaffingsolutions.com blog posts. Dental Temps Staffing Solutions only discloses logged in user and commenter IP addresses under the same circumstances that it uses and discloses personally-identifying information as described below.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kf",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kg",
+									"text": "Gathering of Personally-Identifying Information",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kh",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ki",
+									"text": "Certain visitors to Dental Temps Staffing Solutions's websites choose to interact with Dental Temps Staffing Solutions in ways that require Dental Temps Staffing Solutions to gather personally-identifying information. The amount and type of information that Dental Temps Staffing Solutions gathers depends on the nature of the interaction. For example, we ask visitors who sign up for a blog at https://dtstaffingsolutions.com to provide a username and email address.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kj",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kk",
+									"text": "Security",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kl",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "km",
+									"text": "The security of your Personal Information is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kn",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ko",
+									"text": "Advertisements",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kp",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kq",
+									"text": "Ads appearing on our website may be delivered to users by advertising partners, who may set cookies. These cookies allow the ad server to recognize your computer each time they send you an online advertisement to compile information about you or others who use your computer. This information allows ad networks to, among other things, deliver targeted advertisements that they believe will be of most interest to you. This Privacy Policy covers the use of cookies by Dental Temps Staffing Solutions and does not cover the use of cookies by any advertisers.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kr",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ks",
+									"text": "Links to External Sites",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kt",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ku",
+									"text": "Our Service may contain links to external sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy and terms and conditions of every site you visit.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kv",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kw",
+									"text": "We have no control over, and assume no responsibility for the content, privacy policies or practices of any third party sites, products or services.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kx",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ky",
+									"text": "Dtstaffingsolutions.com uses Google AdWords for remarketing. Dtstaffingsolutions.com uses the remarketing services to advertise on third party websites (including Google) to previous visitors to our site. It could mean that we advertise to previous visitors who haven't completed a task on our site, for example using the contact form to make an enquiry. This could be in the form of an advertisement on the Google search results page, or a site in the Google Display Network. Third-party vendors, including Google, use cookies to serve ads based on someone's past visits. Of course, any data collected will be used in accordance with our own privacy policy and Google's privacy policy.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "kz",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k10",
+									"text": "You can set preferences for how Google advertises to you using the ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "k12",
+									"text": "Google Ad Preferences page",
+									"marks": [
+										"k11"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k13",
+									"text": ", and if you want to you can opt out of interest-based advertising entirely by cookie settings or permanently using a browser plugin.",
+									"marks": []
+								}
+							],
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "k11",
+									"href": "https://adssettings.google.com"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k14",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k15",
+									"text": "Protection of Certain Personally-Identifying Information",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k16",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k17",
+									"text": "Dental Temps Staffing Solutions discloses potentially personally-identifying and personally-identifying information only to those of its employees, contractors and affiliated organizations that (i) need to know that information in order to process it on Dental Temps Staffing Solutions's behalf or to provide services available at Dental Temps Staffing Solutions's website, and (ii) that have agreed not to disclose it to others. Some of those employees, contractors and affiliated organizations may be located outside of your home country; by using Dental Temps Staffing Solutions's website, you consent to the transfer of such information to them. Dental Temps Staffing Solutions will not rent or sell potentially personally-identifying and personally-identifying information to anyone. Other than to its employees, contractors and affiliated organizations, as described above, Dental Temps Staffing Solutions discloses potentially personally-identifying and personally-identifying information only in response to a subpoena, court order or other governmental request, or when Dental Temps Staffing Solutions believes in good faith that disclosure is reasonably necessary to protect the property or rights of Dental Temps Staffing Solutions, third parties or the public at large.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k18",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k19",
+									"text": "If you are a registered user of https://dtstaffingsolutions.com and have supplied your email address, Dental Temps Staffing Solutions may occasionally send you an email to tell you about new features, solicit your feedback, or just keep you up to date with what's going on with Dental Temps Staffing Solutions and our products. We primarily use our blog to communicate this type of information, so we expect to keep this type of email to a minimum. If you send us a request (for example via a support email or via one of our feedback mechanisms), we reserve the right to publish it in order to help us clarify or respond to your request or to help us support other users. Dental Temps Staffing Solutions takes all measures reasonably necessary to protect against the unauthorized access, use, alteration or destruction of potentially personally-identifying and personally-identifying information.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1a",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1b",
+									"text": "Aggregated Statistics",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1c",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1d",
+									"text": "Dental Temps Staffing Solutions may collect statistics about the behavior of visitors to its website. Dental Temps Staffing Solutions may display this information publicly or provide it to others. However, Dental Temps Staffing Solutions does not disclose your personally-identifying information.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1e",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1f",
+									"text": "Affiliate Disclosure",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1g",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1h",
+									"text": "This site uses affiliate links and does earn a commission from certain links. This does not affect your purchases or the price you may pay.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1i",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1j",
+									"text": "Cookies",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1k",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1l",
+									"text": "To enrich and perfect your online experience, Dental Temps Staffing Solutions uses \"Cookies\", similar technologies and services provided by others to display personalized content, appropriate advertising and store your preferences on your computer.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1m",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1n",
+									"text": "A cookie is a string of information that a website stores on a visitor's computer, and that the visitor's browser provides to the website each time the visitor returns. Dental Temps Staffing Solutions uses cookies to help Dental Temps Staffing Solutions identify and track visitors, their usage of https://dtstaffingsolutions.com, and their website access preferences. Dental Temps Staffing Solutions visitors who do not wish to have cookies placed on their computers should set their browsers to refuse cookies before using Dental Temps Staffing Solutions's websites, with the drawback that certain features of Dental Temps Staffing Solutions's websites may not function properly without the aid of cookies.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1p",
+									"text": "By continuing to navigate our website without changing your cookie settings, you hereby acknowledge and agree to Dental Temps Staffing Solutions's use of cookies.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1q",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1r",
+									"text": "COPPA (Children's Online Privacy Protection Act)",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1s",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1t",
+									"text": "When it comes to the collection of personal information from children under the age of 13 years old, the Children's Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, United States' consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children's privacy and safety online.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1u",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1v",
+									"text": "We do not specifically market to children under the age of 13 years old. We are not responsible for third-parties, including plug-ins unrelated to Dental Temps Staffing Solutions LLC, that collect PII from children under 13. Nor are we responsible for online ad exchanges, including SSPs, DSPs, data aggregators and retargeting platforms, including ad networks that put our website into their networks, databases and platforms without notifying us.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1w",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1x",
+									"text": "Fair Information Practices",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k1y",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1z",
+									"text": "The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k20",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k21",
+									"text": "In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k22",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k23",
+									"text": "We will notify all visitors that fill out the contact form, and anyone that responds to a survey or marketing communications content and submits an email address that we can respond to:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k24",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k25",
+									"text": "Within 7 business days",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k26",
+									"text": " via in-site notification",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k27",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k28",
+									"text": "We also agree to the Individual Redress Principle which requires that individuals have the right to legally pursue enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or government agencies to investigate and/or prosecute non-compliance by data processors. We will only collect name, email, subject and your message which is completely optional to any visitor to https://dtstaffingsolutions.com.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k29",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2a",
+									"text": "CAN-SPAM Act",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2b",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2c",
+									"text": "The CAN-SPAM Act is a law that sets the rules for commercial email, establishes requirements for commercial messages, gives recipients the right to have emails stopped from being sent to them, and spells out tough penalties for violations.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2d",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2e",
+									"text": "We collect your email address in order to:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2f",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2g",
+									"text": "Send information, respond to inquiries, and/or other requests or questions",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2h",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2i",
+									"text": "Market to our mailing list or continue to send emails to our clients after the original transaction has occurred",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2j",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2k",
+									"text": "To be in accordance with CAN-SPAM, we agree to the following:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2l",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2m",
+									"text": "Not use false or misleading subjects or email addresses",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2n",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2o",
+									"text": "Identify the message as an advertisement in some reasonable way",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2p",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2q",
+									"text": "Include the physical address of our business or site headquarters",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2r",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2s",
+									"text": "Monitor third-party email marketing services for compliance, if one is used",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2t",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2u",
+									"text": "Honor opt-out/unsubscribe requests quickly",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2v",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2w",
+									"text": "Allow users to unsubscribe by using the link at the bottom of each email",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k2x",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2y",
+									"text": "If at any time you would like to unsubscribe from receiving future emails, you can click the unsubscribe link at the bottom of any email.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2z",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k30",
+									"text": "California Online Privacy Protection Act (CalOPPA)",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k31",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k32",
+									"text": "CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law's reach stretches well beyond California to require any person or company in the United States (and conceivably the world) that operates websites collecting Personally Identifiable Information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals or companies with whom it is being shared.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k33",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k34",
+									"text": "According to CalOPPA, we agree to the following:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k35",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k36",
+									"text": "Users can visit our site anonymously",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k37",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k38",
+									"text": "Once this privacy policy is created, we will add a link to it on our home page or as a minimum, on the first significant page after entering our website",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k39",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3a",
+									"text": "Our Privacy Policy link includes the word 'Privacy' and can easily be found on the page specified above",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k3b",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3c",
+									"text": "Users may contact us to request modification of their stored personal information",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k3d",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3e",
+									"text": "Privacy Policy Changes",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3f",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3g",
+									"text": "Although most changes are likely to be minor, Dental Temps Staffing Solutions may change its Privacy Policy from time to time, and in Dental Temps Staffing Solutions's sole discretion. Dental Temps Staffing Solutions encourages visitors to frequently check this page for any changes to its Privacy Policy. Your continued use of this site after any change in this Privacy Policy will constitute your acceptance of such change.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3h",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3i",
+									"text": "Contact Information",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3j",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3k",
+									"text": "If you have any questions about this Privacy Policy, please contact us:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3l",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3m",
+									"text": "Email:",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k3n",
+									"text": " dtss@dtstaffingsolutions.com",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k3o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3p",
+									"text": "Phone:",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k3q",
+									"text": " 1-888-653-1657",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						}
+					]
+				}
+			},
+			{
+				"id": "pages:2",
+				"slug": "terms",
+				"status": "published",
+				"data": {
+					"title": "Terms & Conditions",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k3r",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3s",
+									"text": "Dental Temps Staffing Solutions",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k3t",
+									"text": " 3204 Smokey Pt. Dr., Suite 206 Arlington, WA 98223, United States",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3u",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3v",
+									"text": "Welcome to Dental Temps Staffing Solutions. These terms and conditions outline the rules and regulations for the use of Dental Temps Staffing Solutions's website.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3w",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3x",
+									"text": "By accessing this website we assume you accept these terms and conditions in full. Do not continue to use Dental Temps Staffing Solutions's website if you do not accept all of the terms and conditions stated on this page.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3y",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3z",
+									"text": "The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and any or all Agreements: \"Client\", \"You\" and \"Your\" refers to you, the person accessing this website and accepting the Company's terms and conditions. \"The Company\", \"Ourselves\", \"We\", \"Our\" and \"Us\" refers to our Company. \"Party\", \"Parties\", or \"Us\" refers to both the Client and ourselves, or either the Client or ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner, whether by formal meetings of a fixed duration, or any other means, for the express purpose of meeting the Client's needs in respect of provision of the Company's stated services/products, in accordance with and subject to, prevailing law of the United States.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k40",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k41",
+									"text": "Cookies",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k42",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k43",
+									"text": "We employ the use of cookies. By using Dental Temps Staffing Solutions's website you consent to the use of cookies in accordance with Dental Temps Staffing Solutions's privacy policy.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k44",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k45",
+									"text": "Most modern interactive websites use cookies to enable us to retrieve user details for each visit. Cookies are used in some areas of our site to enable the functionality of this area and ease of use for those visiting. Some of our affiliate and advertising partners may also use cookies.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k46",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k47",
+									"text": "License",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k48",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k49",
+									"text": "Unless otherwise stated, Dental Temps Staffing Solutions and/or its licensors own the intellectual property rights for all material on Dental Temps Staffing Solutions. All intellectual property rights are reserved. You may view and/or print pages from https://dtstaffingsolutions.com for your own personal use subject to restrictions set in these terms and conditions.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k4a",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4b",
+									"text": "You must not:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k4c",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4d",
+									"text": "Republish material from https://dtstaffingsolutions.com",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4e",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4f",
+									"text": "Sell, rent or sub-license material from https://dtstaffingsolutions.com",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4g",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4h",
+									"text": "Reproduce, duplicate or copy material from https://dtstaffingsolutions.com",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4i",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4j",
+									"text": "Redistribute content from Dental Temps Staffing Solutions (unless content is specifically made for redistribution)",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4k",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4l",
+									"text": "Hyperlinking to Our Content",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k4m",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4n",
+									"text": "The following organizations may link to our website without prior written approval:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k4o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4p",
+									"text": "Government agencies",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4q",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4r",
+									"text": "Search engines",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4s",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4t",
+									"text": "News organizations",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4u",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4v",
+									"text": "Online directory distributors when they list us in the directory may link to our website in the same manner as they hyperlink to the websites of other listed businesses",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4w",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4x",
+									"text": "Systemwide Accredited Businesses except soliciting non-profit organizations, charity shopping malls, and charity fundraising groups",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k4y",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4z",
+									"text": "These organizations may link to our home page, to publications or to other website information so long as the link: (a) is not in any way misleading; (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its products or services; and (c) fits within the context of the linking party's site.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k50",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k51",
+									"text": "We may consider and approve in our sole discretion other link requests from the following types of organizations:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k52",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k53",
+									"text": "Commonly-known consumer and/or business information sources such as Chambers of Commerce, American Automobile Association, AARP and Consumers Union",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k54",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k55",
+									"text": "Dot.com community sites",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k56",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k57",
+									"text": "Associations or other groups representing charities, including charity giving sites",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k58",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k59",
+									"text": "Online directory distributors",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5a",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5b",
+									"text": "Internet portals",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5c",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5d",
+									"text": "Accounting, law and consulting firms whose primary clients are businesses",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5e",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5f",
+									"text": "Educational institutions and trade associations",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5g",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5h",
+									"text": "We will approve link requests from these organizations if we determine that: (a) the link would not reflect unfavorably on us or our accredited businesses; (b) the organization does not have an unsatisfactory record with us; (c) the benefit to us from the visibility associated with the hyperlink outweighs any absence thereof; and (d) where the link is in the context of general resource information or is otherwise consistent with editorial content in a newsletter or similar product furthering the mission of the organization.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5i",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5j",
+									"text": "If you are among the organizations listed above and are interested in linking to our website, you must notify us by sending an email to dtss@dtstaffingsolutions.com. Please include your name, your organization name, contact information (such as a phone number and/or email address) as well as the URL of your site, a list of any URLs from which you intend to link to our website, and a list of the URL(s) on our site to which you would like to link. Allow 2–3 weeks for a response.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5k",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5l",
+									"text": "Approved organizations may hyperlink to our website as follows:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5m",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5n",
+									"text": "By use of our corporate name",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5p",
+									"text": "By use of the uniform resource locator (web address) being linked to",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5q",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5r",
+									"text": "By use of any other description of our website or material being linked to that makes sense within the context and format of content on the linking party's site",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k5s",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5t",
+									"text": "No use of Dental Temps Staffing Solutions's logo or other artwork will be allowed for linking absent a trademark license agreement.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5u",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5v",
+									"text": "Iframes",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5w",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5x",
+									"text": "Without prior approval and express written permission, you may not create frames around our web pages or use other techniques that alter in any way the visual presentation or appearance of our website.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5y",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5z",
+									"text": "Reservation of Rights",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k60",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k61",
+									"text": "We reserve the right at any time and in our sole discretion to request that you remove all links or any particular link to our website. You agree to immediately remove all links to our website upon such request. We also reserve the right to amend these terms and conditions and our linking policy at any time. By continuing to link to our website, you agree to be bound by and abide by these linking terms and conditions.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k62",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k63",
+									"text": "Removal of Links from Our Website",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k64",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k65",
+									"text": "If you find any link on our website or any linked website objectionable for any reason, you may contact us about this. We will consider requests to remove links but will have no obligation to do so or to respond directly to you.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k66",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k67",
+									"text": "Whilst we endeavour to ensure that the information on this website is correct, we do not warrant its completeness or accuracy; nor do we commit to ensuring that the website remains available or that the material on the website is kept up to date.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k68",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k69",
+									"text": "Content Liability",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6a",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6b",
+									"text": "We shall have no responsibility or liability for any content appearing on your website. You agree to indemnify and defend us against all claims arising out of or based upon your website. No link(s) may appear on any page on your website or within any context containing content or materials that may be interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6c",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6d",
+									"text": "Disclaimer",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6e",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6f",
+									"text": "To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website (including, without limitation, any warranties implied by law in respect of satisfactory quality, fitness for purpose and/or the use of reasonable care and skill). Nothing in this disclaimer will:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6g",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6h",
+									"text": "Limit or exclude our or your liability for death or personal injury resulting from negligence",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k6i",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6j",
+									"text": "Limit or exclude our or your liability for fraud or fraudulent misrepresentation",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k6k",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6l",
+									"text": "Limit any of our or your liabilities in any way that is not permitted under applicable law",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k6m",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6n",
+									"text": "Exclude any of our or your liabilities that may not be excluded under applicable law",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k6o",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6p",
+									"text": "The limitations and exclusions of liability set out in this section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer or in relation to the subject matter of this disclaimer, including liabilities arising in contract, in tort (including negligence) and for breach of statutory duty.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6q",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6r",
+									"text": "To the extent that the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6s",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6t",
+									"text": "Contact Information",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6u",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6v",
+									"text": "If you have any queries regarding any of our terms, please contact us at:",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6w",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k6x",
+									"text": "Email:",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k6y",
+									"text": " dtss@dtstaffingsolutions.com",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "k6z",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k70",
+									"text": "Phone:",
+									"marks": [
+										"strong"
+									]
+								},
+								{
+									"_type": "span",
+									"_key": "k71",
+									"text": " 1-888-653-1657",
+									"marks": []
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						}
+					]
+				}
+			},
+			{
+				"id": "pages:3",
+				"slug": "disclaimers",
+				"status": "published",
+				"data": {
+					"title": "Disclaimers",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k72",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k73",
+									"text": "All the information on this website is published in good faith and for general information purposes only. Dental Temps Staffing Solutions does not make any warranties about the completeness, reliability and accuracy of this information. Any action you take upon the information you find on this website (https://www.dtstaffingsolutions.com) is strictly at your own risk. Dental Temps Staffing Solutions will not be liable for any losses and/or damages in connection with the use of our website.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k74",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k75",
+									"text": "From our website, you can visit other websites by following hyperlinks to such external sites. While we strive to provide only quality links to useful and ethical websites, we have no control over the content and nature of these sites. These links to other websites do not imply a recommendation for all the content found on these sites. Site owners and content may change without notice and may occur before we have the opportunity to remove a link which may have gone 'bad'.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k76",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k77",
+									"text": "Please also be aware that when you leave our website, other sites may have different privacy policies and terms which are beyond our control. Please be sure to check the Privacy Policies of these sites as well as their \"Terms of Service\" before engaging in any business or uploading any information.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k78",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k79",
+									"text": "Consent",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7a",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7b",
+									"text": "By using our website, you hereby consent to our disclaimer and agree to its terms.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7c",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7d",
+									"text": "Update",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7e",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7f",
+									"text": "Should we update, amend or make any changes to this document, those changes will be prominently posted here.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7g",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7h",
+									"text": "If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email at dtss@dtstaffingsolutions.com.",
+									"marks": []
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		]
+	}
+}

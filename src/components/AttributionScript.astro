@@ -1,0 +1,147 @@
+---
+/**
+ * Browser half of attribution (server half: src/lib/referral.ts).
+ *
+ * 1. ?ref= / ?c= → `dtss_ref` cookie on the shared parent domain, FIRST TOUCH
+ *    WINS. Runs in the browser because cached pages never reach middleware.
+ * 2. First-landing UTMs are remembered for the session.
+ * 3. Outbound links into the apps (practice / professional / partner origins)
+ *    get ?ref= and the UTMs appended, as a belt-and-braces for browsers that
+ *    block the cookie — the apps capture ?ref= server-side on arrival.
+ *
+ * ⚠️ Cookie contract: see src/lib/referral.ts. The value is written raw
+ * (`CODE|ISO`, no URL-encoding) to match the apps' serializer.
+ */
+import { APP_ORIGINS, ENV } from "@/lib/env";
+
+const cookieDomain = ENV.cookieDomain;
+const appOrigins = APP_ORIGINS.map((u) => new URL(u).origin);
+---
+
+<script is:inline define:vars={{ cookieDomain, appOrigins }}>
+	(function () {
+		var NAME = "dtss_ref";
+		var MAX_AGE = 90 * 24 * 60 * 60;
+		var PATTERN = /^[A-Z0-9-]{4,32}$/;
+		var UTM_KEYS = [
+			"utm_source",
+			"utm_medium",
+			"utm_campaign",
+			"utm_term",
+			"utm_content",
+		];
+
+		function readCookie(name) {
+			var parts = document.cookie ? document.cookie.split("; ") : [];
+			for (var i = 0; i < parts.length; i++) {
+				var eq = parts[i].indexOf("=");
+				if (parts[i].slice(0, eq) === name) {
+					try {
+						return decodeURIComponent(parts[i].slice(eq + 1));
+					} catch (e) {
+						return parts[i].slice(eq + 1);
+					}
+				}
+			}
+			return null;
+		}
+
+		function validRef() {
+			var raw = readCookie(NAME);
+			if (!raw) return null;
+			var p = raw.split("|");
+			if (p.length !== 2 || !PATTERN.test(p[0])) return null;
+			var t = Date.parse(p[1]);
+			if (isNaN(t) || t > Date.now() || (Date.now() - t) / 1000 > MAX_AGE)
+				return null;
+			return p[0];
+		}
+
+		var params = new URLSearchParams(window.location.search);
+		var incoming = (params.get("ref") || params.get("c") || "")
+			.trim()
+			.toUpperCase();
+		if (!PATTERN.test(incoming)) incoming = "";
+
+		var active = validRef();
+		if (!active && incoming) {
+			document.cookie =
+				NAME +
+				"=" +
+				incoming +
+				"|" +
+				new Date().toISOString() +
+				"; path=/; max-age=" +
+				MAX_AGE +
+				"; samesite=lax" +
+				(cookieDomain ? "; domain=" + cookieDomain : "") +
+				(location.protocol === "https:" ? "; secure" : "");
+			active = incoming;
+		}
+		active = active || incoming;
+
+		var utm = {};
+		try {
+			var stored = sessionStorage.getItem("dtss_utm");
+			if (stored) utm = JSON.parse(stored) || {};
+		} catch (e) {
+			/* storage blocked — fine, UTMs just won't persist */
+		}
+		var sawUtm = false;
+		UTM_KEYS.forEach(function (k) {
+			if (params.get(k)) {
+				if (!sawUtm) utm = {};
+				sawUtm = true;
+				utm[k] = params.get(k);
+			}
+		});
+		if (sawUtm) {
+			try {
+				sessionStorage.setItem("dtss_utm", JSON.stringify(utm));
+			} catch (e) {
+				/* storage blocked */
+			}
+		}
+
+		window.__dtss = { ref: active || null, utm: utm };
+
+		function decorate(a) {
+			var url;
+			try {
+				url = new URL(a.href, location.href);
+			} catch (e) {
+				return;
+			}
+			if (appOrigins.indexOf(url.origin) === -1) return;
+			if (active && !url.searchParams.get("ref"))
+				url.searchParams.set("ref", active);
+			for (var k in utm)
+				if (!url.searchParams.get(k)) url.searchParams.set(k, utm[k]);
+			a.href = url.toString();
+		}
+
+		function decorateAll(root) {
+			var links = (root || document).querySelectorAll("a[href]");
+			for (var i = 0; i < links.length; i++) decorate(links[i]);
+		}
+		window.__dtssDecorate = decorateAll;
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", function () {
+				decorateAll();
+			});
+		} else {
+			decorateAll();
+		}
+		// Links rendered later (job dialog, etc.) are decorated at click time.
+		document.addEventListener(
+			"click",
+			function (e) {
+				var a =
+					e.target && e.target.closest ? e.target.closest("a[href]") : null;
+				if (a) decorate(a);
+			},
+			true
+		);
+	})();
+</script>

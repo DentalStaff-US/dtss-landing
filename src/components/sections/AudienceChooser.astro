@@ -1,0 +1,160 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/ui/Container.astro";
+import Badge from "@/components/ui/Badge.astro";
+import { appLink, type AppAction } from "@/lib/links";
+import { ENV } from "@/lib/env";
+
+interface Props {
+	mode: "sign-up" | "sign-in";
+	/** Referral code to carry onto the app links explicitly (the /r alias). */
+	refCode?: string | null;
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+}
+const { mode, refCode, noindex = false } = Astro.props;
+const signUp = mode === "sign-up";
+const params = refCode ? { ref: refCode } : {};
+const partnerAction: AppAction = signUp ? "apply" : "sign-in";
+const showPartner = !signUp || ENV.affiliateProgramLive;
+
+const title =
+	Astro.props.title ?? (signUp ? "Let's get you started" : "Welcome back");
+const description =
+	Astro.props.description ??
+	(signUp
+		? "Tell us who you are and we'll take you to the right place. It's free to join."
+		: "Choose your portal to sign in.");
+
+const options = [
+	{
+		audience: "practice" as const,
+		icon: "tabler:building-hospital",
+		eyebrow: "Dental practice",
+		heading: signUp ? "I need dental staff" : "Practice portal",
+		body: signUp
+			? "Book vetted temps, hire permanently and manage timesheets in one place."
+			: "Offices, managers and practice staff.",
+		cta: signUp ? "Create practice account" : "Sign in as a practice",
+		href: appLink("practice", mode, params),
+		classes: "from-sky-50 to-white ring-primary/20 hover:ring-primary",
+		iconBg: "bg-primary",
+		text: "text-primary-dark",
+	},
+	{
+		audience: "pro" as const,
+		icon: "tabler:stethoscope",
+		eyebrow: "Dental professional",
+		heading: signUp ? "I'm looking for work" : "Professional portal",
+		body: signUp
+			? "Hygienists, assistants, front office, lab techs and dentists — temp or permanent."
+			: "Hygienists, assistants and dental pros.",
+		cta: signUp ? "Create free profile" : "Sign in as a professional",
+		href: appLink("pro", mode, params),
+		classes: "from-teal-50 to-white ring-pro/20 hover:ring-pro",
+		iconBg: "bg-pro",
+		text: "text-pro-dark",
+	},
+	...(showPartner
+		? [
+				{
+					audience: "partner" as const,
+					icon: "tabler:share",
+					eyebrow: "Partner / affiliate",
+					heading: signUp ? "I want to refer others" : "Partner portal",
+					body: signUp
+						? "Schools, suppliers and community leaders — earn by referring."
+						: "Track referrals, earnings and payouts.",
+					cta: signUp ? "Apply to partner" : "Sign in as a partner",
+					href: appLink("partner", partnerAction, params),
+					classes:
+						"from-slate-50 to-white ring-border hover:ring-foreground/40",
+					iconBg: "bg-navy",
+					text: "text-navy",
+				},
+			]
+		: []),
+];
+---
+
+<Layout
+	title={signUp ? "Get Started" : "Sign In"}
+	description={description}
+	noindex={noindex}
+>
+	<section class="bg-gradient-to-br from-sky-50 via-white to-teal-50">
+		<Container class="py-16 sm:py-24">
+			<div class="mx-auto max-w-2xl text-center">
+				<Badge>{signUp ? "Free to join" : "Member login"}</Badge>
+				<h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">{title}</h1>
+				<p class="mt-4 text-lg text-muted-foreground">{description}</p>
+			</div>
+			<ul
+				class={`mx-auto mt-12 grid max-w-5xl gap-6 ${options.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
+			>
+				{
+					options.map((o) => (
+						<li>
+							<a
+								href={o.href}
+								class={`group flex h-full flex-col rounded-2xl bg-gradient-to-br p-8 shadow-sm ring-2 transition hover:-translate-y-1 hover:shadow-xl ${o.classes}`}
+								data-track={signUp ? "signup_click" : "signin_click"}
+								data-track-props={JSON.stringify({
+									audience: o.audience,
+									placement: "chooser",
+								})}
+							>
+								<span
+									class={`inline-flex size-14 items-center justify-center rounded-xl text-white ${o.iconBg}`}
+								>
+									<Icon name={o.icon} class="size-7" aria-hidden="true" />
+								</span>
+								<span
+									class={`mt-6 text-xs font-bold uppercase tracking-wide ${o.text}`}
+								>
+									{o.eyebrow}
+								</span>
+								<span class="mt-1 text-2xl font-extrabold">{o.heading}</span>
+								<span class="mt-3 flex-1 text-muted-foreground">{o.body}</span>
+								<span
+									class={`mt-6 inline-flex items-center gap-1 font-bold ${o.text}`}
+								>
+									{o.cta}
+									<Icon
+										name="tabler:arrow-right"
+										class="size-5 transition group-hover:translate-x-1"
+										aria-hidden="true"
+									/>
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="mt-10 text-center text-sm text-muted-foreground">
+				{
+					signUp ? (
+						<>
+							Already have an account?{" "}
+							<a href="/sign-in" class="font-bold text-primary hover:underline">
+								Sign in
+							</a>
+						</>
+					) : (
+						<>
+							New to DTSS?{" "}
+							<a
+								href="/get-started"
+								class="font-bold text-primary hover:underline"
+							>
+								Create a free account
+							</a>
+						</>
+					)
+				}
+			</p>
+		</Container>
+	</section>
+</Layout>

@@ -1,0 +1,293 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import FeatureGrid from "@/components/sections/FeatureGrid.astro";
+import Steps from "@/components/sections/Steps.astro";
+import Testimonials from "@/components/sections/Testimonials.astro";
+import FaqList from "@/components/sections/FaqList.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import ProductPreview from "@/components/sections/ProductPreview.astro";
+import JobCard from "@/components/jobs/JobCard.astro";
+import { getFaqs, getTestimonials } from "@/lib/cms";
+import { getFacets, listJobs } from "@/lib/jobs";
+import { appLink } from "@/lib/links";
+
+const [faqs, testimonials, jobsRes, facetsRes] = await Promise.all([
+	getFaqs(["professional"]),
+	getTestimonials(),
+	listJobs({ sort: "soonest" }, 3),
+	getFacets(),
+]);
+const proQuotes = testimonials
+	.filter((t) => t.audience === "professional")
+	.slice(0, 3);
+const jobs = jobsRes.ok ? jobsRes.data.jobs : [];
+const facets = facetsRes.ok ? facetsRes.data : null;
+---
+
+<Layout
+	title="Dental Jobs — Temp Shifts & Permanent Positions"
+	description="Flexible dental hygienist, assistant and front office work with weekly direct-deposit pay and one W-2. Pick your shifts, try temp-to-perm, and create your free profile in minutes."
+	breadcrumbs={[{ name: "For Professionals", href: "/professionals" }]}
+>
+	<PageHero
+		tone="pro"
+		eyebrow="For dental professionals"
+		title="Work as much — or as little — as you want."
+		description="One day, three days or five weeks. Pick the shifts and offices that fit your life, get paid weekly, and find a permanent home office when you're ready."
+	>
+		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+			<Button
+				href={appLink("pro", "sign-up")}
+				variant="pro"
+				size="xl"
+				data-track="signup_click"
+				data-track-props='{"audience":"pro","placement":"pros_hero"}'
+			>
+				Create your free profile
+			</Button>
+			<Button href="/jobs" variant="outline" size="xl">Browse open jobs</Button>
+		</div>
+		<ul
+			class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted-foreground"
+		>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-pro"
+					aria-hidden="true"
+				/>Weekly direct deposit
+			</li>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-pro"
+					aria-hidden="true"
+				/>One W-2
+			</li>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-pro"
+					aria-hidden="true"
+				/>You choose your schedule
+			</li>
+		</ul>
+		<ProductPreview slot="aside" variant="pro" />
+	</PageHero>
+
+	<section class="py-20 sm:py-24" aria-labelledby="why-heading">
+		<Container>
+			<SectionHeading
+				id="why-heading"
+				tone="pro"
+				eyebrow="Why work with DTSS"
+				title="Respect, flexibility and a team in your corner"
+				description="Those who work hard for us never go unnoticed — through personal contact, incentive programs, earned rewards and perks."
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					tone="pro"
+					items={[
+						{
+							icon: "tabler:calendar-heart",
+							title: "Your schedule",
+							body: "Set your availability and claim the shifts you want. No early-morning calls begging you to come in.",
+						},
+						{
+							icon: "tabler:cash",
+							title: "Weekly pay",
+							body: "Paid every week by direct deposit — exactly what you're owed, exactly when you're owed it.",
+						},
+						{
+							icon: "tabler:file-invoice",
+							title: "One W-2",
+							body: "We're your employer for temp work, so tax season means one form, not forty.",
+						},
+						{
+							icon: "tabler:arrows-exchange",
+							title: "Temp-to-perm",
+							body: "Love an office? Many of our placements turn permanent — and we list permanent roles too.",
+						},
+						{
+							icon: "tabler:device-mobile",
+							title: "Mobile access",
+							body: "Shifts, calendar, timesheets and messages from your phone.",
+						},
+						{
+							icon: "tabler:gift",
+							title: "Rewards & incentives",
+							body: "Earned rewards, incentives and perks for going above and beyond — plus our affiliate program.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	{
+		jobs.length > 0 && (
+			<section
+				class="bg-gradient-to-b from-teal-50/60 to-white py-20 sm:py-24"
+				aria-labelledby="jobs-heading"
+			>
+				<Container>
+					<div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+						<SectionHeading
+							id="jobs-heading"
+							align="left"
+							tone="pro"
+							eyebrow="Hiring now"
+							title="Shifts starting soon"
+						/>
+						<Button href="/jobs" variant="pro">
+							See all open jobs
+						</Button>
+					</div>
+					<ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+						{jobs.map((job) => (
+							<JobCard job={job} />
+						))}
+					</ul>
+					{facets && facets.disciplines.length > 0 && (
+						<div class="mt-10">
+							<p class="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+								Browse by role
+							</p>
+							<ul class="mt-3 flex flex-wrap gap-2">
+								{facets.disciplines.map((d) => (
+									<li>
+										<a
+											href={`/jobs?discipline=${d.id}`}
+											class="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-sm font-semibold hover:border-pro hover:text-pro-dark"
+										>
+											{d.name}
+											<span class="rounded-full bg-pro/10 px-2 text-xs text-pro-dark">
+												{d.openCount}
+											</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+				</Container>
+			</section>
+		)
+	}
+
+	<section class="py-20 sm:py-24" aria-labelledby="how-heading">
+		<Container>
+			<SectionHeading
+				id="how-heading"
+				tone="pro"
+				eyebrow="Getting started"
+				title="From sign-up to your first shift"
+			/>
+			<div class="mt-14">
+				<Steps
+					tone="pro"
+					steps={[
+						{
+							title: "Create your profile",
+							body: "Sign up free with your email, then tell us about your role and experience.",
+						},
+						{
+							title: "Add your credentials",
+							body: "Upload your résumé, licenses and documents — all the forms you need are provided.",
+						},
+						{
+							title: "Set your availability",
+							body: "Tell us when and where you want to work. Our team reviews and approves your profile.",
+						},
+						{
+							title: "Start working",
+							body: "Claim temp shifts or apply for permanent roles, and get paid every week.",
+						},
+					]}
+				/>
+			</div>
+			<div class="mt-12 text-center">
+				<Button href={appLink("pro", "sign-up")} variant="pro" size="lg"
+					>Get started — it's free</Button
+				>
+			</div>
+		</Container>
+	</section>
+
+	<section class="bg-muted/50 py-20" aria-labelledby="roles-heading">
+		<Container>
+			<SectionHeading
+				id="roles-heading"
+				tone="pro"
+				eyebrow="Roles we place"
+				title="Opportunities across the dental office"
+			/>
+			<ul class="mx-auto mt-10 flex max-w-4xl flex-wrap justify-center gap-3">
+				{
+					[
+						"Dental Hygienists",
+						"Dental Assistants",
+						"Expanded Function Assistants",
+						"Floaters",
+						"Front Office",
+						"Insurance Billers",
+						"Office Managers",
+						"Lab Technicians",
+						"Dentists",
+					].map((r) => (
+						<li class="rounded-full bg-white px-5 py-2.5 text-sm font-bold shadow-sm ring-1 ring-border">
+							{r}
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	{
+		proQuotes.length > 0 && (
+			<section class="py-20 sm:py-24" aria-labelledby="quotes-heading">
+				<Container>
+					<SectionHeading
+						id="quotes-heading"
+						tone="pro"
+						eyebrow="In their words"
+						title="Professionals love working with DTSS"
+					/>
+					<div class="mt-12">
+						<Testimonials items={proQuotes} />
+					</div>
+				</Container>
+			</section>
+		)
+	}
+
+	{
+		faqs.length > 0 && (
+			<section class="bg-muted/50 py-20 sm:py-24" aria-labelledby="faq-heading">
+				<Container size="prose">
+					<SectionHeading
+						id="faq-heading"
+						tone="pro"
+						eyebrow="FAQ"
+						title="Questions professionals ask"
+					/>
+					<div class="mt-10">
+						<FaqList items={faqs} jsonLd tone="pro" />
+					</div>
+				</Container>
+			</section>
+		)
+	}
+
+	<CtaBand
+		audience="pro"
+		title="Your next shift is waiting."
+		description="Create your free profile today — it only takes a few minutes to get started."
+	/>
+</Layout>

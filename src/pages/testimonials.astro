@@ -1,0 +1,35 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import Testimonials from "@/components/sections/Testimonials.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import { getTestimonials } from "@/lib/cms";
+
+const all = await getTestimonials();
+---
+
+<Layout
+	title="Testimonials"
+	description="What dentists, office managers, hygienists and assistants say about working with Dental Temps Staffing Solutions."
+	breadcrumbs={[{ name: "Testimonials", href: "/testimonials" }]}
+>
+	<PageHero
+		size="compact"
+		eyebrow="Testimonials"
+		title="What do our clients think?"
+		description="Practices and professionals on what it's like to work with DTSS."
+	/>
+	<section class="py-16 sm:py-20">
+		<Container>
+			{
+				all.length ? (
+					<Testimonials items={all} layout="masonry" />
+				) : (
+					<p class="text-muted-foreground">Testimonials coming soon.</p>
+				)
+			}
+		</Container>
+	</section>
+	<CtaBand />
+</Layout>

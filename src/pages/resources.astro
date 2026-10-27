@@ -1,0 +1,105 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import PostCard from "@/components/sections/PostCard.astro";
+import Button from "@/components/ui/Button.astro";
+import { getPosts } from "@/lib/cms";
+
+const { posts } = await getPosts({ perPage: 3 });
+const partners = [
+	{
+		name: "Deals For Dentists",
+		href: "https://www.dealsfordentists.com/",
+		body: "Savings on supplies, equipment and services for dental practices.",
+		icon: "tabler:discount",
+	},
+	{
+		name: "Extensibl Media",
+		href: "https://www.extensiblmedia.com",
+		body: "Web design and development for practices and healthcare brands.",
+		icon: "tabler:code",
+	},
+	{
+		name: "Tintero Creative",
+		href: null,
+		body: "Digital media marketing and creative partner.",
+		icon: "tabler:brush",
+	},
+];
+---
+
+<Layout
+	title="Partner Resources"
+	description="Tools and partners we recommend to dental practices — plus guides and articles from the DTSS blog."
+	breadcrumbs={[{ name: "Resources", href: "/resources" }]}
+>
+	<PageHero
+		size="compact"
+		eyebrow="Resources"
+		title="Partners we trust"
+		description="We partner with industry leaders for digital development, marketing and practice savings."
+	/>
+
+	<section class="py-16 sm:py-20">
+		<Container>
+			<ul class="grid gap-6 md:grid-cols-3">
+				{
+					partners.map((p) => (
+						<li
+							class="flex flex-col rounded-xl border bg-white p-6 shadow-sm"
+							data-reveal
+						>
+							<span class="inline-flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+								<Icon name={p.icon} class="size-6" aria-hidden="true" />
+							</span>
+							<h2 class="mt-4 text-lg font-bold">{p.name}</h2>
+							<p class="mt-2 flex-1 text-muted-foreground">{p.body}</p>
+							{p.href && (
+								<a
+									href={p.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="mt-4 inline-flex items-center gap-1 text-sm font-bold text-primary hover:underline"
+								>
+									Visit site{" "}
+									<Icon
+										name="tabler:external-link"
+										class="size-4"
+										aria-hidden="true"
+									/>
+								</a>
+							)}
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	{
+		posts.length > 0 && (
+			<section class="bg-muted/50 py-16 sm:py-20">
+				<Container>
+					<div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+						<SectionHeading
+							align="left"
+							eyebrow="From the blog"
+							title="Latest articles"
+						/>
+						<Button href="/blog" variant="outline">
+							All articles
+						</Button>
+					</div>
+					<div class="mt-10 grid gap-6 md:grid-cols-3">
+						{posts.map((p) => (
+							<PostCard post={p} />
+						))}
+					</div>
+				</Container>
+			</section>
+		)
+	}
+</Layout>

@@ -1,15 +1,16 @@
 export interface SEOProps {
-  title?: string;
-  description?: string;
-  canonicalURL?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-  ogImage?: string;
-  ogType?: "website" | "article";
-  twitterCard?: "summary" | "summary_large_image";
-  twitterTitle?: string;
-  twitterDescription?: string;
-  twitterImage?: string;
-  noindex?: boolean;
-  nofollow?: boolean;
+	/** Page title; " | DTSS" is appended unless `rawTitle` is set. */
+	title?: string;
+	rawTitle?: boolean;
+	description?: string;
+	canonicalURL?: string;
+	ogImage?: string;
+	ogType?: "website" | "article";
+	noindex?: boolean;
+	/** Extra JSON-LD objects for this page (Organization is always emitted). */
+	jsonLd?: Record<string, unknown>[];
+	/** Breadcrumb trail (Home is implied) → BreadcrumbList JSON-LD. */
+	breadcrumbs?: { name: string; href: string }[];
+	publishedTime?: string;
+	modifiedTime?: string;
 }

@@ -1,0 +1,44 @@
+---
+import Badge from "./Badge.astro";
+
+interface Props {
+	eyebrow?: string;
+	title: string;
+	description?: string;
+	tone?: "primary" | "pro" | "neutral" | "white";
+	align?: "center" | "left";
+	id?: string;
+	as?: "h1" | "h2";
+}
+const {
+	eyebrow,
+	title,
+	description,
+	tone = "primary",
+	align = "center",
+	id,
+	as: Tag = "h2",
+} = Astro.props;
+const center = align === "center";
+const onDark = tone === "white";
+---
+
+<div class={`${center ? "mx-auto text-center" : ""} max-w-3xl`} data-reveal>
+	{eyebrow && <Badge tone={tone}>{eyebrow}</Badge>}
+	<Tag
+		id={id}
+		class={`mt-4 text-3xl font-extrabold sm:text-4xl ${onDark ? "text-white" : "text-foreground"}`}
+	>
+		{title}
+	</Tag>
+	{
+		description && (
+			<p
+				class={`mt-4 text-lg leading-relaxed ${onDark ? "text-white/85" : "text-muted-foreground"}`}
+			>
+				{description}
+			</p>
+		)
+	}
+	<slot />
+</div>

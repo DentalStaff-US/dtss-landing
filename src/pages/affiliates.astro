@@ -1,0 +1,227 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import FeatureGrid from "@/components/sections/FeatureGrid.astro";
+import Steps from "@/components/sections/Steps.astro";
+import FaqList from "@/components/sections/FaqList.astro";
+import LeadForm from "@/components/forms/LeadForm.astro";
+import { getFaqs } from "@/lib/cms";
+import { ENV } from "@/lib/env";
+import { appLink } from "@/lib/links";
+
+/**
+ * The program is switched on per environment in the admin app
+ * (affiliate_program_enabled). Until it's live in production this page
+ * collects a waitlist instead of sending people to apply.
+ */
+const live = ENV.affiliateProgramLive;
+const faqs = await getFaqs(["affiliate"]);
+---
+
+<Layout
+	title="Affiliate Program — Earn by Referring Dental Practices & Professionals"
+	description="Join the DTSS affiliate program. Share your link, refer dental practices and professionals, and earn 2.5% of regular hours on every paid temp shift they work."
+	breadcrumbs={[{ name: "Affiliate Program", href: "/affiliates" }]}
+>
+	<PageHero
+		eyebrow={live ? "Affiliate program" : "Affiliate program · coming soon"}
+		title="Grow your local dental community — and earn while you do."
+		description="Know practices that struggle to stay staffed, or great hygienists and assistants looking for flexible work? Refer them to DTSS and earn a share of every temp shift they work."
+	>
+		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+			{
+				live ? (
+					<>
+						<Button
+							href={appLink("partner", "apply")}
+							size="xl"
+							data-track="affiliate_apply_click"
+						>
+							Apply to become a partner
+						</Button>
+						<Button
+							href={appLink("partner", "sign-in")}
+							variant="outline"
+							size="xl"
+						>
+							Sign in to the partner portal
+						</Button>
+					</>
+				) : (
+					<Button href="#waitlist" size="xl">
+						Join the waitlist
+					</Button>
+				)
+			}
+		</div>
+	</PageHero>
+
+	<section class="border-b bg-white">
+		<Container>
+			<dl
+				class="grid grid-cols-1 divide-y sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+			>
+				{
+					[
+						["2.5%", "of regular hours on paid temp-shift invoices"],
+						["90 days", "referral window from the first click"],
+						["$25", "minimum payout, paid straight to your bank"],
+					].map(([stat, label]) => (
+						<div class="px-6 py-8 text-center" data-reveal>
+							<dt class="sr-only">{label}</dt>
+							<dd class="text-4xl font-extrabold text-primary">{stat}</dd>
+							<dd class="mt-1 text-sm text-muted-foreground">{label}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</Container>
+	</section>
+
+	<section class="py-20 sm:py-24" aria-labelledby="how-heading">
+		<Container>
+			<SectionHeading
+				id="how-heading"
+				eyebrow="How it works"
+				title="Share a link. We do the rest."
+			/>
+			<div class="mt-14">
+				<Steps
+					steps={[
+						{
+							title: "Join",
+							body: "Practices and pros enroll from their portal settings. Outside partners apply and are approved by our team.",
+						},
+						{
+							title: "Share your link",
+							body: "Send your personal referral link to practices and professionals — by email, text or social.",
+						},
+						{
+							title: "They sign up",
+							body: "Anyone who signs up within 90 days of clicking your link is credited to you.",
+						},
+						{
+							title: "Get paid",
+							body: "Earn on every paid temp shift they work, tracked live in your partner portal.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	<section class="bg-muted/50 py-20 sm:py-24" aria-labelledby="who-heading">
+		<Container>
+			<SectionHeading
+				id="who-heading"
+				eyebrow="Who it's for"
+				title="Anyone connected to dentistry can refer"
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					items={[
+						{
+							icon: "tabler:building-hospital",
+							title: "Dental practices",
+							body: "Refer a colleague's office — or the great temp who saved your Tuesday.",
+						},
+						{
+							icon: "tabler:stethoscope",
+							title: "Dental professionals",
+							body: "Refer friends from school, past coworkers, or the practices you've loved working with.",
+						},
+						{
+							icon: "tabler:school",
+							title: "Schools & educators",
+							body: "Help graduating hygienists and assistants find flexible first jobs.",
+						},
+						{
+							icon: "tabler:truck-delivery",
+							title: "Suppliers & consultants",
+							body: "Add value for the practices you already serve.",
+						},
+						{
+							icon: "tabler:speakerphone",
+							title: "Creators & communities",
+							body: "Share DTSS with your dental audience and earn on the results.",
+						},
+						{
+							icon: "tabler:chart-line",
+							title: "Real-time tracking",
+							body: "See referrals, earnings and payouts in your partner portal any time.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	<section
+		id="waitlist"
+		class="scroll-mt-24 py-20 sm:py-24"
+		aria-labelledby="contact-heading"
+	>
+		<Container size="narrow">
+			<div class="grid gap-12 lg:grid-cols-5">
+				<div class="lg:col-span-2">
+					<SectionHeading
+						id="contact-heading"
+						align="left"
+						eyebrow={live ? "Questions?" : "Be first in line"}
+						title={live
+							? "Let's talk partnership"
+							: "Join the affiliate waitlist"}
+						description={live
+							? "Representing a school, supplier or community? Tell us a little about your audience and we'll help you get set up."
+							: "We're putting the finishing touches on the program. Leave your details and we'll invite you as soon as it opens."}
+					/>
+				</div>
+				<div
+					class="rounded-2xl border bg-white p-6 shadow-lg shadow-sky-900/5 sm:p-8 lg:col-span-3"
+				>
+					<LeadForm
+						kind={live ? "partner-enquiry" : "affiliate-waitlist"}
+						audience="affiliate"
+						fields={["name", "email", "phone", "organization", "message"]}
+						submitLabel={live ? "Send enquiry" : "Join the waitlist"}
+						messageLabel="Who would you refer?"
+						messagePlaceholder="e.g. I run a hygiene study group of 200 local RDHs…"
+						successBody={live
+							? "Thanks! Our partnerships team will be in touch soon."
+							: "You're on the list — we'll email you when the program opens."}
+					/>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	{
+		faqs.length > 0 && (
+			<section class="bg-muted/50 py-20 sm:py-24" aria-labelledby="faq-heading">
+				<Container size="prose">
+					<SectionHeading
+						id="faq-heading"
+						eyebrow="FAQ"
+						title="Affiliate program questions"
+					/>
+					<div class="mt-10">
+						<FaqList items={faqs} jsonLd />
+					</div>
+					<p class="mt-6 flex items-start gap-2 text-sm text-muted-foreground">
+						<Icon
+							name="tabler:info-circle"
+							class="mt-0.5 size-4 shrink-0"
+							aria-hidden="true"
+						/>
+						Program terms are set out in the affiliate agreement you accept when
+						you join, which takes precedence over this summary.
+					</p>
+				</Container>
+			</section>
+		)
+	}
+</Layout>

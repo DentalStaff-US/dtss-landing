@@ -1,0 +1,353 @@
+---
+/**
+ * One form component for every lead on the site. Submission goes through
+ * src/lib/forms/submit.ts (Web3Forms today, the CRM later) — this component
+ * never knows which provider is behind it.
+ */
+import { ENV } from "@/lib/env";
+import type { LeadAudience, LeadKind } from "@/lib/forms/submit";
+
+type FieldName =
+	| "name"
+	| "email"
+	| "phone"
+	| "organization"
+	| "location"
+	| "message"
+	| "audience"
+	| "discipline"
+	| "startDate";
+
+interface Props {
+	kind: LeadKind;
+	audience?: LeadAudience;
+	fields?: FieldName[];
+	submitLabel?: string;
+	successTitle?: string;
+	successBody?: string;
+	tone?: "primary" | "pro";
+	messageLabel?: string;
+	messagePlaceholder?: string;
+	disciplines?: string[];
+	id?: string;
+}
+
+const {
+	kind,
+	audience = "general",
+	fields = ["name", "email", "phone", "message"],
+	submitLabel = "Send message",
+	successTitle = "Thanks — we've got it!",
+	successBody = "A member of our team will be in touch within one business day.",
+	tone = "primary",
+	messageLabel = "How can we help?",
+	messagePlaceholder = "",
+	disciplines = [
+		"Dental Hygienist",
+		"Dental Assistant",
+		"Front Office",
+		"Floater",
+		"Insurance Biller",
+		"Dental Lab Tech",
+		"Dentist",
+	],
+	id = `lead-${kind}`,
+} = Astro.props;
+
+const has = (f: FieldName) => fields.includes(f);
+const input =
+	"mt-1.5 block w-full rounded-md border border-input bg-white px-3.5 py-2.5 text-base shadow-sm outline-none transition placeholder:text-muted-foreground/70 focus:border-ring focus:ring-2 focus:ring-ring/30 aria-[invalid=true]:border-destructive";
+const label = "block text-sm font-semibold";
+const btn =
+	tone === "pro"
+		? "bg-pro hover:bg-pro-dark text-pro-foreground"
+		: "bg-primary hover:bg-primary-dark text-primary-foreground";
+---
+
+<form
+	id={id}
+	class="space-y-5"
+	novalidate
+	data-lead-form
+	data-kind={kind}
+	data-audience={audience}
+	data-key={ENV.web3formsKey}
+>
+	<div
+		class="hidden rounded-lg border border-success/30 bg-success/10 p-4 text-sm"
+		role="status"
+		data-success
+	>
+		<p class="font-bold text-foreground">{successTitle}</p>
+		<p class="mt-1 text-muted-foreground">{successBody}</p>
+	</div>
+	<div
+		class="hidden rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive"
+		role="alert"
+		data-error
+	>
+	</div>
+
+	<input
+		type="checkbox"
+		name="botcheck"
+		class="hidden"
+		tabindex="-1"
+		autocomplete="off"
+		aria-hidden="true"
+	/>
+
+	{
+		has("audience") && (
+			<fieldset>
+				<legend class={label}>I am a…</legend>
+				<div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+					{[
+						["practice", "Dental practice"],
+						["professional", "Dental professional"],
+						["general", "Something else"],
+					].map(([value, text], i) => (
+						<label class="flex cursor-pointer items-center gap-2 rounded-md border border-input px-3 py-2.5 text-sm font-semibold has-[:checked]:border-primary has-[:checked]:bg-primary-soft">
+							<input
+								type="radio"
+								name="audience"
+								value={value}
+								checked={i === 0}
+								class="accent-primary"
+							/>
+							{text}
+						</label>
+					))}
+				</div>
+			</fieldset>
+		)
+	}
+
+	<div class="grid gap-5 sm:grid-cols-2">
+		{
+			has("name") && (
+				<div class="sm:col-span-1">
+					<label for={`${id}-name`} class={label}>
+						Full name <span class="text-destructive">*</span>
+					</label>
+					<input
+						id={`${id}-name`}
+						name="name"
+						required
+						autocomplete="name"
+						class={input}
+					/>
+				</div>
+			)
+		}
+		{
+			has("email") && (
+				<div>
+					<label for={`${id}-email`} class={label}>
+						Email <span class="text-destructive">*</span>
+					</label>
+					<input
+						id={`${id}-email`}
+						name="email"
+						type="email"
+						required
+						autocomplete="email"
+						class={input}
+					/>
+				</div>
+			)
+		}
+		{
+			has("phone") && (
+				<div>
+					<label for={`${id}-phone`} class={label}>
+						Phone
+					</label>
+					<input
+						id={`${id}-phone`}
+						name="phone"
+						type="tel"
+						autocomplete="tel"
+						class={input}
+					/>
+				</div>
+			)
+		}
+		{
+			has("organization") && (
+				<div>
+					<label for={`${id}-org`} class={label}>
+						{audience === "affiliate" ? "Organization" : "Practice name"}
+					</label>
+					<input
+						id={`${id}-org`}
+						name="organization"
+						autocomplete="organization"
+						class={input}
+					/>
+				</div>
+			)
+		}
+		{
+			has("location") && (
+				<div>
+					<label for={`${id}-location`} class={label}>
+						City &amp; state
+					</label>
+					<input
+						id={`${id}-location`}
+						name="location"
+						placeholder="e.g. Tampa, FL"
+						class={input}
+					/>
+				</div>
+			)
+		}
+		{
+			has("discipline") && (
+				<div>
+					<label for={`${id}-discipline`} class={label}>
+						Role needed
+					</label>
+					<select id={`${id}-discipline`} name="discipline" class={input}>
+						<option value="">Choose a role</option>
+						{disciplines.map((d) => (
+							<option>{d}</option>
+						))}
+					</select>
+				</div>
+			)
+		}
+		{
+			has("startDate") && (
+				<div>
+					<label for={`${id}-start`} class={label}>
+						Needed from
+					</label>
+					<input
+						id={`${id}-start`}
+						name="startDate"
+						type="date"
+						class={input}
+					/>
+				</div>
+			)
+		}
+	</div>
+
+	{
+		has("message") && (
+			<div>
+				<label for={`${id}-message`} class={label}>
+					{messageLabel}
+				</label>
+				<textarea
+					id={`${id}-message`}
+					name="message"
+					rows="5"
+					placeholder={messagePlaceholder}
+					class={input}
+				/>
+			</div>
+		)
+	}
+
+	<div
+		class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+	>
+		<p class="text-xs text-muted-foreground">
+			By submitting you agree to our <a
+				href="/privacy"
+				class="underline hover:text-foreground">Privacy Policy</a
+			>.
+		</p>
+		<button
+			type="submit"
+			class={`inline-flex h-11 items-center justify-center gap-2 rounded-md px-6 text-base font-semibold shadow-sm transition disabled:opacity-60 ${btn}`}
+		>
+			<span data-label>{submitLabel}</span>
+			<span class="hidden" data-loading>Sending…</span>
+		</button>
+	</div>
+</form>
+
+<script>
+	import {
+		submitLead,
+		type LeadAudience,
+		type LeadKind,
+	} from "@/lib/forms/submit";
+
+	const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+	document
+		.querySelectorAll<HTMLFormElement>("form[data-lead-form]")
+		.forEach((form) => {
+			if (form.dataset.bound) return;
+			form.dataset.bound = "1";
+			const ok = form.querySelector<HTMLElement>("[data-success]")!;
+			const err = form.querySelector<HTMLElement>("[data-error]")!;
+			const btn = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+
+			const fail = (el: HTMLInputElement | null, msg: string) => {
+				el?.setAttribute("aria-invalid", "true");
+				err.textContent = msg;
+				err.classList.remove("hidden");
+				el?.focus();
+			};
+
+			form.addEventListener("submit", async (e) => {
+				e.preventDefault();
+				err.classList.add("hidden");
+				form
+					.querySelectorAll("[aria-invalid]")
+					.forEach((el) => el.removeAttribute("aria-invalid"));
+
+				const fd = new FormData(form);
+				const val = (k: string) => String(fd.get(k) ?? "").trim();
+				const nameEl = form.querySelector<HTMLInputElement>("[name=name]");
+				const emailEl = form.querySelector<HTMLInputElement>("[name=email]");
+				if (nameEl && val("name").length < 2)
+					return fail(nameEl, "Please enter your name.");
+				if (emailEl && !EMAIL.test(val("email")))
+					return fail(emailEl, "Please enter a valid email address.");
+
+				btn.disabled = true;
+				btn.querySelector("[data-label]")!.classList.add("hidden");
+				btn.querySelector("[data-loading]")!.classList.remove("hidden");
+
+				const extra: Record<string, string> = {};
+				if (val("discipline")) extra["Role needed"] = val("discipline");
+				if (val("startDate")) extra["Needed from"] = val("startDate");
+				if (form.dataset.extra)
+					Object.assign(extra, JSON.parse(form.dataset.extra));
+
+				const result = await submitLead(form.dataset.key!, {
+					kind: form.dataset.kind as LeadKind,
+					audience:
+						((val("audience") || form.dataset.audience) as LeadAudience) ??
+						"general",
+					name: val("name"),
+					email: val("email"),
+					phone: val("phone") || undefined,
+					organization: val("organization") || undefined,
+					location: val("location") || undefined,
+					message: val("message") || undefined,
+					extra,
+					botcheck: fd.get("botcheck") === "on",
+				});
+
+				btn.disabled = false;
+				btn.querySelector("[data-label]")!.classList.remove("hidden");
+				btn.querySelector("[data-loading]")!.classList.add("hidden");
+
+				if (result.ok) {
+					form.reset();
+					ok.classList.remove("hidden");
+					ok.scrollIntoView({ behavior: "smooth", block: "nearest" });
+				} else {
+					fail(null, result.error ?? "Something went wrong. Please try again.");
+				}
+			});
+		});
+</script>

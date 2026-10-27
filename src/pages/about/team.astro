@@ -1,0 +1,38 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import TeamGrid from "@/components/sections/TeamGrid.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import { getTeam } from "@/lib/cms";
+
+const team = await getTeam();
+---
+
+<Layout
+	title="Meet Our Team"
+	description="Meet the dental and HR professionals behind Dental Temps Staffing Solutions."
+	breadcrumbs={[
+		{ name: "About", href: "/about" },
+		{ name: "Our Team", href: "/about/team" },
+	]}
+>
+	<PageHero
+		size="compact"
+		eyebrow="Our team"
+		title="Real people. Decades in dentistry."
+		description="When you call DTSS, you reach people who've worked chairside, run front offices and built staffing companies."
+	/>
+	<section class="py-16 sm:py-20">
+		<Container>
+			{
+				team.length ? (
+					<TeamGrid members={team} />
+				) : (
+					<p class="text-muted-foreground">Team profiles are coming soon.</p>
+				)
+			}
+		</Container>
+	</section>
+	<CtaBand />
+</Layout>

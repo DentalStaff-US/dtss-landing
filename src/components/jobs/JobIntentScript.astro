@@ -1,0 +1,43 @@
+---
+/**
+ * Clicking any job CTA ([data-job-cta]) remembers the job in the shared
+ * `dtss_job` cookie, so the candidate app can land the new user on that job
+ * after sign-up + onboarding — even if the ?job= param gets lost on the way.
+ *
+ * ⚠️ Contract: dtss-candidate-app/src/lib/server/jobIntent.ts
+ *   value `<uuid>|<ISO8601>` (raw, no URL-encoding), 7 days, LAST touch wins.
+ */
+import { ENV } from "@/lib/env";
+const cookieDomain = ENV.cookieDomain;
+---
+
+<script is:inline define:vars={{ cookieDomain }}>
+	document.addEventListener(
+		"click",
+		function (e) {
+			var el =
+				e.target && e.target.closest
+					? e.target.closest("[data-job-cta]")
+					: null;
+			if (!el) return;
+			var id = (el.getAttribute("data-job-cta") || "").toLowerCase();
+			if (
+				!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(
+					id
+				)
+			)
+				return;
+			document.cookie =
+				"dtss_job=" +
+				id +
+				"|" +
+				new Date().toISOString() +
+				"; path=/; max-age=" +
+				7 * 24 * 60 * 60 +
+				"; samesite=lax" +
+				(cookieDomain ? "; domain=" + cookieDomain : "") +
+				(location.protocol === "https:" ? "; secure" : "");
+		},
+		true
+	);
+</script>

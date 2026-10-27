@@ -1,0 +1,123 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import PostCard from "@/components/sections/PostCard.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import { getCategories, getPosts } from "@/lib/cms";
+
+interface Props {
+	page: number;
+	category?: { slug: string; label: string };
+}
+const { page, category } = Astro.props;
+const [{ posts, hasMore }, categories] = await Promise.all([
+	getPosts({ page, category: category?.slug }),
+	getCategories(),
+]);
+
+const base = category ? `/blog/category/${category.slug}` : "/blog";
+const pageHref = (n: number) => (n <= 1 ? base : `${base}/page/${n}`);
+const title = category ? `${category.label} Articles` : "Blog";
+---
+
+<Layout
+	title={page > 1 ? `${title} — Page ${page}` : title}
+	description={category
+		? `Articles on ${category.label.toLowerCase()} from Dental Temps Staffing Solutions.`
+		: "Hiring tips for dental practices and career advice for dental professionals from the DTSS team."}
+	breadcrumbs={[
+		{ name: "Blog", href: "/blog" },
+		...(category ? [{ name: category.label, href: base }] : []),
+	]}
+	noindex={posts.length === 0}
+>
+	<PageHero
+		size="compact"
+		eyebrow="The DTSS blog"
+		title={category ? category.label : "Insights for practices & dental pros"}
+		description="Hiring tips, practice management and career advice from people who've spent their careers in dentistry."
+	>
+		{
+			categories.length > 0 && (
+				<nav class="mt-8 flex flex-wrap gap-2" aria-label="Categories">
+					<a
+						href="/blog"
+						class:list={[
+							"rounded-full px-4 py-2 text-sm font-bold ring-1",
+							!category
+								? "bg-primary text-white ring-primary"
+								: "bg-white ring-border hover:ring-primary",
+						]}
+					>
+						All
+					</a>
+					{categories.map((c) => (
+						<a
+							href={`/blog/category/${c.slug}`}
+							class:list={[
+								"rounded-full px-4 py-2 text-sm font-bold ring-1",
+								category?.slug === c.slug
+									? "bg-primary text-white ring-primary"
+									: "bg-white ring-border hover:ring-primary",
+							]}
+						>
+							{c.label}
+						</a>
+					))}
+				</nav>
+			)
+		}
+	</PageHero>
+
+	<section class="py-16 sm:py-20">
+		<Container>
+			{
+				posts.length ? (
+					<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+						{posts.map((p) => (
+							<PostCard post={p} />
+						))}
+					</div>
+				) : (
+					<p class="py-12 text-center text-muted-foreground">
+						No articles here yet — check back soon.
+					</p>
+				)
+			}
+			{
+				(page > 1 || hasMore) && (
+					<nav
+						class="mt-12 flex items-center justify-between"
+						aria-label="Pagination"
+					>
+						{page > 1 ? (
+							<a
+								href={pageHref(page - 1)}
+								rel="prev"
+								class="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-accent"
+							>
+								← Newer
+							</a>
+						) : (
+							<span />
+						)}
+						<span class="text-sm text-muted-foreground">Page {page}</span>
+						{hasMore ? (
+							<a
+								href={pageHref(page + 1)}
+								rel="next"
+								class="rounded-md border px-4 py-2 text-sm font-semibold hover:bg-accent"
+							>
+								Older →
+							</a>
+						) : (
+							<span />
+						)}
+					</nav>
+				)
+			}
+		</Container>
+	</section>
+	<CtaBand />
+</Layout>

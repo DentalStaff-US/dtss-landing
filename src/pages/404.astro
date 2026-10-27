@@ -1,0 +1,35 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+
+Astro.response.status = 404;
+---
+
+<Layout title="Page not found" noindex>
+	<section class="bg-gradient-to-br from-sky-50 via-white to-sky-100">
+		<Container size="prose" class="py-24 text-center sm:py-32">
+			<span
+				class="inline-flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary"
+			>
+				<Icon name="tabler:dental-broken" class="size-8" aria-hidden="true" />
+			</span>
+			<p class="mt-6 text-sm font-bold uppercase tracking-wide text-primary">
+				404
+			</p>
+			<h1 class="mt-2 text-4xl font-extrabold sm:text-5xl">
+				We couldn't find that page.
+			</h1>
+			<p class="mt-4 text-lg text-muted-foreground">
+				It may have moved when we refreshed our site. These might help:
+			</p>
+			<div class="mt-8 flex flex-wrap justify-center gap-3">
+				<Button href="/" size="lg">Go home</Button>
+				<Button href="/jobs" variant="outline" size="lg">Browse jobs</Button>
+				<Button href="/blog" variant="outline" size="lg">Read the blog</Button>
+				<Button href="/contact" variant="ghost" size="lg">Contact us</Button>
+			</div>
+		</Container>
+	</section>
+</Layout>

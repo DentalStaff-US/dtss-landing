@@ -1,0 +1,149 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import FeatureGrid from "@/components/sections/FeatureGrid.astro";
+import TrustBar from "@/components/sections/TrustBar.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import TeamGrid from "@/components/sections/TeamGrid.astro";
+import { getTeam } from "@/lib/cms";
+
+const team = await getTeam();
+---
+
+<Layout
+	title="About Us"
+	description="Dental Temps Staffing Solutions is redefining dental staffing — proprietary workforce software paired with a personal, small-town touch, built by people who've spent their careers in dentistry."
+	breadcrumbs={[{ name: "About", href: "/about" }]}
+>
+	<PageHero
+		eyebrow="About DTSS"
+		title="Redefining how dental staffing works."
+		description="Today's practices need more than a website and a lobby for interviews. We built DTSS to give dentists their time back — and to give dental professionals rapid access to the work around them, without the hassle."
+	/>
+
+	<section class="py-20 sm:py-24">
+		<Container size="narrow">
+			<div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+				<div data-reveal>
+					<h2 class="text-3xl font-extrabold">Our story</h2>
+					<div
+						class="mt-6 space-y-5 text-lg leading-relaxed text-muted-foreground"
+					>
+						<p>
+							Our co-founder Shannon Cole began her dental career in Miami in
+							1981. After decades chairside and in the front office, she saw
+							first-hand how a single call-out could derail a practice's day —
+							and how hard it was for great hygienists and assistants to find
+							flexible work they could trust.
+						</p>
+						<p>
+							So she built a different kind of staffing company. Brett Cole
+							joined to build the technology: an on-demand workforce platform
+							that lets practices book vetted professionals in minutes, and lets
+							professionals choose the work that fits their lives.
+						</p>
+						<p>
+							The software is fast. The people behind it still pick up the
+							phone, remember your name, and care how your day goes. That's what
+							we mean by a <strong class="text-foreground"
+								>whole new staffing experience</strong
+							>.
+						</p>
+					</div>
+				</div>
+				<div class="grid content-start gap-4" data-reveal>
+					{
+						[
+							[
+								"tabler:target-arrow",
+								"Our mission",
+								"Keep every practice fully staffed with people who fit — and give every dental professional work on their terms.",
+							],
+							[
+								"tabler:building-community",
+								"Where we're going",
+								"A one-stop Whole Office Management Solution: staffing, payroll and HR, so independent practices get big-group advantages without giving up their independence.",
+							],
+							[
+								"tabler:heart",
+								"What we value",
+								"Respect for everyone we work with. Hard work never goes unnoticed — through personal contact, incentives, rewards and perks.",
+							],
+						].map(([icon, title, body]) => (
+							<div class="flex gap-4 rounded-xl border bg-white p-6 shadow-sm">
+								<span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+									<Icon name={icon} class="size-6" aria-hidden="true" />
+								</span>
+								<div>
+									<h3 class="font-bold">{title}</h3>
+									<p class="mt-1 text-muted-foreground">{body}</p>
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	<section class="bg-muted/50 py-20 sm:py-24" aria-labelledby="diff-heading">
+		<Container>
+			<SectionHeading
+				id="diff-heading"
+				eyebrow="What makes us different"
+				title="Technology with a small-town feel"
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					items={[
+						{
+							icon: "tabler:cpu",
+							title: "Purpose-built software",
+							body: "Our own on-demand workforce platform — requests, matching, timesheets and invoicing in one place.",
+						},
+						{
+							icon: "tabler:users-group",
+							title: "Dental people",
+							body: "Our team has spent careers in dentistry and HR. We know what a great assistant looks like.",
+						},
+						{
+							icon: "tabler:receipt-tax",
+							title: "Employer of record",
+							body: "Unlike referral services, we employ the temps we place — payroll, taxes and workers' comp included.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	{
+		team.length > 0 && (
+			<section class="py-20 sm:py-24" aria-labelledby="team-heading">
+				<Container>
+					<div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+						<SectionHeading
+							id="team-heading"
+							align="left"
+							eyebrow="Our team"
+							title="The people behind every placement"
+						/>
+						<Button href="/about/team" variant="outline">
+							Meet the whole team
+						</Button>
+					</div>
+					<div class="mt-10">
+						<TeamGrid members={team.slice(0, 4)} compact />
+					</div>
+				</Container>
+			</section>
+		)
+	}
+
+	<TrustBar />
+	<CtaBand />
+</Layout>

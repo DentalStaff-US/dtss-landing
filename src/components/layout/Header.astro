@@ -1,0 +1,329 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import logo from "@/assets/dtss-logo.png";
+import Button from "@/components/ui/Button.astro";
+import { MAIN_NAV, SIGN_IN_LINKS } from "@/config/nav";
+import { CONTACT } from "@/config/site.mjs";
+
+const path = Astro.url.pathname;
+const isActive = (href?: string) =>
+	!!href && href !== "/" && (path === href || path.startsWith(href + "/"));
+---
+
+<div class="hidden bg-navy text-white/90 md:block">
+	<div
+		class="mx-auto flex h-9 max-w-7xl items-center justify-between px-4 text-xs sm:px-6 lg:px-8"
+	>
+		<p>Dental temp &amp; permanent staffing — with a small-town feel.</p>
+		<div class="flex items-center gap-5">
+			<a
+				href={CONTACT.phoneHref}
+				class="inline-flex items-center gap-1.5 hover:text-white"
+			>
+				<Icon name="tabler:phone" class="size-3.5" aria-hidden="true" />
+				{CONTACT.phone}
+			</a>
+			<a
+				href={`mailto:${CONTACT.email}`}
+				class="inline-flex items-center gap-1.5 hover:text-white"
+			>
+				<Icon name="tabler:mail" class="size-3.5" aria-hidden="true" />
+				{CONTACT.email}
+			</a>
+		</div>
+	</div>
+</div>
+
+<header
+	class="sticky top-0 z-40 border-b border-border/80 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75"
+>
+	<nav
+		class="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
+		aria-label="Main"
+	>
+		<a
+			href="/"
+			class="flex shrink-0 items-center"
+			aria-label="Dental Temps Staffing Solutions — home"
+		>
+			<Image
+				src={logo}
+				alt=""
+				width={120}
+				height={56}
+				class="h-12 w-auto"
+				loading="eager"
+			/>
+		</a>
+
+		<ul class="hidden items-center gap-1 xl:flex">
+			{
+				MAIN_NAV.map((item) =>
+					item.children ? (
+						<li class="group relative" data-dropdown>
+							<button
+								type="button"
+								class="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-foreground/80 hover:bg-accent hover:text-foreground"
+								aria-expanded="false"
+								data-dropdown-trigger
+							>
+								{item.label}
+								<Icon
+									name="tabler:chevron-down"
+									class="size-4 transition group-hover:rotate-180"
+									aria-hidden="true"
+								/>
+							</button>
+							<div
+								class="invisible absolute left-1/2 top-full z-50 w-80 -translate-x-1/2 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 data-[open]:visible data-[open]:opacity-100"
+								data-dropdown-panel
+							>
+								<ul class="rounded-lg border bg-white p-2 shadow-xl shadow-sky-900/10">
+									{item.children.map((c) => (
+										<li>
+											<a
+												href={c.href}
+												class="flex gap-3 rounded-md p-3 hover:bg-primary-soft"
+												aria-current={isActive(c.href) ? "page" : undefined}
+											>
+												{c.icon && (
+													<Icon
+														name={c.icon}
+														class="mt-0.5 size-5 shrink-0 text-primary"
+														aria-hidden="true"
+													/>
+												)}
+												<span>
+													<span class="block text-sm font-bold text-foreground">
+														{c.label}
+													</span>
+													{c.description && (
+														<span class="block text-xs text-muted-foreground">
+															{c.description}
+														</span>
+													)}
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						</li>
+					) : (
+						<li>
+							<a
+								href={item.href}
+								class:list={[
+									"rounded-md px-3 py-2 text-sm font-semibold hover:bg-accent hover:text-foreground",
+									isActive(item.href) ? "text-primary" : "text-foreground/80",
+									item.href === "/jobs" && "inline-flex items-center gap-1.5",
+								]}
+								aria-current={isActive(item.href) ? "page" : undefined}
+							>
+								{item.href === "/jobs" && (
+									<span class="relative flex size-2" aria-hidden="true">
+										<span class="absolute inline-flex size-full animate-ping rounded-full bg-pro opacity-60" />
+										<span class="relative inline-flex size-2 rounded-full bg-pro" />
+									</span>
+								)}
+								{item.label}
+							</a>
+						</li>
+					)
+				)
+			}
+		</ul>
+
+		<div class="flex items-center gap-2">
+			<div class="group relative hidden sm:block" data-dropdown>
+				<button
+					type="button"
+					class="inline-flex h-10 items-center gap-1 rounded-md border border-input px-3 text-sm font-semibold hover:bg-accent"
+					aria-expanded="false"
+					data-dropdown-trigger
+				>
+					<Icon name="tabler:user-circle" class="size-4" aria-hidden="true" />
+					Sign in
+					<Icon name="tabler:chevron-down" class="size-4" aria-hidden="true" />
+				</button>
+				<div
+					class="invisible absolute right-0 top-full z-50 w-72 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 data-[open]:visible data-[open]:opacity-100"
+					data-dropdown-panel
+				>
+					<ul
+						class="rounded-lg border bg-white p-2 shadow-xl shadow-sky-900/10"
+					>
+						{
+							SIGN_IN_LINKS.map((l) => (
+								<li>
+									<a
+										href={l.href}
+										class="flex gap-3 rounded-md p-3 hover:bg-primary-soft"
+										data-track="signin_click"
+										data-track-props={JSON.stringify({ portal: l.label })}
+									>
+										<Icon
+											name={l.icon!}
+											class="mt-0.5 size-5 shrink-0 text-primary"
+											aria-hidden="true"
+										/>
+										<span>
+											<span class="block text-sm font-bold">{l.label}</span>
+											<span class="block text-xs text-muted-foreground">
+												{l.description}
+											</span>
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+			<Button
+				href="/get-started"
+				class="hidden sm:inline-flex"
+				data-track="get_started_click">Get started</Button
+			>
+			<button
+				type="button"
+				class="inline-flex size-10 items-center justify-center rounded-md border border-input xl:hidden"
+				aria-controls="mobile-menu"
+				aria-expanded="false"
+				data-mobile-toggle
+			>
+				<span class="sr-only">Open menu</span>
+				<Icon
+					name="tabler:menu-2"
+					class="size-5"
+					aria-hidden="true"
+					data-icon-open
+				/>
+				<Icon
+					name="tabler:x"
+					class="hidden size-5"
+					aria-hidden="true"
+					data-icon-close
+				/>
+			</button>
+		</div>
+	</nav>
+
+	<div
+		id="mobile-menu"
+		class="hidden max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t bg-white xl:hidden"
+		data-mobile-menu
+	>
+		<div class="mx-auto max-w-7xl space-y-1 px-4 py-4 sm:px-6">
+			{
+				MAIN_NAV.map((item) =>
+					item.children ? (
+						<details class="group rounded-md">
+							<summary class="flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-3 font-semibold hover:bg-accent">
+								{item.label}
+								<Icon
+									name="tabler:chevron-down"
+									class="size-4 transition group-open:rotate-180"
+									aria-hidden="true"
+								/>
+							</summary>
+							<ul class="mb-2 ml-3 border-l pl-3">
+								{item.children.map((c) => (
+									<li>
+										<a
+											href={c.href}
+											class="block rounded-md px-3 py-2 text-sm hover:bg-accent"
+										>
+											{c.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</details>
+					) : (
+						<a
+							href={item.href}
+							class="block rounded-md px-3 py-3 font-semibold hover:bg-accent"
+						>
+							{item.label}
+						</a>
+					)
+				)
+			}
+			<div class="mt-4 grid gap-2 border-t pt-4">
+				<p
+					class="px-3 text-xs font-bold uppercase tracking-wide text-muted-foreground"
+				>
+					Sign in
+				</p>
+				{
+					SIGN_IN_LINKS.map((l) => (
+						<a
+							href={l.href}
+							class="flex items-center gap-3 rounded-md px-3 py-2 hover:bg-accent"
+						>
+							<Icon
+								name={l.icon!}
+								class="size-5 text-primary"
+								aria-hidden="true"
+							/>
+							<span class="text-sm font-semibold">{l.label}</span>
+						</a>
+					))
+				}
+				<Button href="/get-started" size="lg" class="mt-2 w-full"
+					>Get started — it's free</Button
+				>
+				<a
+					href={CONTACT.phoneHref}
+					class="mt-1 text-center text-sm text-muted-foreground"
+					>Call {CONTACT.phone}</a
+				>
+			</div>
+		</div>
+	</div>
+</header>
+
+<script>
+	// Mobile menu disclosure
+	const toggle = document.querySelector<HTMLButtonElement>(
+		"[data-mobile-toggle]"
+	);
+	const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+	toggle?.addEventListener("click", () => {
+		const open = toggle.getAttribute("aria-expanded") === "true";
+		toggle.setAttribute("aria-expanded", String(!open));
+		menu?.classList.toggle("hidden", open);
+		toggle.querySelector("[data-icon-open]")?.classList.toggle("hidden", !open);
+		toggle.querySelector("[data-icon-close]")?.classList.toggle("hidden", open);
+		toggle.querySelector(".sr-only")!.textContent = open
+			? "Open menu"
+			: "Close menu";
+	});
+
+	// Desktop dropdowns: hover/focus via CSS; click + Escape for keyboard/touch.
+	document.querySelectorAll<HTMLElement>("[data-dropdown]").forEach((dd) => {
+		const trigger = dd.querySelector<HTMLButtonElement>(
+			"[data-dropdown-trigger]"
+		)!;
+		const panel = dd.querySelector<HTMLElement>("[data-dropdown-panel]")!;
+		const set = (open: boolean) => {
+			trigger.setAttribute("aria-expanded", String(open));
+			panel.toggleAttribute("data-open", open);
+		};
+		trigger.addEventListener("click", () =>
+			set(trigger.getAttribute("aria-expanded") !== "true")
+		);
+		dd.addEventListener("keydown", (e) => {
+			if (e.key === "Escape") {
+				set(false);
+				trigger.focus();
+			}
+		});
+		dd.addEventListener("focusout", (e) => {
+			if (!dd.contains(e.relatedTarget as Node)) set(false);
+		});
+		dd.addEventListener("mouseleave", () => set(false));
+	});
+</script>

@@ -1,0 +1,8 @@
+---
+import BlogIndex from "@/components/sections/BlogIndex.astro";
+
+const n = Number(Astro.params.n);
+if (!Number.isInteger(n) || n < 2) return Astro.redirect("/blog", 301);
+---
+
+<BlogIndex page={n} />

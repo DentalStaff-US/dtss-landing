@@ -1,0 +1,259 @@
+---
+/**
+ * Job detail + sign-up gate. Rendered server-side both as the /jobs/[id] page
+ * body and as the partial the board's dialog loads, so there's one template.
+ *
+ * Everything shown comes from the admin app's allowlist DTO; the practice name,
+ * street address and full description are only revealed inside the app.
+ */
+import { Icon } from "astro-icon/components";
+import {
+	formatDate,
+	formatTime,
+	jobPay,
+	jobPlace,
+	jobTitle,
+	postedAgo,
+	type PublicJobDetail,
+} from "@/lib/jobs";
+import { appLink } from "@/lib/links";
+
+interface Props {
+	job: PublicJobDetail;
+	variant?: "page" | "dialog";
+}
+const { job, variant = "page" } = Astro.props;
+const isPerm = job.type === "perm";
+const signUp = appLink("pro", "sign-up", { job: job.publicId });
+const signIn = appLink("pro", "sign-in", { job: job.publicId });
+const hiddenChars = Math.max(
+	0,
+	job.descriptionLength - (job.descriptionTeaser?.length ?? 0)
+);
+const H = variant === "page" ? "h1" : "h2";
+---
+
+<div class="space-y-6" data-job-detail={job.publicId}>
+	<div>
+		<div class="flex flex-wrap items-center gap-2">
+			<span
+				class={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide ${isPerm ? "bg-primary/10 text-primary-dark" : "bg-pro/10 text-pro-dark"}`}
+			>
+				<Icon
+					name={isPerm ? "tabler:briefcase" : "tabler:calendar-event"}
+					class="size-3.5"
+					aria-hidden="true"
+				/>
+				{isPerm ? "Permanent position" : "Temp shifts"}
+			</span>
+			<span class="text-xs text-muted-foreground"
+				>{postedAgo(job.postedAt)}</span
+			>
+		</div>
+		<H
+			class={`mt-3 font-extrabold ${variant === "page" ? "text-3xl sm:text-4xl" : "text-2xl"}`}
+			id={variant === "dialog" ? "job-dialog-title" : undefined}
+		>
+			{jobTitle(job)}
+		</H>
+		<p class="mt-2 text-muted-foreground">{job.summary}</p>
+	</div>
+
+	<dl class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+		<div class="rounded-lg bg-muted p-3">
+			<dt
+				class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+			>
+				Area
+			</dt>
+			<dd class="mt-1 font-bold">{jobPlace(job)}</dd>
+		</div>
+		<div class="rounded-lg bg-muted p-3">
+			<dt
+				class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+			>
+				Pay
+			</dt>
+			<dd class="mt-1 font-bold">{jobPay(job)}</dd>
+		</div>
+		<div class="rounded-lg bg-muted p-3">
+			<dt
+				class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+			>
+				Experience
+			</dt>
+			<dd class="mt-1 font-bold">{job.experienceLevel ?? "No preference"}</dd>
+		</div>
+		<div class="rounded-lg bg-muted p-3">
+			<dt
+				class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+			>
+				{isPerm ? "Type" : "Open dates"}
+			</dt>
+			<dd class="mt-1 font-bold">
+				{
+					job.schedule.permanent
+						? "Permanent"
+						: `${job.schedule.openDateCount} open`
+				}
+			</dd>
+		</div>
+	</dl>
+
+	{
+		!job.schedule.permanent && job.schedule.nextDates.length > 0 && (
+			<div>
+				<h3 class="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+					Upcoming shifts
+				</h3>
+				<ul class="mt-3 grid gap-2 sm:grid-cols-2">
+					{job.schedule.nextDates.map((d) => (
+						<li class="flex items-center gap-3 rounded-lg border px-3 py-2 text-sm">
+							<Icon
+								name="tabler:calendar"
+								class="size-4 text-pro"
+								aria-hidden="true"
+							/>
+							<span class="font-semibold">
+								{formatDate(d.date, {
+									weekday: "short",
+									month: "short",
+									day: "numeric",
+								})}
+							</span>
+							<span class="text-muted-foreground">
+								{formatTime(d.start)}–{formatTime(d.end)}
+							</span>
+						</li>
+					))}
+				</ul>
+				{job.schedule.openDateCount > job.schedule.nextDates.length && (
+					<p class="mt-2 text-xs text-muted-foreground">
+						+{job.schedule.openDateCount - job.schedule.nextDates.length} more
+						dates visible after you sign up
+					</p>
+				)}
+			</div>
+		)
+	}
+
+	{
+		job.skills.length > 0 && (
+			<div>
+				<h3 class="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+					Skills
+				</h3>
+				<div class="mt-3 space-y-3">
+					{job.skills.map((g) => (
+						<div>
+							<p class="text-xs text-muted-foreground">
+								{g.category} ·{" "}
+								{g.matchMode === "ALL" ? "all required" : "any of"}
+							</p>
+							<ul class="mt-1.5 flex flex-wrap gap-1.5">
+								{g.skills.map((s) => (
+									<li class="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-xs font-semibold">
+										{s.name}
+										{s.requiresCertificate && (
+											<Icon
+												name="tabler:certificate"
+												class="size-3.5 text-primary"
+												aria-label="certificate required"
+											/>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			</div>
+		)
+	}
+
+	<div>
+		<h3 class="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+			About the role
+		</h3>
+		<div class="relative mt-3">
+			{
+				job.descriptionTeaser && (
+					<p class="leading-relaxed">{job.descriptionTeaser}</p>
+				)
+			}
+			{
+				hiddenChars > 40 && (
+					<div class="relative mt-3 select-none" aria-hidden="true">
+						<p class="leading-relaxed text-muted-foreground blur-[5px]">
+							Practice details, the full job description, office culture,
+							parking and arrival instructions, and the team you'll be working
+							alongside are shared once you're signed in.
+						</p>
+						<div class="absolute inset-0 bg-gradient-to-b from-transparent to-white" />
+					</div>
+				)
+			}
+		</div>
+	</div>
+
+	<div
+		class="rounded-xl bg-gradient-to-br from-teal-50 to-sky-50 p-5 ring-1 ring-pro/20"
+		data-job-gate
+	>
+		<p class="flex items-center gap-2 text-sm font-semibold">
+			<Icon name="tabler:lock" class="size-4 text-pro" aria-hidden="true" />
+			Practice name &amp; exact location are shared with signed-in professionals.
+		</p>
+		<a
+			href={signUp}
+			class="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-md bg-pro px-6 text-base font-bold text-pro-foreground shadow-sm transition hover:bg-pro-dark"
+			data-job-cta={job.publicId}
+			data-track="job_signup_click"
+			data-track-props={JSON.stringify({
+				type: job.type,
+				discipline: job.discipline.name,
+				placement: variant,
+			})}
+		>
+			{
+				isPerm
+					? "Create your free account to apply"
+					: "Create your free account to claim this shift"
+			}
+			<Icon name="tabler:arrow-right" class="size-5" aria-hidden="true" />
+		</a>
+		<p class="mt-3 text-center text-sm text-muted-foreground">
+			Already with DTSS?
+			<a
+				href={signIn}
+				class="font-bold text-pro-dark hover:underline"
+				data-job-cta={job.publicId}>Sign in to view this job</a
+			>
+		</p>
+		<ul
+			class="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-muted-foreground"
+		>
+			<li>
+				<Icon
+					name="tabler:currency-dollar"
+					class="mx-auto size-4 text-pro"
+					aria-hidden="true"
+				/>Weekly pay
+			</li>
+			<li>
+				<Icon
+					name="tabler:file-invoice"
+					class="mx-auto size-4 text-pro"
+					aria-hidden="true"
+				/>One W-2
+			</li>
+			<li>
+				<Icon
+					name="tabler:clock"
+					class="mx-auto size-4 text-pro"
+					aria-hidden="true"
+				/>Free, ~5 min
+			</li>
+		</ul>
+	</div>
+</div>

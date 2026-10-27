@@ -1,0 +1,97 @@
+---
+import Badge from "@/components/ui/Badge.astro";
+import Container from "@/components/ui/Container.astro";
+
+interface Props {
+	eyebrow?: string;
+	title: string;
+	description?: string;
+	/** practice = sky gradient (admin auth shell), pro = teal gradient (candidate auth shell) */
+	tone?: "practice" | "pro" | "neutral";
+	size?: "default" | "compact";
+	breadcrumbs?: { name: string; href: string }[];
+}
+const {
+	eyebrow,
+	title,
+	description,
+	tone = "practice",
+	size = "default",
+	breadcrumbs,
+} = Astro.props;
+const bg = {
+	practice: "from-sky-50 via-white to-sky-100",
+	pro: "from-teal-50 via-white to-emerald-50",
+	neutral: "from-slate-50 via-white to-sky-50",
+}[tone];
+const hasAside = Astro.slots.has("aside");
+---
+
+<section class={`relative overflow-hidden bg-gradient-to-br ${bg}`}>
+	<div
+		class={`pointer-events-none absolute -right-24 -top-24 size-96 rounded-full blur-3xl ${tone === "pro" ? "bg-pro/10" : "bg-primary/10"}`}
+		aria-hidden="true"
+	>
+	</div>
+	<Container
+		class={`relative ${size === "compact" ? "py-12 sm:py-16" : "py-16 sm:py-24"}`}
+	>
+		{
+			breadcrumbs && (
+				<nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted-foreground">
+					<ol class="flex flex-wrap items-center gap-1.5">
+						<li>
+							<a href="/" class="hover:text-foreground">
+								Home
+							</a>
+						</li>
+						{breadcrumbs.map((b, i) => (
+							<li class="flex items-center gap-1.5">
+								<span aria-hidden="true">/</span>
+								{i === breadcrumbs.length - 1 ? (
+									<span
+										aria-current="page"
+										class="font-semibold text-foreground"
+									>
+										{b.name}
+									</span>
+								) : (
+									<a href={b.href} class="hover:text-foreground">
+										{b.name}
+									</a>
+								)}
+							</li>
+						))}
+					</ol>
+				</nav>
+			)
+		}
+		<div class={hasAside ? "grid items-center gap-14 lg:grid-cols-12" : ""}>
+			<div class={hasAside ? "lg:col-span-7" : "max-w-3xl"}>
+				{
+					eyebrow && (
+						<Badge tone={tone === "pro" ? "pro" : "primary"}>{eyebrow}</Badge>
+					)
+				}
+				<h1 class="mt-4 text-4xl font-extrabold sm:text-5xl lg:text-6xl">
+					{title}
+				</h1>
+				{
+					description && (
+						<p class="mt-6 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+							{description}
+						</p>
+					)
+				}
+				<slot />
+			</div>
+			{
+				hasAside && (
+					<div class="hidden lg:col-span-5 lg:block">
+						<slot name="aside" />
+					</div>
+				)
+			}
+		</div>
+	</Container>
+</section>
