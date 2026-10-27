@@ -1,0 +1,95 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import eVerify from "@/assets/e-verify.png";
+import Container from "@/components/ui/Container.astro";
+
+interface Props {
+	variant?: "full" | "compact";
+}
+const { variant = "full" } = Astro.props;
+---
+
+<section class="border-y bg-muted/60" aria-labelledby="trust-heading">
+	<Container class={variant === "full" ? "py-14" : "py-8"}>
+		<div class="grid items-center gap-10 lg:grid-cols-12">
+			<div class="flex items-center gap-6 lg:col-span-6" data-reveal>
+				<a
+					href="https://www.e-verify.gov"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="shrink-0"
+					aria-label="E-Verify (opens in new tab)"
+				>
+					<Image
+						src={eVerify}
+						alt="E-Verify participant: this business uses E-Verify in its hiring practices to achieve a lawful workforce."
+						widths={[112, 224]}
+						sizes="112px"
+						class="h-24 w-auto"
+					/>
+				</a>
+				<div>
+					<h2 id="trust-heading" class="text-xl font-bold">
+						Federally compliant hiring
+					</h2>
+					<p class="mt-1 text-muted-foreground">
+						We participate in E-Verify to confirm every professional's
+						employment eligibility — so the staff you welcome into your practice
+						are verified before they walk through the door.
+					</p>
+				</div>
+			</div>
+			<ul
+				class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-3 lg:col-span-6"
+				data-reveal
+			>
+				<li
+					class="flex items-center gap-3 rounded-lg bg-white p-4 ring-1 ring-border"
+				>
+					<Icon
+						name="tabler:shield-check"
+						class="size-6 shrink-0 text-primary"
+						aria-hidden="true"
+					/>
+					<span class="font-semibold">Licenses &amp; credentials verified</span>
+				</li>
+				<li
+					class="flex items-center gap-3 rounded-lg bg-white p-4 ring-1 ring-border"
+				>
+					<Icon
+						name="tabler:receipt-tax"
+						class="size-6 shrink-0 text-primary"
+						aria-hidden="true"
+					/>
+					<span class="font-semibold">W-2 employer of record</span>
+				</li>
+				<li
+					class="col-span-2 flex items-center gap-3 rounded-lg bg-white p-4 ring-1 ring-border sm:col-span-1"
+				>
+					<Icon
+						name="tabler:certificate"
+						class="size-6 shrink-0 text-primary"
+						aria-hidden="true"
+					/>
+					<span>
+						<span class="font-semibold">Proud members</span><br />
+						<a
+							href="https://www.adaausa.org/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-primary hover:underline">ADAA</a
+						>
+						·
+						<a
+							href="https://www.napw.com/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-primary hover:underline">NAPW</a
+						>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</Container>
+</section>

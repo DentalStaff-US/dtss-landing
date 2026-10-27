@@ -1,0 +1,56 @@
+---
+import { mediaUrl, type TeamMember } from "@/lib/cms";
+
+interface Props {
+	members: TeamMember[];
+	compact?: boolean;
+}
+const { members, compact = false } = Astro.props;
+const initials = (n: string) =>
+	n
+		.split(/\s+/)
+		.map((p) => p[0])
+		.join("")
+		.slice(0, 2);
+---
+
+<ul
+	class={compact
+		? "grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+		: "grid gap-8 md:grid-cols-2"}
+>
+	{
+		members.map((m) => {
+			const photo = mediaUrl(m.photo);
+			return (
+				<li
+					class={`flex rounded-2xl border bg-white shadow-sm ${compact ? "flex-col items-center p-6 text-center" : "flex-col gap-6 p-6 sm:flex-row sm:p-8"}`}
+					data-reveal
+				>
+					{photo ? (
+						<img
+							src={photo}
+							alt={m.photo?.alt || m.name}
+							loading="lazy"
+							class={`shrink-0 rounded-full object-cover ring-4 ring-primary/10 ${compact ? "size-28" : "size-32"}`}
+						/>
+					) : (
+						<span
+							class={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-pro text-2xl font-extrabold text-white ring-4 ring-primary/10 ${compact ? "size-28" : "size-32"}`}
+							aria-hidden="true"
+						>
+							{initials(m.name)}
+						</span>
+					)}
+					<div class={compact ? "mt-4" : ""}>
+						<h3 class="text-xl font-extrabold">{m.name}</h3>
+						<p class="font-semibold text-primary">{m.role}</p>
+						{!compact && m.bio && (
+							<p class="mt-4 leading-relaxed text-muted-foreground">{m.bio}</p>
+						)}
+					</div>
+				</li>
+			);
+		})
+	}
+</ul>

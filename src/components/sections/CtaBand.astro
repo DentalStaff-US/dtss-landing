@@ -1,0 +1,73 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import { appLink } from "@/lib/links";
+
+interface Props {
+	title?: string;
+	description?: string;
+	/** both = practice + pro buttons; otherwise one audience */
+	audience?: "both" | "practice" | "pro";
+}
+const {
+	title = "It's a whole new staffing experience.",
+	description = "Free to join. Real people behind the software. Let's get you staffed — or get you to work.",
+	audience = "both",
+} = Astro.props;
+---
+
+<section class="py-16 sm:py-20">
+	<Container>
+		<div
+			class={`relative overflow-hidden rounded-2xl px-6 py-14 text-center shadow-xl sm:px-12 ${audience === "pro" ? "bg-gradient-to-br from-pro to-pro-dark shadow-teal-900/20" : "bg-gradient-to-br from-primary to-primary-dark shadow-sky-900/20"}`}
+			data-reveal
+		>
+			<div
+				class="pointer-events-none absolute -left-20 -top-20 size-72 rounded-full bg-white/10 blur-2xl"
+				aria-hidden="true"
+			>
+			</div>
+			<div
+				class="pointer-events-none absolute -bottom-24 -right-16 size-80 rounded-full bg-white/10 blur-2xl"
+				aria-hidden="true"
+			>
+			</div>
+			<h2
+				class="relative mx-auto max-w-2xl text-3xl font-extrabold text-white sm:text-4xl"
+			>
+				{title}
+			</h2>
+			<p class="relative mx-auto mt-4 max-w-xl text-lg text-white/85">
+				{description}
+			</p>
+			<div class="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+				{
+					(audience === "both" || audience === "practice") && (
+						<Button
+							href={appLink("practice", "sign-up")}
+							variant="white"
+							size="xl"
+							data-track="signup_click"
+							data-track-props='{"audience":"practice","placement":"cta_band"}'
+						>
+							I need dental staff
+						</Button>
+					)
+				}
+				{
+					(audience === "both" || audience === "pro") && (
+						<Button
+							href={appLink("pro", "sign-up")}
+							variant={audience === "pro" ? "white" : "outline-white"}
+							size="xl"
+							data-track="signup_click"
+							data-track-props='{"audience":"pro","placement":"cta_band"}'
+						>
+							I'm looking for work
+						</Button>
+					)
+				}
+			</div>
+		</div>
+	</Container>
+</section>

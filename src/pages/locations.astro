@@ -1,0 +1,142 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import { CONTACT } from "@/config/site.mjs";
+import { getLocations } from "@/lib/cms";
+
+const locations = await getLocations();
+const STATE_NAMES: Record<string, string> = {
+	FL: "Florida",
+	WA: "Washington",
+	TX: "Texas",
+	IL: "Illinois",
+};
+const byState = Object.entries(
+	locations.reduce<Record<string, typeof locations>>((acc, l) => {
+		(acc[l.state] ||= []).push(l);
+		return acc;
+	}, {})
+);
+---
+
+<Layout
+	title="Locations & Service Areas"
+	description="DTSS provides dental temp and permanent staffing across Florida, Washington, Dallas/Ft. Worth and Chicago. Find your local staffing contact."
+	breadcrumbs={[{ name: "Locations", href: "/locations" }]}
+>
+	<PageHero
+		size="compact"
+		eyebrow="Where we work"
+		title="Local teams. Growing coverage."
+		description="Every region has a staffing manager who knows the local practices and professionals. Call or text them directly."
+	/>
+
+	<section class="py-16 sm:py-20">
+		<Container>
+			<div class="space-y-14">
+				{
+					byState.map(([state, regions]) => (
+						<div>
+							<h2 class="flex items-center gap-3 text-2xl font-extrabold">
+								<span class="flex size-10 items-center justify-center rounded-lg bg-primary text-sm font-extrabold text-white">
+									{state}
+								</span>
+								{STATE_NAMES[state] ?? state}
+							</h2>
+							<ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+								{regions.map((r) => (
+									<li
+										class="rounded-xl border bg-white p-6 shadow-sm"
+										data-reveal
+									>
+										<h3 class="text-lg font-bold">{r.region}</h3>
+										{r.cities && (
+											<p class="text-sm text-muted-foreground">{r.cities}</p>
+										)}
+										{r.contactName && (
+											<div class="mt-5 space-y-2 border-t pt-4 text-sm">
+												<p class="flex items-center gap-2 font-semibold">
+													<Icon
+														name="tabler:user"
+														class="size-4 text-primary"
+														aria-hidden="true"
+													/>
+													{r.contactName}
+												</p>
+												{r.extension && (
+													<a
+														href={`${CONTACT.phoneHref},${r.extension}`}
+														class="flex items-center gap-2 hover:text-primary"
+													>
+														<Icon
+															name="tabler:phone"
+															class="size-4 text-primary"
+															aria-hidden="true"
+														/>
+														{CONTACT.phone} ext. {r.extension}
+													</a>
+												)}
+												{r.sms && (
+													<a
+														href={`sms:+1${r.sms.replace(/\D/g, "")}`}
+														class="flex items-center gap-2 hover:text-primary"
+													>
+														<Icon
+															name="tabler:message"
+															class="size-4 text-primary"
+															aria-hidden="true"
+														/>
+														Text {r.sms}
+													</a>
+												)}
+											</div>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+				{
+					locations.length === 0 && (
+						<p class="text-muted-foreground">
+							Call {CONTACT.phone} to reach your local team.
+						</p>
+					)
+				}
+			</div>
+
+			<div
+				class="mt-16 grid gap-6 rounded-2xl bg-gradient-to-br from-sky-50 to-white p-8 ring-1 ring-primary/15 sm:grid-cols-2 sm:p-10"
+			>
+				<div>
+					<h2 class="text-xl font-extrabold">Corporate headquarters</h2>
+					<address class="mt-3 not-italic text-muted-foreground">
+						{CONTACT.hq.street}<br />
+						{CONTACT.hq.city}, {CONTACT.hq.region}
+						{CONTACT.hq.postalCode}
+					</address>
+					<p class="mt-3">
+						<a href={CONTACT.phoneHref} class="font-bold text-primary"
+							>{CONTACT.phone}</a
+						>
+					</p>
+				</div>
+				<div class="sm:text-right">
+					<h2 class="text-xl font-extrabold">Not in one of these areas?</h2>
+					<p class="mt-3 text-muted-foreground">
+						We're growing. Tell us where you are and we'll let you know when we
+						arrive.
+					</p>
+					<Button href="/contact" class="mt-5">Get in touch</Button>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	<CtaBand />
+</Layout>

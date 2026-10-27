@@ -1,0 +1,17 @@
+---
+/** Renders EmDash Portable Text with the site's typography. */
+import { PortableText } from "emdash/ui";
+
+interface Props {
+	value: unknown;
+	class?: string;
+	size?: "default" | "sm";
+}
+const { value, class: className = "", size = "default" } = Astro.props;
+---
+
+<div
+	class={`prose max-w-none prose-slate prose-headings:font-extrabold prose-headings:tracking-tight prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl ${size === "sm" ? "prose-sm" : "prose-lg"} ${className}`}
+>
+	<PortableText value={value as never} />
+</div>

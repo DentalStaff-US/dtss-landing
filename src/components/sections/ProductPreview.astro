@@ -1,0 +1,119 @@
+---
+/**
+ * Illustrative (static, decorative) preview of the apps for page heroes —
+ * shows the product moment each audience cares about. Not real data.
+ */
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	variant: "practice" | "pro";
+}
+const { variant } = Astro.props;
+---
+
+<div class="relative mx-auto w-full max-w-md" aria-hidden="true">
+	<div
+		class={`absolute -inset-6 rounded-[2rem] blur-2xl ${variant === "pro" ? "bg-pro/15" : "bg-primary/15"}`}
+	>
+	</div>
+	{
+		variant === "practice" ? (
+			<div class="relative space-y-4">
+				<div class="rounded-2xl border bg-white p-5 shadow-xl shadow-sky-900/10">
+					<div class="flex items-center justify-between">
+						<span class="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+							New request
+						</span>
+						<span class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
+							Posted 7:02am
+						</span>
+					</div>
+					<p class="mt-3 text-lg font-extrabold">Dental Hygienist</p>
+					<ul class="mt-3 grid grid-cols-3 gap-2 text-sm">
+						<li class="rounded-lg bg-muted px-3 py-2">
+							<>
+								<span class="block text-xs text-muted-foreground">Date</span>
+								<b>Tue, Nov 3</b>
+							</>
+						</li>
+						<li class="rounded-lg bg-muted px-3 py-2">
+							<>
+								<span class="block text-xs text-muted-foreground">Hours</span>
+								<b>8am–5pm</b>
+							</>
+						</li>
+						<li class="rounded-lg bg-muted px-3 py-2">
+							<>
+								<span class="block text-xs text-muted-foreground">Rate</span>
+								<b>$48/hr</b>
+							</>
+						</li>
+					</ul>
+				</div>
+				<div class="ml-8 rounded-2xl border bg-white p-5 shadow-xl shadow-sky-900/10">
+					<div class="flex items-center gap-3">
+						<span class="flex size-11 items-center justify-center rounded-full bg-gradient-to-br from-primary to-pro font-bold text-white">
+							SK
+						</span>
+						<div class="flex-1">
+							<p class="font-bold">Sarah K., RDH</p>
+							<p class="text-xs text-muted-foreground">
+								8 yrs · Dentrix · Local anesthesia ✓
+							</p>
+						</div>
+						<span class="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-bold text-success">
+							<Icon name="tabler:circle-check-filled" class="size-4" /> Assigned
+						</span>
+					</div>
+					<p class="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
+						<Icon name="tabler:bolt" class="size-4 text-amber-500" />
+						Filled 4 minutes after posting
+					</p>
+				</div>
+				<div class="mr-10 flex items-center gap-3 rounded-xl bg-navy px-4 py-3 text-sm text-white shadow-lg">
+					<Icon name="tabler:receipt" class="size-5 text-sky-300" />
+					Timesheet approved · invoice ready
+				</div>
+			</div>
+		) : (
+			<div class="relative space-y-4">
+				<div class="rounded-2xl border bg-white p-5 shadow-xl shadow-teal-900/10">
+					<div class="flex items-center justify-between">
+						<span class="text-xs font-bold uppercase tracking-wide text-pro-dark">
+							Shift near you
+						</span>
+						<span class="text-xs text-muted-foreground">3.5 mi away</span>
+					</div>
+					<p class="mt-3 text-lg font-extrabold">Temp Dental Assistant</p>
+					<p class="text-sm text-muted-foreground">
+						Thu, Nov 5 · 7:30am–4pm · <b class="text-foreground">$26/hr</b>
+					</p>
+					<div class="mt-4 flex gap-2">
+						<span class="flex h-10 flex-1 items-center justify-center rounded-md bg-pro text-sm font-bold text-white">
+							Claim shift
+						</span>
+						<span class="flex h-10 items-center justify-center rounded-md border px-4 text-sm font-semibold">
+							Details
+						</span>
+					</div>
+				</div>
+				<div class="ml-8 grid grid-cols-7 gap-1.5 rounded-2xl border bg-white p-4 text-center text-xs shadow-xl shadow-teal-900/10">
+					{["M", "T", "W", "T", "F", "S", "S"].map((d) => (
+						<span class="font-bold text-muted-foreground">{d}</span>
+					))}
+					{[0, 1, 0, 1, 1, 0, 0].map((on, i) => (
+						<span
+							class={`rounded-md py-2 font-bold ${on ? "bg-pro text-white" : "bg-muted text-muted-foreground"}`}
+						>
+							{i + 2}
+						</span>
+					))}
+				</div>
+				<div class="mr-10 flex items-center gap-3 rounded-xl bg-navy px-4 py-3 text-sm text-white shadow-lg">
+					<Icon name="tabler:cash" class="size-5 text-emerald-300" />
+					Weekly pay deposited · $1,248.00
+				</div>
+			</div>
+		)
+	}
+</div>

@@ -1,0 +1,13 @@
+---
+/** Referral alias: www.dtstaffingsolutions.com/r/<CODE>[?to=practice|pro] */
+import ReferralLanding from "@/components/sections/ReferralLanding.astro";
+import { handleReferralVisit } from "@/lib/referral";
+
+const { active, redirectTo } = handleReferralVisit(
+	Astro,
+	Astro.params.code ?? null
+);
+if (redirectTo) return Astro.redirect(redirectTo, 302);
+---
+
+<ReferralLanding refCode={active} />

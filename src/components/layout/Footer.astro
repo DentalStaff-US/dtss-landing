@@ -1,0 +1,123 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import logo from "@/assets/dtss-logo.png";
+import Button from "@/components/ui/Button.astro";
+import { FOOTER_NAV } from "@/config/nav";
+import { CONTACT, SITE, SOCIAL } from "@/config/site.mjs";
+---
+
+<footer class="bg-navy text-white/80" aria-labelledby="footer-heading">
+	<h2 id="footer-heading" class="sr-only">Footer</h2>
+	<div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+		<div class="grid gap-12 lg:grid-cols-12">
+			<div class="lg:col-span-4">
+				<Image
+					src={logo}
+					alt="Dental Temps Staffing Solutions"
+					width={160}
+					height={74}
+					class="h-16 w-auto brightness-0 invert"
+				/>
+				<p class="mt-5 max-w-sm text-sm leading-relaxed">
+					{SITE.tagline} DTSS pairs proprietary staffing software with a personal,
+					small-town touch — so practices stay fully staffed and dental professionals
+					work on their terms.
+				</p>
+				<ul class="mt-6 space-y-2 text-sm">
+					<li>
+						<a
+							href={CONTACT.phoneHref}
+							class="inline-flex items-center gap-2 hover:text-white"
+						>
+							<Icon name="tabler:phone" class="size-4" aria-hidden="true" />{
+								CONTACT.phone
+							}
+						</a>
+					</li>
+					<li class="inline-flex items-center gap-2">
+						<Icon name="tabler:printer" class="size-4" aria-hidden="true" />Fax {
+							CONTACT.fax
+						}
+					</li>
+					<li>
+						<a
+							href={`mailto:${CONTACT.email}`}
+							class="inline-flex items-center gap-2 break-all hover:text-white"
+						>
+							<Icon name="tabler:mail" class="size-4" aria-hidden="true" />{
+								CONTACT.email
+							}
+						</a>
+					</li>
+				</ul>
+				<ul class="mt-6 flex gap-3" aria-label="Social media">
+					{
+						SOCIAL.map((s) => (
+							<li>
+								<a
+									href={s.href}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="flex size-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
+									aria-label={`${s.label} (opens in new tab)`}
+								>
+									<Icon name={s.icon} class="size-4" aria-hidden="true" />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8">
+				{
+					FOOTER_NAV.map((col) => (
+						<div>
+							<h3 class="text-sm font-bold uppercase tracking-wide text-white">
+								{col.title}
+							</h3>
+							<ul class="mt-4 space-y-3 text-sm">
+								{col.links.map((l) => (
+									<li>
+										<a href={l.href} class="hover:text-white">
+											{l.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</div>
+
+		<div
+			class="mt-12 flex flex-col items-start justify-between gap-6 rounded-xl bg-white/5 p-6 ring-1 ring-white/10 sm:flex-row sm:items-center"
+		>
+			<div>
+				<p class="font-bold text-white">Ready when you are.</p>
+				<p class="text-sm">
+					Free accounts for practices and dental professionals. No contracts to
+					get started.
+				</p>
+			</div>
+			<Button href="/get-started" variant="white" size="lg">Get started</Button>
+		</div>
+
+		<div
+			class="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs sm:flex-row sm:items-center sm:justify-between"
+		>
+			<p>
+				&copy; {new Date().getFullYear()}
+				{SITE.legalName}. All rights reserved.
+			</p>
+			<ul class="flex flex-wrap gap-x-6 gap-y-2">
+				<li><a href="/privacy" class="hover:text-white">Privacy Policy</a></li>
+				<li><a href="/terms" class="hover:text-white">Terms of Use</a></li>
+				<li><a href="/disclaimers" class="hover:text-white">Disclaimers</a></li>
+				<li><a href="/sitemap.xml" class="hover:text-white">Sitemap</a></li>
+			</ul>
+		</div>
+	</div>
+</footer>

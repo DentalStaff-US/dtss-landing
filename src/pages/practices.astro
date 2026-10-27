@@ -1,0 +1,377 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Button from "@/components/ui/Button.astro";
+import Container from "@/components/ui/Container.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import FeatureGrid from "@/components/sections/FeatureGrid.astro";
+import Steps from "@/components/sections/Steps.astro";
+import Testimonials from "@/components/sections/Testimonials.astro";
+import TrustBar from "@/components/sections/TrustBar.astro";
+import FaqList from "@/components/sections/FaqList.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import ProductPreview from "@/components/sections/ProductPreview.astro";
+import LeadForm from "@/components/forms/LeadForm.astro";
+import { getFaqs, getTestimonials } from "@/lib/cms";
+import { appLink } from "@/lib/links";
+
+const [faqs, testimonials] = await Promise.all([
+	getFaqs(["practice"]),
+	getTestimonials(),
+]);
+const practiceQuotes = testimonials
+	.filter((t) => t.audience === "practice")
+	.slice(0, 3);
+
+const services = [
+	{
+		id: "temp",
+		icon: "tabler:calendar-bolt",
+		eyebrow: "Temp staffing",
+		title: "Are call-outs costing you patients?",
+		body: "With appointments booked back-to-back, one sick call can cost a full day's production. We keep experienced, reliable temps ready to fill the gap.",
+		points: [
+			"Experienced staff on demand — assigned in minutes",
+			"Seamless integration into your practice",
+			"We're the employer of record: payroll, workers' comp, SUTA, FUTA, FICA and unemployment",
+			"No 1099 or employment responsibilities for you",
+		],
+	},
+	{
+		id: "placement",
+		icon: "tabler:user-search",
+		eyebrow: "Direct placement & temp-to-perm",
+		title: "Can't find the right person?",
+		body: "Don't spend weeks or months searching. We act as your outsourced recruiter — or let you try before you hire.",
+		points: [
+			"We help define the role, post it, screen and recommend candidates",
+			"Every placement is backed by our guarantee",
+			"Temp-to-perm: work with someone first, hire them for an agreed fee",
+			"Not the right fit? We'll find a replacement at no charge",
+		],
+	},
+	{
+		id: "wms",
+		icon: "tabler:briefcase-2",
+		eyebrow: "Workforce management",
+		title: "HR, payroll and benefits headaches?",
+		body: "Become an employer of choice without the admin. We become your silent partner for your critical HR responsibilities and employer risk.",
+		points: [
+			"Payroll and benefits management",
+			"HR consulting",
+			"Employment taxes, unemployment claims and compliance",
+			"Economies of scale for a better benefits package",
+		],
+	},
+];
+---
+
+<Layout
+	title="Dental Staffing for Practices — Temp, Perm & Temp-to-Perm"
+	description="Fill call-outs in minutes with pre-screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record — plus direct placement and workforce management."
+	breadcrumbs={[{ name: "For Practices", href: "/practices" }]}
+>
+	<PageHero
+		eyebrow="For dental practices"
+		title="You do dentistry. We do talent."
+		description="Don't let staffing get in the way of great dentistry. Post a shift in minutes, get a vetted professional assigned fast, and leave payroll, taxes and paperwork to us."
+	>
+		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+			<Button
+				href={appLink("practice", "sign-up")}
+				size="xl"
+				data-track="signup_click"
+				data-track-props='{"audience":"practice","placement":"practices_hero"}'
+			>
+				Create a free practice account
+			</Button>
+			<Button href="#request" variant="outline" size="xl"
+				>Talk to our team</Button
+			>
+		</div>
+		<ul
+			class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted-foreground"
+		>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-primary"
+					aria-hidden="true"
+				/>Free to create an account
+			</li>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-primary"
+					aria-hidden="true"
+				/>You set the rate
+			</li>
+			<li class="flex items-center gap-1.5">
+				<Icon
+					name="tabler:check"
+					class="size-4 text-primary"
+					aria-hidden="true"
+				/>Pay only for approved hours
+			</li>
+		</ul>
+		<ProductPreview slot="aside" variant="practice" />
+	</PageHero>
+
+	<section class="py-20 sm:py-24" aria-labelledby="roles-heading">
+		<Container>
+			<SectionHeading
+				id="roles-heading"
+				eyebrow="Who we staff"
+				title="The whole dental team, on demand"
+				description="From a single hygiene day to a new permanent office manager."
+			/>
+			<ul class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+				{
+					[
+						["tabler:dental", "Hygienists"],
+						["tabler:dental-broken", "Assistants"],
+						["tabler:arrows-shuffle", "Floaters"],
+						["tabler:headset", "Front office"],
+						["tabler:flask", "Lab technicians"],
+						["tabler:stethoscope", "Dentists"],
+					].map(([icon, label]) => (
+						<li
+							class="flex flex-col items-center gap-3 rounded-xl border bg-white p-6 text-center shadow-sm"
+							data-reveal
+						>
+							<Icon
+								name={icon}
+								class="size-8 text-primary"
+								aria-hidden="true"
+							/>
+							<span class="font-bold">{label}</span>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	<section
+		class="bg-muted/50 py-20 sm:py-24"
+		aria-labelledby="services-heading"
+	>
+		<Container>
+			<SectionHeading
+				id="services-heading"
+				eyebrow="Three great ways to work with us"
+				title="Staffing solutions that fit your practice"
+			/>
+			<div class="mt-14 space-y-8">
+				{
+					services.map((s, i) => (
+						<article
+							id={s.id}
+							class="grid scroll-mt-28 items-center gap-8 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-border sm:p-10 lg:grid-cols-2 lg:gap-14"
+							data-reveal
+						>
+							<div class={i % 2 ? "lg:order-2" : ""}>
+								<span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary-dark">
+									<Icon name={s.icon} class="size-5" aria-hidden="true" />
+									{s.eyebrow}
+								</span>
+								<h3 class="mt-3 text-2xl font-extrabold sm:text-3xl">
+									{s.title}
+								</h3>
+								<p class="mt-4 text-lg leading-relaxed text-muted-foreground">
+									{s.body}
+								</p>
+							</div>
+							<ul class="space-y-3 rounded-xl bg-gradient-to-br from-sky-50 to-white p-6 ring-1 ring-primary/10">
+								{s.points.map((p) => (
+									<li class="flex gap-3">
+										<Icon
+											name="tabler:circle-check-filled"
+											class="mt-0.5 size-5 shrink-0 text-primary"
+											aria-hidden="true"
+										/>
+										<span>{p}</span>
+									</li>
+								))}
+							</ul>
+						</article>
+					))
+				}
+			</div>
+		</Container>
+	</section>
+
+	<section class="py-20 sm:py-24" aria-labelledby="how-heading">
+		<Container>
+			<SectionHeading
+				id="how-heading"
+				eyebrow="How it works"
+				title="From sign-up to staffed in four steps"
+			/>
+			<div class="mt-14">
+				<Steps
+					steps={[
+						{
+							title: "Create your account",
+							body: "Sign up free, then add your practice details, office locations and the team members who'll manage staffing.",
+						},
+						{
+							title: "Set up billing",
+							body: "Add a card or bank account once — or choose paper invoicing.",
+						},
+						{
+							title: "Post a request",
+							body: "Pick the role, dates, hours and hourly rate. Qualified professionals nearby are notified right away.",
+						},
+						{
+							title: "Approve & done",
+							body: "Your pro shows up ready. Approve their timesheet in the portal and we take care of payroll and invoicing.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	<section
+		class="bg-gradient-to-b from-sky-50/70 to-white py-20 sm:py-24"
+		aria-labelledby="why-heading"
+	>
+		<Container>
+			<SectionHeading
+				id="why-heading"
+				eyebrow="Why DTSS"
+				title="Software that's fast. People who care."
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					items={[
+						{
+							icon: "tabler:bolt",
+							title: "Fast fills",
+							body: "Place an order through our software and have a temporary employee assigned in minutes.",
+						},
+						{
+							icon: "tabler:shield-check",
+							title: "Thorough vetting",
+							body: "Experience, licenses, certifications and documents are reviewed before anyone works a shift — plus E-Verify.",
+						},
+						{
+							icon: "tabler:receipt",
+							title: "No paperwork",
+							body: "We're the W-2 employer of record. You approve the hours; we handle everything else.",
+						},
+						{
+							icon: "tabler:heart-handshake",
+							title: "A real team",
+							body: "Decades of combined experience in dentistry and HR — and people who'll pick up the phone.",
+						},
+						{
+							icon: "tabler:device-mobile",
+							title: "One portal",
+							body: "Requests, calendar, timesheets, invoices and messages in one place, on any device.",
+						},
+						{
+							icon: "tabler:map-pin",
+							title: "Local coverage",
+							body: "Area managers in Florida, Washington, Texas and Illinois who know your market.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	{
+		practiceQuotes.length > 0 && (
+			<section class="py-20 sm:py-24" aria-labelledby="quotes-heading">
+				<Container>
+					<SectionHeading
+						id="quotes-heading"
+						eyebrow="Testimonials"
+						title="Practices that never looked back"
+					/>
+					<div class="mt-12">
+						<Testimonials items={practiceQuotes} />
+					</div>
+				</Container>
+			</section>
+		)
+	}
+
+	<TrustBar variant="compact" />
+
+	<section
+		id="request"
+		class="scroll-mt-24 py-20 sm:py-24"
+		aria-labelledby="request-heading"
+	>
+		<Container size="narrow">
+			<div class="grid gap-12 lg:grid-cols-5">
+				<div class="lg:col-span-2">
+					<SectionHeading
+						id="request-heading"
+						align="left"
+						eyebrow="Talk to us"
+						title="Need staff? Tell us what you're looking for."
+						description="Prefer to talk it through first? Send us a few details and a local staffing manager will reach out — usually the same day."
+					/>
+					<p class="mt-6 text-sm text-muted-foreground">
+						Ready to go now?
+						<a
+							href={appLink("practice", "sign-up")}
+							class="font-bold text-primary hover:underline"
+							>Create your free account</a
+						>
+						and post your first request today.
+					</p>
+				</div>
+				<div
+					class="rounded-2xl border bg-white p-6 shadow-lg shadow-sky-900/5 sm:p-8 lg:col-span-3"
+				>
+					<LeadForm
+						kind="staffing-request"
+						audience="practice"
+						fields={[
+							"name",
+							"email",
+							"phone",
+							"organization",
+							"location",
+							"discipline",
+							"startDate",
+							"message",
+						]}
+						submitLabel="Request staff"
+						messageLabel="Anything else we should know?"
+						messagePlaceholder="Days, hours, software you use, experience you're looking for…"
+					/>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	{
+		faqs.length > 0 && (
+			<section class="bg-muted/50 py-20 sm:py-24" aria-labelledby="faq-heading">
+				<Container size="prose">
+					<SectionHeading
+						id="faq-heading"
+						eyebrow="FAQ"
+						title="Questions practices ask us"
+					/>
+					<div class="mt-10">
+						<FaqList items={faqs} jsonLd />
+					</div>
+				</Container>
+			</section>
+		)
+	}
+
+	<CtaBand
+		audience="practice"
+		title="Ready to stop worrying about call-outs?"
+		description="Create your free practice account and post your first request in minutes."
+	/>
+</Layout>

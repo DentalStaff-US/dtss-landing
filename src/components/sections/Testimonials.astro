@@ -1,0 +1,75 @@
+---
+/**
+ * CMS-driven testimonials. Horizontal scroll-snap strip on mobile, grid on
+ * desktop — no JS carousel, so every quote is crawlable and nothing shifts.
+ */
+import { Icon } from "astro-icon/components";
+import type { Testimonial } from "@/lib/cms";
+
+interface Props {
+	items: Testimonial[];
+	layout?: "strip" | "masonry";
+}
+const { items, layout = "strip" } = Astro.props;
+const initials = (n: string) =>
+	n
+		.replace(/^Dr\.?\s+/i, "")
+		.split(/\s+/)
+		.map((p) => p[0])
+		.join("")
+		.slice(0, 2)
+		.toUpperCase();
+---
+
+{
+	items.length > 0 && (
+		<ul
+			class={
+				layout === "strip"
+					? "-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3"
+					: "columns-1 gap-6 sm:columns-2 lg:columns-3 [&>li]:mb-6 [&>li]:break-inside-avoid"
+			}
+		>
+			{items.map((t) => (
+				<li
+					class={`flex flex-col rounded-xl border bg-white p-6 shadow-sm ${layout === "strip" ? "w-[85%] shrink-0 snap-center sm:w-auto" : ""}`}
+					data-reveal
+				>
+					<figure class="flex h-full flex-col">
+						<div
+							class="flex items-center gap-0.5 text-amber-400"
+							aria-label={`${t.rating ?? 5} out of 5 stars`}
+						>
+							{Array.from({ length: t.rating ?? 5 }).map(() => (
+								<Icon
+									name="tabler:star-filled"
+									class="size-4"
+									aria-hidden="true"
+								/>
+							))}
+						</div>
+						<blockquote class="mt-4 flex-1 leading-relaxed text-foreground/90">
+							<p>“{t.quote}”</p>
+						</blockquote>
+						<figcaption class="mt-6 flex items-center gap-3 border-t pt-4">
+							<span
+								class={`flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${t.audience === "professional" ? "bg-pro/10 text-pro-dark" : "bg-primary/10 text-primary-dark"}`}
+								aria-hidden="true"
+							>
+								{initials(t.name)}
+							</span>
+							<span class="text-sm">
+								<span class="block font-bold">{t.name}</span>
+								{(t.role || t.organization) && (
+									<span class="block text-muted-foreground">
+										{[t.role, t.organization].filter(Boolean).join(" · ")}
+									</span>
+								)}
+							</span>
+						</figcaption>
+					</figure>
+				</li>
+			))}
+		</ul>
+	)
+}

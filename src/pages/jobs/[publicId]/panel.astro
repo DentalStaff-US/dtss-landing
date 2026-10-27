@@ -1,0 +1,31 @@
+---
+/**
+ * HTML fragment for the job board's detail dialog (Astro page partial).
+ * Same template as the full page; noindex because it's a fragment.
+ */
+import JobDetail from "@/components/jobs/JobDetail.astro";
+import { getJob, isPublicId } from "@/lib/jobs";
+
+export const partial = true;
+
+const id = Astro.params.publicId;
+const res = isPublicId(id) ? await getJob(id) : null;
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+if (!res?.ok) Astro.response.status = res && !res.ok ? res.status : 404;
+---
+
+{
+	res?.ok ? (
+		<JobDetail job={res.data.job} variant="dialog" />
+	) : (
+		<div class="py-10 text-center">
+			<h2 id="job-dialog-title" class="text-xl font-extrabold">
+				This job is no longer available
+			</h2>
+			<p class="mt-2 text-muted-foreground">
+				It may have just been filled. There are plenty more — create a free
+				profile to get notified first.
+			</p>
+		</div>
+	)
+}

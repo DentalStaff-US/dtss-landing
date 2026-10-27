@@ -1,0 +1,40 @@
+---
+export interface Step {
+	title: string;
+	body: string;
+}
+interface Props {
+	steps: Step[];
+	tone?: "primary" | "pro";
+}
+const { steps, tone = "primary" } = Astro.props;
+const dot =
+	tone === "pro"
+		? "bg-pro text-pro-foreground"
+		: "bg-primary text-primary-foreground";
+const line = tone === "pro" ? "bg-pro/20" : "bg-primary/20";
+---
+
+<ol
+	class={`relative grid gap-8 ${steps.length >= 4 ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-3"}`}
+>
+	{
+		steps.map((s, i) => (
+			<li class="relative" data-reveal>
+				{i < steps.length - 1 && (
+					<span
+						class={`absolute left-12 right-0 top-6 hidden h-0.5 lg:block ${line}`}
+						aria-hidden="true"
+					/>
+				)}
+				<span
+					class={`relative inline-flex size-12 items-center justify-center rounded-full text-lg font-extrabold shadow-md ${dot}`}
+				>
+					{i + 1}
+				</span>
+				<h3 class="mt-4 text-lg font-bold">{s.title}</h3>
+				<p class="mt-2 leading-relaxed text-muted-foreground">{s.body}</p>
+			</li>
+		))
+	}
+</ol>

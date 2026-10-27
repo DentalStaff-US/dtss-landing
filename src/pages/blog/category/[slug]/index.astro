@@ -1,0 +1,11 @@
+---
+import BlogIndex from "@/components/sections/BlogIndex.astro";
+import { getCategories } from "@/lib/cms";
+
+const category = (await getCategories()).find(
+	(c) => c.slug === Astro.params.slug
+);
+if (!category) return Astro.rewrite("/404");
+---
+
+<BlogIndex page={1} category={category} />

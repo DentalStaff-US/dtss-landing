@@ -1,0 +1,19 @@
+---
+/**
+ * Role-neutral referral landing (the chooser half). The calling page has
+ * already captured the cookie and handled ?to= via handleReferralVisit().
+ */
+import AudienceChooser from "@/components/sections/AudienceChooser.astro";
+
+interface Props {
+	refCode: string | null;
+}
+---
+
+<AudienceChooser
+	mode="sign-up"
+	refCode={Astro.props.refCode}
+	noindex
+	title="You've been invited to DTSS"
+	description="Someone thinks you'd love working with Dental Temps Staffing Solutions. Tell us who you are to get started — it's free."
+/>

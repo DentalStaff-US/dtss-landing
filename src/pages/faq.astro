@@ -1,0 +1,94 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import FaqList from "@/components/sections/FaqList.astro";
+import CtaBand from "@/components/sections/CtaBand.astro";
+import { getFaqs, ptToText, type FaqAudience } from "@/lib/cms";
+import { CONTACT } from "@/config/site.mjs";
+
+const faqs = await getFaqs();
+const groups: {
+	id: string;
+	title: string;
+	audience: FaqAudience;
+	tone: "primary" | "pro";
+}[] = [
+	{ id: "general", title: "General", audience: "general", tone: "primary" },
+	{
+		id: "practices",
+		title: "For practices",
+		audience: "practice",
+		tone: "primary",
+	},
+	{
+		id: "professionals",
+		title: "For professionals",
+		audience: "professional",
+		tone: "pro",
+	},
+	{
+		id: "affiliates",
+		title: "Affiliate program",
+		audience: "affiliate",
+		tone: "primary",
+	},
+];
+const sections = groups
+	.map((g) => ({ ...g, items: faqs.filter((f) => f.audience === g.audience) }))
+	.filter((g) => g.items.length);
+
+// One FAQPage for the whole URL.
+const ld = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	mainEntity: faqs.map((f) => ({
+		"@type": "Question",
+		name: f.question,
+		acceptedAnswer: { "@type": "Answer", text: ptToText(f.answer, 2000) },
+	})),
+};
+---
+
+<Layout
+	title="Frequently Asked Questions"
+	description="Answers for dental practices, dental professionals and affiliates: how DTSS staffing works, pay, screening, pricing and more."
+	breadcrumbs={[{ name: "FAQ", href: "/faq" }]}
+	jsonLd={faqs.length ? [ld] : []}
+>
+	<PageHero
+		size="compact"
+		eyebrow="FAQ"
+		title="Frequently asked questions"
+		description={`Can't find your answer? Call ${CONTACT.phone} or send us a message.`}
+	>
+		<nav class="mt-8 flex flex-wrap gap-2" aria-label="FAQ sections">
+			{
+				sections.map((s) => (
+					<a
+						href={`#${s.id}`}
+						class="rounded-full bg-white px-4 py-2 text-sm font-bold shadow-sm ring-1 ring-border hover:ring-primary"
+					>
+						{s.title}
+					</a>
+				))
+			}
+		</nav>
+	</PageHero>
+
+	<section class="py-16 sm:py-20">
+		<Container size="prose">
+			<div class="space-y-14">
+				{
+					sections.map((s) => (
+						<div id={s.id} class="scroll-mt-28">
+							<h2 class="mb-6 text-2xl font-extrabold">{s.title}</h2>
+							<FaqList items={s.items} tone={s.tone} />
+						</div>
+					))
+				}
+			</div>
+		</Container>
+	</section>
+	<CtaBand />
+</Layout>

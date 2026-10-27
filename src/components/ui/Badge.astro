@@ -1,0 +1,20 @@
+---
+/** The apps' auth-shell pill ("Client Portal" / "Professional Portal"). */
+interface Props {
+	tone?: "primary" | "pro" | "neutral" | "white";
+	class?: string;
+}
+const { tone = "primary", class: className = "" } = Astro.props;
+const tones = {
+	primary: "bg-primary/10 text-primary-dark",
+	pro: "bg-pro/10 text-pro-dark",
+	neutral: "bg-muted text-muted-foreground",
+	white: "bg-white/15 text-white ring-1 ring-white/30",
+};
+---
+
+<span
+	class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${tones[tone]} ${className}`}
+>
+	<slot />
+</span>

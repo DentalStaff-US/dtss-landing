@@ -1,0 +1,19 @@
+---
+/** shadcn card: rounded-lg border bg-card shadow-sm. */
+interface Props {
+	class?: string;
+	as?: "div" | "article" | "li" | "section";
+	interactive?: boolean;
+}
+const {
+	class: className = "",
+	as: Tag = "div",
+	interactive = false,
+} = Astro.props;
+---
+
+<Tag
+	class={`rounded-lg border bg-card text-card-foreground shadow-sm ${interactive ? "transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-sky-900/5" : ""} ${className}`}
+>
+	<slot />
+</Tag>

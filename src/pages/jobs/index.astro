@@ -1,0 +1,616 @@
+---
+import { Icon } from "astro-icon/components";
+import Layout from "@/layouts/Layout.astro";
+import Container from "@/components/ui/Container.astro";
+import Button from "@/components/ui/Button.astro";
+import JobCard from "@/components/jobs/JobCard.astro";
+import JobIntentScript from "@/components/jobs/JobIntentScript.astro";
+import LeadForm from "@/components/forms/LeadForm.astro";
+import { filtersFromUrl, getFacets, isPublicId, listJobs } from "@/lib/jobs";
+import { appLink } from "@/lib/links";
+
+const filters = filtersFromUrl(Astro.url);
+const page = Math.max(1, Number(filters.page) || 1);
+const [res, facetsRes] = await Promise.all([
+	listJobs(filters, 18),
+	getFacets(),
+]);
+
+const jobs = res.ok ? res.data.jobs : [];
+const total = res.ok ? res.data.total : 0;
+const limit = res.ok ? res.data.limit : 18;
+const pages = Math.max(1, Math.ceil(total / limit));
+const facets = facetsRes.ok ? facetsRes.data : null;
+const apiDown = !res.ok && res.status !== 400;
+
+const discipline = facets?.disciplines.find((d) => d.id === filters.discipline);
+const cities =
+	facets?.cities.filter(
+		(c) => !filters.state || c.state === filters.state.toUpperCase()
+	) ?? [];
+const typeLabel =
+	filters.type === "temp"
+		? "Temp dental shifts"
+		: filters.type === "perm"
+			? "Permanent dental jobs"
+			: "Dental jobs";
+const where = filters.city
+	? `${filters.city}${filters.state ? `, ${filters.state.toUpperCase()}` : ""}`
+	: filters.state?.toUpperCase();
+const heading = `${discipline ? `${discipline.name} ${filters.type === "perm" ? "jobs" : filters.type === "temp" ? "shifts" : "jobs"}` : typeLabel}${where ? ` in ${where}` : ""}`;
+
+const hrefWith = (patch: Record<string, string | null>) => {
+	const u = new URL(Astro.url.pathname, Astro.url);
+	for (const [k, v] of Object.entries({ ...filters, ...patch }))
+		if (v) u.searchParams.set(k, v);
+	return u.pathname + u.search;
+};
+const activeFilterCount = [
+	"discipline",
+	"type",
+	"state",
+	"city",
+	"experienceLevel",
+	"lat",
+].filter((k) => filters[k as keyof typeof filters]).length;
+const deepLink = Astro.url.searchParams.get("job");
+const select =
+	"h-11 w-full rounded-md border border-input bg-white px-3 text-sm font-semibold shadow-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/30";
+---
+
+<Layout
+	title={`${heading} — Open Now`}
+	description={`Browse ${total || "open"} ${heading.toLowerCase()} with Dental Temps Staffing Solutions. Weekly pay, flexible schedules, temp-to-perm. Create a free profile to apply.`}
+	breadcrumbs={[{ name: "Jobs", href: "/jobs" }]}
+	canonicalURL={activeFilterCount > 1 || page > 1 ? "/jobs" : undefined}
+>
+	<section
+		class="relative overflow-hidden bg-gradient-to-br from-teal-50 via-white to-sky-50"
+	>
+		<Container class="py-12 sm:py-16">
+			<div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+				<div class="max-w-2xl">
+					<p
+						class="inline-flex items-center gap-2 rounded-full bg-pro/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-pro-dark"
+					>
+						<span class="relative flex size-2"
+							><span
+								class="absolute inline-flex size-full animate-ping rounded-full bg-pro opacity-60"
+							></span><span
+								class="relative inline-flex size-2 rounded-full bg-pro"
+							></span></span
+						>
+						{total > 0 ? `${total} open now` : "Job board"}
+					</p>
+					<h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">{heading}</h1>
+					<p class="mt-4 text-lg text-muted-foreground">
+						Real openings from dental practices we staff. Practice names and
+						exact addresses are shared once you create your free profile.
+					</p>
+				</div>
+				<div class="flex shrink-0 flex-col gap-2 sm:flex-row">
+					<Button
+						href={appLink("pro", "sign-up")}
+						variant="pro"
+						size="lg"
+						data-track="signup_click"
+						data-track-props='{"audience":"pro","placement":"jobs_header"}'
+						>Create free profile</Button
+					>
+					<Button href="/practices" variant="outline" size="lg"
+						>Hiring? Post a job</Button
+					>
+				</div>
+			</div>
+
+			<form
+				method="get"
+				action="/jobs"
+				class="mt-10 rounded-2xl bg-white p-4 shadow-lg shadow-teal-900/5 ring-1 ring-border"
+				role="search"
+				aria-label="Filter jobs"
+				data-job-filters
+			>
+				<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-12">
+					<div class="lg:col-span-3">
+						<label
+							for="f-discipline"
+							class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+							>Role</label
+						>
+						<select id="f-discipline" name="discipline" class={select}>
+							<option value="">All roles</option>
+							{
+								facets?.disciplines.map((d) => (
+									<option value={d.id} selected={d.id === filters.discipline}>
+										{d.name} ({d.openCount})
+									</option>
+								))
+							}
+						</select>
+					</div>
+					<fieldset class="lg:col-span-3">
+						<legend
+							class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+							>Type</legend
+						>
+						<div
+							class="grid h-11 grid-cols-3 rounded-md bg-muted p-1 text-sm font-semibold"
+						>
+							{
+								[
+									["", "All"],
+									["temp", "Temp"],
+									["perm", "Permanent"],
+								].map(([v, l]) => (
+									<label class="flex cursor-pointer items-center justify-center rounded has-[:checked]:bg-white has-[:checked]:shadow-sm has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring">
+										<input
+											type="radio"
+											name="type"
+											value={v}
+											checked={(filters.type ?? "") === v}
+											class="sr-only"
+										/>
+										{l}
+									</label>
+								))
+							}
+						</div>
+					</fieldset>
+					<div class="lg:col-span-2">
+						<label
+							for="f-state"
+							class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+							>State</label
+						>
+						<select id="f-state" name="state" class={select}>
+							<option value="">Any</option>
+							{
+								facets?.states.map((s) => (
+									<option
+										value={s.state}
+										selected={s.state === filters.state?.toUpperCase()}
+									>
+										{s.state} ({s.count})
+									</option>
+								))
+							}
+						</select>
+					</div>
+					<div class="lg:col-span-2">
+						<label
+							for="f-city"
+							class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+							>City</label
+						>
+						<input
+							id="f-city"
+							name="city"
+							list="f-city-list"
+							value={filters.city ?? ""}
+							placeholder="Any city"
+							class={select}
+							autocomplete="off"
+						/>
+						<datalist id="f-city-list"
+							>{
+								cities.map((c) => (
+									<option value={c.city}>
+										{c.city}, {c.state}
+									</option>
+								))
+							}</datalist
+						>
+					</div>
+					<div class="flex items-end lg:col-span-2">
+						<button
+							type="submit"
+							class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-pro px-4 text-sm font-bold text-white hover:bg-pro-dark"
+						>
+							<Icon name="tabler:search" class="size-4" aria-hidden="true" /> Search
+						</button>
+					</div>
+				</div>
+				<details
+					class="mt-3 group"
+					open={Boolean(filters.experienceLevel || filters.lat || filters.sort)}
+				>
+					<summary
+						class="inline-flex cursor-pointer list-none items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-foreground"
+					>
+						<Icon
+							name="tabler:adjustments-horizontal"
+							class="size-4"
+							aria-hidden="true"
+						/> More filters
+					</summary>
+					<div class="mt-3 grid gap-3 sm:grid-cols-3">
+						<div>
+							<label
+								for="f-exp"
+								class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+								>My experience</label
+							>
+							<select id="f-exp" name="experienceLevel" class={select}>
+								<option value="">Any</option>
+								{
+									facets?.experienceLevels.map((e) => (
+										<option
+											value={e.id}
+											selected={e.id === filters.experienceLevel}
+										>
+											{e.value}
+										</option>
+									))
+								}
+							</select>
+						</div>
+						<div>
+							<label
+								for="f-sort"
+								class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+								>Sort by</label
+							>
+							<select id="f-sort" name="sort" class={select}>
+								<option value="newest" selected={filters.sort !== "soonest"}
+									>Newest</option
+								>
+								<option value="soonest" selected={filters.sort === "soonest"}
+									>Starting soonest</option
+								>
+							</select>
+						</div>
+						<div>
+							<span
+								class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
+								>Near me</span
+							>
+							<input
+								type="hidden"
+								name="lat"
+								value={filters.lat ?? ""}
+								data-geo-lat
+							/>
+							<input
+								type="hidden"
+								name="lng"
+								value={filters.lng ?? ""}
+								data-geo-lng
+							/>
+							<div class="flex gap-2">
+								<button
+									type="button"
+									class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-md border border-input bg-white text-sm font-semibold hover:bg-accent"
+									data-geo-button
+								>
+									<Icon
+										name="tabler:current-location"
+										class="size-4"
+										aria-hidden="true"
+									/>
+									<span data-geo-label
+										>{
+											filters.lat ? "Using your location" : "Use my location"
+										}</span
+									>
+								</button>
+								<select
+									name="radius"
+									class={`${select} w-24`}
+									aria-label="Radius in miles"
+								>
+									{
+										["10", "25", "50", "100"].map((r) => (
+											<option
+												value={r}
+												selected={(filters.radius ?? "25") === r}
+											>
+												{r} mi
+											</option>
+										))
+									}
+								</select>
+							</div>
+						</div>
+					</div>
+				</details>
+			</form>
+		</Container>
+	</section>
+
+	<section class="py-12">
+		<Container>
+			{
+				activeFilterCount > 0 && (
+					<div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+						<p class="text-sm text-muted-foreground">
+							<span class="font-bold text-foreground">{total}</span>{" "}
+							{total === 1 ? "job matches" : "jobs match"} your filters
+						</p>
+						<a
+							href="/jobs"
+							class="text-sm font-semibold text-primary hover:underline"
+						>
+							Clear filters
+						</a>
+					</div>
+				)
+			}
+
+			{
+				jobs.length > 0 ? (
+					<ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-job-list>
+						{jobs.map((job) => (
+							<JobCard job={job} />
+						))}
+					</ul>
+				) : (
+					<div class="mx-auto max-w-2xl rounded-2xl border bg-white p-8 text-center shadow-sm sm:p-10">
+						<span class="inline-flex size-14 items-center justify-center rounded-2xl bg-pro/10 text-pro">
+							<Icon
+								name={apiDown ? "tabler:cloud-off" : "tabler:search"}
+								class="size-7"
+								aria-hidden="true"
+							/>
+						</span>
+						<h2 class="mt-4 text-2xl font-extrabold">
+							{apiDown
+								? "Our job board is taking a quick break"
+								: "No matching jobs right now"}
+						</h2>
+						<p class="mt-2 text-muted-foreground">
+							{apiDown
+								? "Please try again in a few minutes."
+								: "New shifts are posted every day. Create a free profile to be notified the moment something opens up near you — or leave your details below."}
+						</p>
+						<div class="mt-6 flex flex-wrap justify-center gap-3">
+							<Button href={appLink("pro", "sign-up")} variant="pro" size="lg">
+								Create free profile
+							</Button>
+							{activeFilterCount > 0 && (
+								<Button href="/jobs" variant="outline" size="lg">
+									See all jobs
+								</Button>
+							)}
+						</div>
+						{!apiDown && (
+							<div class="mt-8 border-t pt-8 text-left">
+								<h3 class="font-bold">Get job alerts</h3>
+								<div class="mt-4">
+									<LeadForm
+										kind="job-alert"
+										audience="professional"
+										tone="pro"
+										fields={[
+											"name",
+											"email",
+											"phone",
+											"location",
+											"discipline",
+										]}
+										submitLabel="Alert me"
+										successBody="We'll let you know when matching jobs open up."
+									/>
+								</div>
+							</div>
+						)}
+					</div>
+				)
+			}
+
+			{
+				pages > 1 && (
+					<nav
+						class="mt-12 flex items-center justify-center gap-2"
+						aria-label="Pagination"
+					>
+						{page > 1 && (
+							<a
+								href={hrefWith({ page: String(page - 1) })}
+								class="rounded-md border bg-white px-4 py-2 text-sm font-semibold hover:bg-accent"
+								rel="prev"
+							>
+								← Previous
+							</a>
+						)}
+						<span class="px-3 text-sm text-muted-foreground">
+							Page {page} of {pages}
+						</span>
+						{page < pages && (
+							<a
+								href={hrefWith({ page: String(page + 1) })}
+								class="rounded-md border bg-white px-4 py-2 text-sm font-semibold hover:bg-accent"
+								rel="next"
+							>
+								Next →
+							</a>
+						)}
+					</nav>
+				)
+			}
+
+			{
+				jobs.length > 0 && (
+					<div class="mt-16 grid gap-6 rounded-2xl bg-gradient-to-br from-pro to-pro-dark p-8 text-white shadow-xl shadow-teal-900/20 sm:p-10 lg:grid-cols-3 lg:items-center">
+						<div class="lg:col-span-2">
+							<h2 class="text-2xl font-extrabold">
+								See practice details and apply in minutes
+							</h2>
+							<p class="mt-2 text-white/85">
+								Create a free profile to unlock full job details, claim temp
+								shifts and apply for permanent roles. Weekly pay, one W-2.
+							</p>
+						</div>
+						<div class="lg:text-right">
+							<Button
+								href={appLink("pro", "sign-up")}
+								variant="white"
+								size="xl"
+								data-track="signup_click"
+								data-track-props='{"audience":"pro","placement":"jobs_footer"}'
+							>
+								Create free profile
+							</Button>
+						</div>
+					</div>
+				)
+			}
+		</Container>
+	</section>
+
+	<!-- Detail dialog: content is the server-rendered /jobs/[id]/panel partial. -->
+	<dialog
+		id="job-dialog"
+		class="m-auto w-[min(44rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl p-0 shadow-2xl backdrop:bg-transparent"
+		aria-labelledby="job-dialog-title"
+		data-deep-link={isPublicId(deepLink ?? undefined) ? deepLink : undefined}
+	>
+		<div
+			class="sticky top-0 z-10 flex items-center justify-between border-b bg-white/95 px-6 py-3 backdrop-blur"
+		>
+			<a
+				href="#"
+				class="text-sm font-semibold text-primary hover:underline"
+				data-dialog-permalink>Open full page</a
+			>
+			<button
+				type="button"
+				class="inline-flex size-9 items-center justify-center rounded-md hover:bg-accent"
+				data-dialog-close
+			>
+				<span class="sr-only">Close</span>
+				<Icon name="tabler:x" class="size-5" aria-hidden="true" />
+			</button>
+		</div>
+		<div class="p-6 sm:p-8" data-dialog-body aria-live="polite"></div>
+	</dialog>
+
+	<JobIntentScript />
+</Layout>
+
+<script>
+	// Auto-apply filters as they change (the form still works without JS).
+	const form = document.querySelector<HTMLFormElement>("[data-job-filters]");
+	const latInput =
+		form?.querySelector<HTMLInputElement>("[data-geo-lat]") ?? null;
+	const lngInput =
+		form?.querySelector<HTMLInputElement>("[data-geo-lng]") ?? null;
+	const submit = () => {
+		if (!form) return;
+		// Drop empty params so URLs stay clean & shareable.
+		const params = new URLSearchParams();
+		new FormData(form).forEach((v, k) => {
+			if (v && !(k === "radius" && !latInput?.value)) params.set(k, String(v));
+		});
+		(
+			window as unknown as {
+				posthog?: { capture: (e: string, p?: object) => void };
+			}
+		).posthog?.capture("job_search", Object.fromEntries(params));
+		location.href = `/jobs${params.toString() ? `?${params}` : ""}`;
+	};
+	form?.addEventListener("change", (e) => {
+		if ((e.target as HTMLElement).id !== "f-city") submit();
+	});
+	form?.addEventListener("submit", (e) => {
+		e.preventDefault();
+		submit();
+	});
+
+	// "Near me": rounded to ~1km before it ever leaves the browser.
+	document
+		.querySelector<HTMLButtonElement>("[data-geo-button]")
+		?.addEventListener("click", (e) => {
+			const btn = e.currentTarget as HTMLButtonElement;
+			const label = btn.querySelector("[data-geo-label]")!;
+			if (!("geolocation" in navigator)) return;
+			label.textContent = "Locating…";
+			navigator.geolocation.getCurrentPosition(
+				(pos) => {
+					if (latInput) latInput.value = pos.coords.latitude.toFixed(2);
+					if (lngInput) lngInput.value = pos.coords.longitude.toFixed(2);
+					submit();
+				},
+				() => {
+					label.textContent = "Location unavailable";
+				},
+				{ timeout: 10000, maximumAge: 600000 }
+			);
+		});
+
+	// Detail dialog
+	const dialog = document.querySelector<HTMLDialogElement>("#job-dialog")!;
+	const body = dialog.querySelector<HTMLElement>("[data-dialog-body]")!;
+	const permalink = dialog.querySelector<HTMLAnchorElement>(
+		"[data-dialog-permalink]"
+	)!;
+	let lastFocus: HTMLElement | null = null;
+
+	async function openJob(id: string, push = true) {
+		lastFocus = document.activeElement as HTMLElement;
+		permalink.href = `/jobs/${id}`;
+		body.innerHTML =
+			'<div class="space-y-3 animate-pulse"><div class="h-6 w-1/3 rounded bg-muted"></div><div class="h-9 w-2/3 rounded bg-muted"></div><div class="h-24 rounded bg-muted"></div><div class="h-32 rounded bg-muted"></div></div>';
+		if (!dialog.open) dialog.showModal();
+		if (push) {
+			const u = new URL(location.href);
+			u.searchParams.set("job", id);
+			history.pushState({ job: id }, "", u);
+		}
+		try {
+			const res = await fetch(`/jobs/${id}/panel`, {
+				headers: { Accept: "text/html" },
+			});
+			// Same-origin, server-rendered partial built from the allowlisted DTO.
+			body.innerHTML = await res.text();
+			(
+				window as unknown as { __dtssDecorate?: (root: Element) => void }
+			).__dtssDecorate?.(body);
+			(
+				window as unknown as {
+					posthog?: { capture: (e: string, p?: object) => void };
+				}
+			).posthog?.capture("job_gate_shown", { job: id });
+		} catch {
+			body.innerHTML =
+				'<p class="py-8 text-center text-muted-foreground">Couldn\'t load this job. <a class="font-bold text-primary" href="/jobs/' +
+				id +
+				'">Open the full page</a>.</p>';
+		}
+	}
+
+	function closeDialog(push = true) {
+		if (dialog.open) dialog.close();
+		if (push && new URL(location.href).searchParams.has("job")) {
+			const u = new URL(location.href);
+			u.searchParams.delete("job");
+			history.pushState({}, "", u);
+		}
+		lastFocus?.focus();
+	}
+
+	document.addEventListener("click", (e) => {
+		const a = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+			"[data-job-open]"
+		);
+		if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+		e.preventDefault();
+		openJob(a.dataset.jobOpen!);
+	});
+	dialog
+		.querySelector("[data-dialog-close]")!
+		.addEventListener("click", () => closeDialog());
+	dialog.addEventListener("click", (e) => {
+		if (e.target === dialog) closeDialog();
+	});
+	dialog.addEventListener("cancel", (e) => {
+		e.preventDefault();
+		closeDialog();
+	});
+	window.addEventListener("popstate", () => {
+		const id = new URL(location.href).searchParams.get("job");
+		if (id) openJob(id, false);
+		else closeDialog(false);
+	});
+	if (dialog.dataset.deepLink) openJob(dialog.dataset.deepLink, false);
+</script>

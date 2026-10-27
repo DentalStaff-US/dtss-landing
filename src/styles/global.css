@@ -1,26 +1,60 @@
 @import "tailwindcss";
+@import "@fontsource-variable/nunito";
 @plugin "@tailwindcss/typography";
 
-/* Accessibility: Skip to content link */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+/*
+ * Design tokens come from dtss-design-tokens (single source of truth for the
+ * site, all three portals and the React Native app). Never edit
+ * ./tokens/* by hand — change tokens.json there, then build + sync.
+ *
+ *   primary = DTSS blue (#2a93d1) — practices / site-wide identity
+ *   pro     = teal (#0d968b)      — professional-facing accents
+ *   navy    = shared chrome (utility bar, footer)
+ */
+@import "./tokens/theme.css";
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+	}
+	*,
+	::before,
+	::after {
+		border-color: var(--color-border);
+	}
+	:focus-visible {
+		outline: 2px solid var(--color-ring);
+		outline-offset: 2px;
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		@apply tracking-tight text-balance;
+	}
+	dialog::backdrop {
+		background: hsl(222 47% 11% / 0.55);
+		backdrop-filter: blur(2px);
+	}
 }
 
-.sr-only:focus {
-  position: fixed;
-  width: auto;
-  height: auto;
-  padding: 0.5rem 1rem;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
+/* Scroll reveal: progressive enhancement. Content is visible unless JS has
+   opted the page in (html.js-reveal), so nothing is ever hidden for no-JS
+   visitors or crawlers, and the LCP heading is never marked data-reveal. */
+@media (prefers-reduced-motion: no-preference) {
+	html.js-reveal [data-reveal] {
+		opacity: 0;
+		transform: translateY(16px);
+		transition:
+			opacity 0.6s ease,
+			transform 0.6s ease;
+	}
+	html.js-reveal [data-reveal].is-visible {
+		opacity: 1;
+		transform: none;
+	}
 }

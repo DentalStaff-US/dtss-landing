@@ -1,0 +1,17 @@
+---
+/**
+ * Referral alias: www.dtstaffingsolutions.com/r?c=CODE (or ?ref=CODE).
+ * The partner portal's /r/<CODE> stays the canonical link; this mirrors it.
+ */
+import ReferralLanding from "@/components/sections/ReferralLanding.astro";
+import { handleReferralVisit } from "@/lib/referral";
+
+const params = Astro.url.searchParams;
+const { active, redirectTo } = handleReferralVisit(
+	Astro,
+	params.get("c") ?? params.get("ref")
+);
+if (redirectTo) return Astro.redirect(redirectTo, 302);
+---
+
+<ReferralLanding refCode={active} />

@@ -1,0 +1,57 @@
+---
+/**
+ * Privacy / terms / disclaimers. The CMS `pages` entry is the source of truth;
+ * the markdown in seed/legal is the fallback (and the seed's starting text),
+ * so these pages never 404 on a fresh, unseeded environment.
+ */
+import type { MarkdownInstance } from "astro";
+import Layout from "@/layouts/Layout.astro";
+import PageHero from "@/components/sections/PageHero.astro";
+import Container from "@/components/ui/Container.astro";
+import Prose from "@/components/ui/Prose.astro";
+import { getPage } from "@/lib/cms";
+
+interface Props {
+	slug: "privacy" | "terms" | "disclaimers";
+	fallbackTitle: string;
+	description: string;
+}
+const { slug, fallbackTitle, description } = Astro.props;
+
+const page = await getPage(slug);
+const fallbacks = import.meta.glob<MarkdownInstance<Record<string, never>>>(
+	"/seed/legal/*.md",
+	{ eager: true }
+);
+const Fallback = fallbacks[`/seed/legal/${slug}.md`]?.Content ?? null;
+const title = page?.title || fallbackTitle;
+const updated = page?.updatedAt?.toLocaleDateString("en-US", {
+	month: "long",
+	day: "numeric",
+	year: "numeric",
+});
+---
+
+<Layout
+	title={title}
+	description={description}
+	breadcrumbs={[{ name: title, href: `/${slug}` }]}
+>
+	<PageHero
+		size="compact"
+		tone="neutral"
+		title={title}
+		description={updated ? `Last updated ${updated}` : undefined}
+	/>
+	<Container size="prose" class="py-14">
+		{
+			page ? (
+				<Prose value={page.content} />
+			) : (
+				<div class="prose prose-lg prose-slate max-w-none prose-headings:font-extrabold prose-a:text-primary [&>h1:first-child]:hidden">
+					{Fallback && <Fallback />}
+				</div>
+			)
+		}
+	</Container>
+</Layout>

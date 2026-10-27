@@ -1,0 +1,74 @@
+---
+import { Icon } from "astro-icon/components";
+import { mediaUrl, type PostSummary } from "@/lib/cms";
+
+interface Props {
+	post: PostSummary;
+}
+const { post } = Astro.props;
+const img = mediaUrl(post.image);
+const date = post.publishedAt?.toLocaleDateString("en-US", {
+	month: "long",
+	day: "numeric",
+	year: "numeric",
+});
+---
+
+<article
+	class="group flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-sky-900/5"
+	data-reveal
+>
+	<a
+		href={`/blog/${post.slug}`}
+		class="block aspect-[16/9] overflow-hidden bg-gradient-to-br from-sky-100 to-teal-50"
+		tabindex="-1"
+		aria-hidden="true"
+	>
+		{
+			img ? (
+				<img
+					src={img}
+					alt=""
+					loading="lazy"
+					decoding="async"
+					class="size-full object-cover transition duration-500 group-hover:scale-105"
+				/>
+			) : (
+				<span class="flex size-full items-center justify-center">
+					<Icon name="tabler:dental" class="size-14 text-primary/40" />
+				</span>
+			)
+		}
+	</a>
+	<div class="flex flex-1 flex-col p-6">
+		{
+			date && (
+				<time
+					datetime={post.publishedAt?.toISOString()}
+					class="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+				>
+					{date}
+				</time>
+			)
+		}
+		<h3 class="mt-2 text-lg font-bold leading-snug">
+			<a href={`/blog/${post.slug}`} class="hover:text-primary">{post.title}</a>
+		</h3>
+		{
+			post.excerpt && (
+				<p class="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+					{post.excerpt}
+				</p>
+			)
+		}
+		<span
+			class="mt-auto inline-flex items-center gap-1 pt-4 text-sm font-bold text-primary"
+		>
+			Read article <Icon
+				name="tabler:arrow-right"
+				class="size-4 transition group-hover:translate-x-0.5"
+				aria-hidden="true"
+			/>
+		</span>
+	</div>
+</article>

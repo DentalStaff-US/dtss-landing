@@ -1,0 +1,45 @@
+---
+/**
+ * PostHog — same project as the apps, so a visitor's journey from marketing
+ * page → sign-up → onboarding is one funnel. Proxied through /ingest.
+ * Does nothing when no project token is configured (local dev).
+ *
+ * The <script> must stay at the top level (not inside an expression) so Astro
+ * bundles the posthog-js import; the token is passed via a data attribute.
+ */
+import { ENV } from "@/lib/env";
+---
+
+<meta name="dtss-posthog" content={ENV.posthogToken} />
+
+<script>
+	const token = document.querySelector<HTMLMetaElement>(
+		'meta[name="dtss-posthog"]'
+	)?.content;
+	if (token) {
+		const { default: posthog } = await import("posthog-js");
+		posthog.init(token, {
+			api_host: "/ingest",
+			ui_host: "https://us.posthog.com",
+			person_profiles: "identified_only",
+			capture_pageview: true,
+			capture_pageleave: true,
+		});
+		(window as unknown as { posthog: typeof posthog }).posthog = posthog;
+
+		// Declarative CTA tracking: <a data-track="event_name" data-track-props='{"k":"v"}'>
+		document.addEventListener("click", (e) => {
+			const el = (e.target as HTMLElement | null)?.closest<HTMLElement>(
+				"[data-track]"
+			);
+			if (!el?.dataset.track) return;
+			let props: Record<string, unknown> = {};
+			try {
+				props = JSON.parse(el.dataset.trackProps || "{}");
+			} catch {
+				/* ignore malformed props */
+			}
+			posthog.capture(el.dataset.track, { ...props, path: location.pathname });
+		});
+	}
+</script>
