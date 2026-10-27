@@ -70,9 +70,17 @@ The schema is defined in `scripts/build-seed.mjs`, which writes `seed/seed.json`
 
 ## Deploying (Railway)
 
-1. Create a Node service. Build command: `npm run build`. Start command: `npm start`.
-2. Set every variable in `.env.example`. The production build refuses to run without the app URLs and `PUBLIC_COOKIE_DOMAIN`.
-3. `EMDASH_DATABASE_URL` must point at the **CMS** Postgres, never the shared app database. Append `?sslmode=no-verify` when using Railway's public proxy.
-4. Back up `EMDASH_ENCRYPTION_KEY`. Plugin secrets can't be decrypted without it.
-5. Media storage: set `S3_*` (DO Spaces). Without it, uploads go to local disk, which Railway does not keep across deploys.
-6. In `dental-staff-app`, set `PUBLIC_JOB_BOARD_ENABLED=true`, `PUBLIC_MARKETING_URL=https://www.dtstaffingsolutions.com` and a shared `JOB_BOARD_SERVER_KEY` (the same value here).
+**One CMS database serves every instance** (staging and production): content is edited once and appears everywhere.
+
+1. Create a Node service per environment. Build command: `npm run build`. Start command: `npm start`.
+2. Set every variable in `.env.example`. The production build refuses to run without the app URLs, `PUBLIC_COOKIE_DOMAIN`, `EMDASH_DATABASE_URL` and `S3_BUCKET`.
+3. **Shared across all instances (identical values):**
+   - `EMDASH_DATABASE_URL`: the one Railway **CMS** Postgres, never the app database. Append `?sslmode=no-verify` on Railway's public proxy.
+   - `EMDASH_ENCRYPTION_KEY`: back it up. Plugin secrets can't be decrypted without it.
+   - `S3_*`: the same bucket, since media rows reference its keys.
+4. **Per instance:**
+   - `EMDASH_SITE_URL`: the origin users open, e.g. `https://www.dtstaffingsolutions.com` or the staging URL. It drives editor passkeys, CSRF and redirects.
+   - The app URLs: staging points at staging apps.
+5. **Upgrading EmDash:** it's pinned to an exact version on purpose. Upgrade it on every instance in the same deploy, because a newer instance would migrate the shared schema under an older one.
+6. **Editing:** content edits appear on the instance they were made on immediately, and on the others within about 60 seconds (the per-process cache TTL). Passkeys are tied to the origin they were registered on, so editors should sign in on one canonical instance (production).
+7. In `dental-staff-app`, set `PUBLIC_JOB_BOARD_ENABLED=true`, `PUBLIC_MARKETING_URL` (this instance's origin) and a shared `JOB_BOARD_SERVER_KEY` (the same value here).

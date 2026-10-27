@@ -19,13 +19,17 @@ const env = loadEnv(
 );
 
 // A production build must know where the apps live, or every CTA would point
-// at localhost (which is exactly what the old static build shipped).
+// at localhost (which is exactly what the old static build shipped). It must
+// also use the shared CMS database + bucket: falling back to SQLite / local
+// disk would silently fork this instance's content from every other instance.
 if (isProdBuild && env.ALLOW_DEV_URLS !== "true") {
 	const required = [
 		"PUBLIC_PRACTICE_APP_URL",
 		"PUBLIC_PROFESSIONAL_APP_URL",
 		"PUBLIC_PARTNER_PORTAL_URL",
 		"PUBLIC_COOKIE_DOMAIN",
+		"EMDASH_DATABASE_URL",
+		"S3_BUCKET",
 	];
 	const missing = required.filter((k) => !env[k]);
 	if (missing.length) {
@@ -41,9 +45,18 @@ if (isProdBuild && env.ALLOW_DEV_URLS !== "true") {
  * shared admin/candidate app database — this site never connects to that one;
  * it reads job data through the admin app's /api/public endpoints instead.
  *
+ * ONE CMS database serves every deployed instance (staging + production), so
+ * content is edited once and shows everywhere. Consequences:
+ *  - every instance must run the SAME emdash version (pinned exactly in
+ *    package.json): runtime migrations would otherwise move the shared schema
+ *    under an older instance. Upgrade emdash on all instances together.
+ *  - every instance needs the same EMDASH_ENCRYPTION_KEY and S3_* storage
+ *    (media rows point at storage keys; local disk can't be shared).
+ *  - each instance sets its own EMDASH_SITE_URL (passkeys/CSRF/redirects).
+ *
  * Without EMDASH_DATABASE_URL, local dev falls back to a SQLite file so the
  * site and admin can be worked on offline (apply seed/seed.json via the
- * setup wizard at /_emdash/admin).
+ * setup wizard at /_emdash/admin). Never point local dev at the shared DB.
  */
 const cmsDatabase = env.EMDASH_DATABASE_URL
 	? postgres({ connectionString: env.EMDASH_DATABASE_URL, pool: { max: 5 } })
@@ -80,8 +93,11 @@ export default defineConfig({
 					directory: "./.emdash/uploads",
 					baseUrl: "/_emdash/api/media/file",
 				}),
-			objectCache: memoryCache(),
-			siteUrl: SITE.url,
+			// Per-process cache: an edit only invalidates the instance it was made
+			// on, so keep the TTL short for the other instances sharing the DB.
+			objectCache: memoryCache({ defaultTtl: 60 }),
+			// No hardcoded siteUrl: each instance sets EMDASH_SITE_URL to the
+			// origin users actually open (EmDash's own fallback order).
 		}),
 	],
 	vite: {
