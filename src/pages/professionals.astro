@@ -11,6 +11,7 @@ import Testimonials from "@/components/sections/Testimonials.astro";
 import FaqList from "@/components/sections/FaqList.astro";
 import CtaBand from "@/components/sections/CtaBand.astro";
 import ProductPreview from "@/components/sections/ProductPreview.astro";
+import ReferralBand from "@/components/sections/ReferralBand.astro";
 import JobCard from "@/components/jobs/JobCard.astro";
 import { getFaqs, getTestimonials } from "@/lib/cms";
 import { getFacets, listJobs } from "@/lib/jobs";
@@ -37,7 +38,7 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 	<PageHero
 		tone="pro"
 		eyebrow="For dental professionals"
-		title="Work as much — or as little — as you want."
+		title="Work as much or as little as you want."
 		description="One day, three days or five weeks. Pick the shifts and offices that fit your life, get paid weekly, and find a permanent home office when you're ready."
 	>
 		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -87,7 +88,7 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 				tone="pro"
 				eyebrow="Why work with DTSS"
 				title="Respect, flexibility and a team in your corner"
-				description="Those who work hard for us never go unnoticed — through personal contact, incentive programs, earned rewards and perks."
+				description="Flexible work, reliable pay, and people who pick up the phone when you call."
 			/>
 			<div class="mt-14">
 				<FeatureGrid
@@ -101,17 +102,17 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 						{
 							icon: "tabler:cash",
 							title: "Weekly pay",
-							body: "Paid every week by direct deposit — exactly what you're owed, exactly when you're owed it.",
+							body: "Paid every week by direct deposit: what you're owed, when you're owed it.",
 						},
 						{
 							icon: "tabler:file-invoice",
 							title: "One W-2",
-							body: "We're your employer for temp work, so tax season means one form, not forty.",
+							body: "We're your employer for temp work, so tax time means one form, however many offices you work in.",
 						},
 						{
 							icon: "tabler:arrows-exchange",
 							title: "Temp-to-perm",
-							body: "Love an office? Many of our placements turn permanent — and we list permanent roles too.",
+							body: "Love an office? Temp-to-perm can make it permanent, and we list permanent roles too.",
 						},
 						{
 							icon: "tabler:device-mobile",
@@ -120,8 +121,8 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 						},
 						{
 							icon: "tabler:gift",
-							title: "Rewards & incentives",
-							body: "Earned rewards, incentives and perks for going above and beyond — plus our affiliate program.",
+							title: "Referral rewards",
+							body: "Know a great colleague or practice? Our affiliate program pays you when the people you refer work temp shifts.",
 						},
 					]}
 				/>
@@ -213,7 +214,7 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 			</div>
 			<div class="mt-12 text-center">
 				<Button href={appLink("pro", "sign-up")} variant="pro" size="lg"
-					>Get started — it's free</Button
+					>Get started for free</Button
 				>
 			</div>
 		</Container>
@@ -288,6 +289,8 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 	<CtaBand
 		audience="pro"
 		title="Your next shift is waiting."
-		description="Create your free profile today — it only takes a few minutes to get started."
+		description="Create your free profile today. It only takes a few minutes."
 	/>
+
+	<ReferralBand />
 </Layout>

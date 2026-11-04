@@ -252,7 +252,7 @@ const FAQS = [
 	[
 		"practice",
 		"How quickly can you fill a shift?",
-		"Post a request in the practice portal and qualified, available professionals nearby are notified right away. Many shifts are assigned within minutes — it's just that simple.",
+		"Post a request in the practice portal and qualified, available professionals nearby are notified right away. When a shift is urgent, our team can step in and assign someone directly. How quickly a shift fills depends on the role, the location and how much notice we have.",
 	],
 	[
 		"practice",

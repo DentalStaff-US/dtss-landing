@@ -8,11 +8,14 @@ interface Props {
 	description?: string;
 	/** both = practice + pro buttons; otherwise one audience */
 	audience?: "both" | "practice" | "pro";
+	/** Analytics placement; pages with more than one band set their own. */
+	placement?: string;
 }
 const {
-	title = "It's a whole new staffing experience.",
-	description = "Free to join. Real people behind the software. Let's get you staffed — or get you to work.",
+	title = "Let's get you staffed, or get you to work.",
+	description = "Free to join for practices and dental professionals, with real people behind the software.",
 	audience = "both",
+	placement = "cta_band",
 } = Astro.props;
 ---
 
@@ -48,7 +51,10 @@ const {
 							variant="white"
 							size="xl"
 							data-track="signup_click"
-							data-track-props='{"audience":"practice","placement":"cta_band"}'
+							data-track-props={JSON.stringify({
+								audience: "practice",
+								placement,
+							})}
 						>
 							I need dental staff
 						</Button>
@@ -61,13 +67,14 @@ const {
 							variant={audience === "pro" ? "white" : "outline-white"}
 							size="xl"
 							data-track="signup_click"
-							data-track-props='{"audience":"pro","placement":"cta_band"}'
+							data-track-props={JSON.stringify({ audience: "pro", placement })}
 						>
 							I'm looking for work
 						</Button>
 					)
 				}
 			</div>
+			<slot />
 		</div>
 	</Container>
 </section>

@@ -24,12 +24,12 @@ const faqs = await getFaqs(["affiliate"]);
 
 <Layout
 	title="Affiliate Program — Earn by Referring Dental Practices & Professionals"
-	description="Join the DTSS affiliate program. Share your link, refer dental practices and professionals, and earn 2.5% of regular hours on every paid temp shift they work."
+	description="Join the DTSS affiliate program. Share your link, refer dental practices and professionals, and earn 2.5% of regular hours on the paid temp shifts they work."
 	breadcrumbs={[{ name: "Affiliate Program", href: "/affiliates" }]}
 >
 	<PageHero
 		eyebrow={live ? "Affiliate program" : "Affiliate program · coming soon"}
-		title="Grow your local dental community — and earn while you do."
+		title="Know a great practice or hygienist? Get rewarded for the introduction."
 		description="Know practices that struggle to stay staffed, or great hygienists and assistants looking for flexible work? Refer them to DTSS and earn a share of every temp shift they work."
 	>
 		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -82,6 +82,62 @@ const faqs = await getFaqs(["affiliate"]);
 		</Container>
 	</section>
 
+	<section class="py-20 sm:py-24" aria-labelledby="rewards-heading">
+		<Container>
+			<SectionHeading
+				id="rewards-heading"
+				eyebrow="Your rewards"
+				title="What you earn, and when you get paid"
+				description={live
+					? "Every referral can keep earning for you, and you can see all of it in your partner portal."
+					: "Here's how rewards will work when the program opens."}
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					items={[
+						{
+							icon: "tabler:percentage",
+							title: "2.5% commission",
+							body: "Earn 2.5% of the regular hours billed on paid temp shifts worked through the practices and professionals you refer.",
+						},
+						{
+							icon: "tabler:users-group",
+							title: "Refer either side",
+							body: "A practice or a professional, you're credited the same way. One referral can bring in shift after shift.",
+						},
+						{
+							icon: "tabler:link",
+							title: "90 days to sign up",
+							body: "Anyone who signs up within 90 days of clicking your link is credited to you. If more than one partner referred them, the first referral wins.",
+						},
+						{
+							icon: "tabler:receipt",
+							title: "Earned on paid invoices",
+							body: "Commission is earned when the practice's invoice is paid. Overtime hours and permanent placement fees aren't included.",
+						},
+						{
+							icon: "tabler:building-bank",
+							title: "Paid to your bank",
+							body: "What you earn in a month is paid on the 1st of the month after next. Balances under $25 roll over to the next cycle.",
+						},
+						{
+							icon: "tabler:chart-line",
+							title: "Tracked in real time",
+							body: "See your referrals, commission and payout history in your partner portal any time.",
+						},
+					]}
+				/>
+			</div>
+			<p
+				class="mx-auto mt-10 max-w-2xl rounded-xl bg-primary/5 px-6 py-4 text-center font-semibold ring-1 ring-primary/15"
+				data-reveal
+			>
+				For example, $10,000 in regular-hour billing from your referrals earns
+				you $250.
+			</p>
+		</Container>
+	</section>
+
 	<section class="py-20 sm:py-24" aria-labelledby="how-heading">
 		<Container>
 			<SectionHeading
@@ -127,7 +183,7 @@ const faqs = await getFaqs(["affiliate"]);
 						{
 							icon: "tabler:building-hospital",
 							title: "Dental practices",
-							body: "Refer a colleague's office — or the great temp who saved your Tuesday.",
+							body: "Refer a colleague's office, or the great temp who saved your Tuesday.",
 						},
 						{
 							icon: "tabler:stethoscope",
@@ -148,11 +204,6 @@ const faqs = await getFaqs(["affiliate"]);
 							icon: "tabler:speakerphone",
 							title: "Creators & communities",
 							body: "Share DTSS with your dental audience and earn on the results.",
-						},
-						{
-							icon: "tabler:chart-line",
-							title: "Real-time tracking",
-							body: "See referrals, earnings and payouts in your partner portal any time.",
 						},
 					]}
 				/>

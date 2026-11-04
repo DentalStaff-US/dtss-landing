@@ -28,40 +28,40 @@ const services = [
 	{
 		id: "temp",
 		icon: "tabler:calendar-bolt",
-		eyebrow: "Temp staffing",
+		eyebrow: "Temporary staffing",
 		title: "Are call-outs costing you patients?",
 		body: "With appointments booked back-to-back, one sick call can cost a full day's production. We keep experienced, reliable temps ready to fill the gap.",
 		points: [
-			"Experienced staff on demand — assigned in minutes",
-			"Seamless integration into your practice",
-			"We're the employer of record: payroll, workers' comp, SUTA, FUTA, FICA and unemployment",
-			"No 1099 or employment responsibilities for you",
+			"Experienced staff on demand, with our team stepping in when it's urgent",
+			"Temps who settle into your practice quickly",
+			"We're the employer of record: payroll, payroll taxes, workers' comp and unemployment",
+			"No 1099s or employment paperwork for you",
 		],
 	},
 	{
 		id: "placement",
 		icon: "tabler:user-search",
-		eyebrow: "Direct placement & temp-to-perm",
+		eyebrow: "Direct placement",
 		title: "Can't find the right person?",
-		body: "Don't spend weeks or months searching. We act as your outsourced recruiter — or let you try before you hire.",
+		body: "Don't spend weeks or months searching. We act as your outsourced recruiter and do the legwork for you.",
 		points: [
-			"We help define the role, post it, screen and recommend candidates",
-			"Every placement is backed by our guarantee",
-			"Temp-to-perm: work with someone first, hire them for an agreed fee",
-			"Not the right fit? We'll find a replacement at no charge",
+			"We help define the role and post it",
+			"We screen candidates and recommend the best fits",
+			"You make the final call",
+			"We back our placements with a guarantee",
 		],
 	},
 	{
-		id: "wms",
-		icon: "tabler:briefcase-2",
-		eyebrow: "Workforce management",
-		title: "HR, payroll and benefits headaches?",
-		body: "Become an employer of choice without the admin. We become your silent partner for your critical HR responsibilities and employer risk.",
+		id: "temp-to-perm",
+		icon: "tabler:arrows-exchange",
+		eyebrow: "Temp-to-perm",
+		title: "Want to try before you hire?",
+		body: "Work with someone in your practice first, so you know the fit before you commit.",
 		points: [
-			"Payroll and benefits management",
-			"HR consulting",
-			"Employment taxes, unemployment claims and compliance",
-			"Economies of scale for a better benefits package",
+			"We find a candidate who fits your needs",
+			"They work in your practice on a temporary basis",
+			"If the fit is good, hire them for an agreed fee",
+			"If not, we'll find you a replacement at no charge",
 		],
 	},
 ];
@@ -69,13 +69,13 @@ const services = [
 
 <Layout
 	title="Dental Staffing for Practices — Temp, Perm & Temp-to-Perm"
-	description="Fill call-outs in minutes with pre-screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record — plus direct placement and workforce management."
+	description="Cover call-outs with screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record, and also offers direct placement and temp-to-perm."
 	breadcrumbs={[{ name: "For Practices", href: "/practices" }]}
 >
 	<PageHero
 		eyebrow="For dental practices"
-		title="You do dentistry. We do talent."
-		description="Don't let staffing get in the way of great dentistry. Post a shift in minutes, get a vetted professional assigned fast, and leave payroll, taxes and paperwork to us."
+		title="Stay fully staffed, without the paperwork."
+		description="Post a shift and we get to work finding a screened professional. Leave payroll, taxes and paperwork to us."
 	>
 		<div class="mt-8 flex flex-col gap-3 sm:flex-row">
 			<Button
@@ -130,7 +130,7 @@ const services = [
 				{
 					[
 						["tabler:dental", "Hygienists"],
-						["tabler:dental-broken", "Assistants"],
+						["tabler:first-aid-kit", "Assistants"],
 						["tabler:arrows-shuffle", "Floaters"],
 						["tabler:headset", "Front office"],
 						["tabler:flask", "Lab technicians"],
@@ -160,7 +160,7 @@ const services = [
 		<Container>
 			<SectionHeading
 				id="services-heading"
-				eyebrow="Three great ways to work with us"
+				eyebrow="Three ways to work with us"
 				title="Staffing solutions that fit your practice"
 			/>
 			<div class="mt-14 space-y-8">
@@ -250,12 +250,12 @@ const services = [
 						{
 							icon: "tabler:bolt",
 							title: "Fast fills",
-							body: "Place an order through our software and have a temporary employee assigned in minutes.",
+							body: "Post a request and professionals nearby hear about it right away. Urgent shift? Our team steps in.",
 						},
 						{
 							icon: "tabler:shield-check",
 							title: "Thorough vetting",
-							body: "Experience, licenses, certifications and documents are reviewed before anyone works a shift — plus E-Verify.",
+							body: "Experience, licenses, certifications and documents are reviewed before anyone works a shift, and we confirm eligibility through E-Verify.",
 						},
 						{
 							icon: "tabler:receipt",
@@ -265,7 +265,7 @@ const services = [
 						{
 							icon: "tabler:heart-handshake",
 							title: "A real team",
-							body: "Decades of combined experience in dentistry and HR — and people who'll pick up the phone.",
+							body: "Decades of combined experience in dentistry and staffing, and people who'll pick up the phone.",
 						},
 						{
 							icon: "tabler:device-mobile",
@@ -289,8 +289,8 @@ const services = [
 				<Container>
 					<SectionHeading
 						id="quotes-heading"
-						eyebrow="Testimonials"
-						title="Practices that never looked back"
+						eyebrow="From practices"
+						title="What dental practices say"
 					/>
 					<div class="mt-12">
 						<Testimonials items={practiceQuotes} />
