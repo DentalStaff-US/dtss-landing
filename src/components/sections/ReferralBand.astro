@@ -6,12 +6,17 @@
 import Button from "@/components/ui/Button.astro";
 import Container from "@/components/ui/Container.astro";
 import { ENV } from "@/lib/env";
+import { dollars, getReferralTerms, percent } from "@/lib/program";
 
 const live = ENV.affiliateProgramLive;
+const terms = await getReferralTerms();
 const facts = [
-	["2.5%", "of regular hours on paid temp shifts"],
+	[
+		percent(terms.referralCommissionPercent),
+		"of regular hours on paid temp shifts",
+	],
 	["90 days", "for a referral to sign up"],
-	["$25", "minimum payout, paid to your bank"],
+	[dollars(terms.referralPayoutMinimum), "minimum payout, paid to your bank"],
 ];
 ---
 

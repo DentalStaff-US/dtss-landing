@@ -12,6 +12,7 @@ import LeadForm from "@/components/forms/LeadForm.astro";
 import { getFaqs } from "@/lib/cms";
 import { ENV } from "@/lib/env";
 import { appLink } from "@/lib/links";
+import { dollars, getReferralTerms, percent } from "@/lib/program";
 
 /**
  * The program is switched on per environment in the admin app
@@ -20,11 +21,14 @@ import { appLink } from "@/lib/links";
  */
 const live = ENV.affiliateProgramLive;
 const faqs = await getFaqs(["affiliate"]);
+const terms = await getReferralTerms();
+const rate = percent(terms.referralCommissionPercent);
+const minimum = dollars(terms.referralPayoutMinimum);
 ---
 
 <Layout
 	title="Affiliate Program — Earn by Referring Dental Practices & Professionals"
-	description="Join the DTSS affiliate program. Share your link, refer dental practices and professionals, and earn 2.5% of regular hours on the paid temp shifts they work."
+	description={`Join the DTSS affiliate program. Share your link, refer dental practices and professionals, and earn ${rate} of regular hours on the paid temp shifts they work.`}
 	breadcrumbs={[{ name: "Affiliate Program", href: "/affiliates" }]}
 >
 	<PageHero
@@ -67,9 +71,9 @@ const faqs = await getFaqs(["affiliate"]);
 			>
 				{
 					[
-						["2.5%", "of regular hours on paid temp-shift invoices"],
+						[rate, "of regular hours on paid temp-shift invoices"],
 						["90 days", "referral window from the first click"],
-						["$25", "minimum payout, paid straight to your bank"],
+						[minimum, "minimum payout, paid straight to your bank"],
 					].map(([stat, label]) => (
 						<div class="px-6 py-8 text-center" data-reveal>
 							<dt class="sr-only">{label}</dt>
@@ -97,8 +101,8 @@ const faqs = await getFaqs(["affiliate"]);
 					items={[
 						{
 							icon: "tabler:percentage",
-							title: "2.5% commission",
-							body: "Earn 2.5% of the regular hours billed on paid temp shifts worked through the practices and professionals you refer.",
+							title: `${rate} commission`,
+							body: `Earn ${rate} of the regular hours billed on paid temp shifts worked through the practices and professionals you refer.`,
 						},
 						{
 							icon: "tabler:users-group",
@@ -118,7 +122,7 @@ const faqs = await getFaqs(["affiliate"]);
 						{
 							icon: "tabler:building-bank",
 							title: "Paid to your bank",
-							body: "What you earn in a month is paid on the 1st of the month after next. Balances under $25 roll over to the next cycle.",
+							body: `What you earn in a month is paid on the 1st of the month after next. Balances under ${minimum} roll over to the next cycle.`,
 						},
 						{
 							icon: "tabler:chart-line",
@@ -133,7 +137,7 @@ const faqs = await getFaqs(["affiliate"]);
 				data-reveal
 			>
 				For example, $10,000 in regular-hour billing from your referrals earns
-				you $250.
+				you {dollars(Math.round(terms.referralCommissionPercent * 100))}.
 			</p>
 		</Container>
 	</section>

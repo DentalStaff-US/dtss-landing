@@ -39,6 +39,19 @@ const services = [
 		],
 	},
 	{
+		id: "permanent",
+		icon: "tabler:briefcase",
+		eyebrow: "Permanent positions",
+		title: "Hiring for the long term?",
+		body: "Post a permanent opening and qualified dental professionals apply through DTSS.",
+		points: [
+			"List a permanent role alongside your temp requests",
+			"Professionals apply, and our team helps screen them",
+			"You make the final call",
+			"Found a temp you love? You can hire them permanently",
+		],
+	},
+	{
 		id: "placement",
 		icon: "tabler:user-search",
 		eyebrow: "Direct placement",
@@ -51,25 +64,12 @@ const services = [
 			"We back our placements with a guarantee",
 		],
 	},
-	{
-		id: "temp-to-perm",
-		icon: "tabler:arrows-exchange",
-		eyebrow: "Temp-to-perm",
-		title: "Want to try before you hire?",
-		body: "Work with someone in your practice first, so you know the fit before you commit.",
-		points: [
-			"We find a candidate who fits your needs",
-			"They work in your practice on a temporary basis",
-			"If the fit is good, hire them for an agreed fee",
-			"If not, we'll find you a replacement at no charge",
-		],
-	},
 ];
 ---
 
 <Layout
-	title="Dental Staffing for Practices — Temp, Perm & Temp-to-Perm"
-	description="Cover call-outs with screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record, and also offers direct placement and temp-to-perm."
+	title="Dental Staffing for Practices — Temp, Permanent & Direct Placement"
+	description="Cover call-outs with screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record, and also lists permanent positions and offers direct placement."
 	breadcrumbs={[{ name: "For Practices", href: "/practices" }]}
 >
 	<PageHero

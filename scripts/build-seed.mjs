@@ -272,7 +272,7 @@ const FAQS = [
 	[
 		"practice",
 		"Can you help us hire permanently?",
-		"Yes. Through **direct placement** we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. With **temp-to-perm** you can try a professional on a temporary basis first, then hire them for an agreed fee.",
+		"Yes. Through **direct placement** we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. You can also list a **permanent position** and have qualified professionals apply, and if a temp you've worked with is a great fit, you can hire them permanently.",
 	],
 	[
 		"practice",
@@ -298,7 +298,7 @@ const FAQS = [
 	[
 		"professional",
 		"Can a temp job turn into a permanent position?",
-		"Absolutely. Many of our placements are temp-to-perm, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
+		"It can. Practices sometimes offer a permanent role to a temp they've worked with, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
 	],
 	[
 		"professional",
@@ -319,7 +319,7 @@ const FAQS = [
 	[
 		"affiliate",
 		"How do I earn?",
-		"You earn a commission of **2.5%** of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. Overtime hours and permanent placement fees aren't included.",
+		"You earn a percentage of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. The current rate is on our [affiliate program page](/affiliates). Overtime hours and permanent placement fees aren't included.",
 	],
 	[
 		"affiliate",
@@ -329,7 +329,7 @@ const FAQS = [
 	[
 		"affiliate",
 		"When and how am I paid?",
-		"Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. The minimum payout is $25 — smaller balances roll over to the next cycle.",
+		"Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. Balances under the minimum payout roll over to the next cycle.",
 	],
 	[
 		"affiliate",

@@ -27,10 +27,10 @@ For anyone writing or editing copy on this site, in code or in the CMS.
 |---|---|---|
 | "You pay only for approved hours" | Approved | Approval can be implicit, as the terms cover. Don't say "hours you've signed off on" or "every timesheet you review" |
 | "We back our placements with a guarantee" | Approved | From the previous site. **Direct placement only** |
-| "Replacement at no charge" | Approved | From the previous site. **Temp-to-perm only** |
+| "Replacement at no charge" | Retired | Belonged to temp-to-perm, which is no longer an offering. Don't use |
 | "Every region has a staffing manager" | Approved | More dedicated managers are planned |
 | Weekly pay by direct deposit | Confirmed | |
-| Referral rewards | Confirmed | 2.5% of regular hours on paid temp-shift invoices. 90-day referral window, $25 minimum, paid on the 1st of the month after next. Excludes overtime and permanent placement fees. Show the waitlist until `PUBLIC_AFFILIATE_PROGRAM_LIVE=true` |
+| Referral rewards | Confirmed | Rate and payout minimum come from Admin → Affiliates through `getReferralTerms()` (`src/lib/program.ts`); never type them into copy or CMS content. 3% of regular hours on paid temp-shift invoices as of November 2026. 90-day referral window, $25 minimum, paid on the 1st of the month after next. Excludes overtime and permanent placement fees. Show the waitlist until `PUBLIC_AFFILIATE_PROGRAM_LIVE=true` |
 
 ## Don't use
 
@@ -39,3 +39,5 @@ For anyone writing or editing copy on this site, in code or in the CMS.
 - **Workforce management, HR consulting, benefits or payroll as a service for a practice's own staff.** Left out for now. Payroll for the temps DTSS employs is fine.
 - **General "incentives, rewards and perks" for working shifts.** Rewards means the referral program.
 - **Specific speed figures in mockups,** such as "filled 4 minutes after posting", unless they're measured.
+- **"Temp-to-perm" or "try before you hire".** The offerings are temporary staffing, permanent positions and direct placement. A temp becoming a permanent hire is something that can happen naturally, so say "if a temp turns out to be the one, you can hire them permanently", not a named service.
+- **A list of states in the home hero.** Service areas belong on `/locations` and in the FAQ.
