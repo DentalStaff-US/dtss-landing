@@ -76,8 +76,9 @@ The schema is defined in `scripts/build-seed.mjs`, which writes `seed/seed.json`
 2. Set every variable in `.env.example`. The production build refuses to run without the app URLs, `PUBLIC_COOKIE_DOMAIN`, `EMDASH_DATABASE_URL` and `S3_BUCKET`.
 3. **Shared across all instances (identical values):**
    - `EMDASH_DATABASE_URL`: the one Railway **CMS** Postgres, never the app database. Append `?sslmode=no-verify` on Railway's public proxy.
-   - `EMDASH_ENCRYPTION_KEY`: back it up. Plugin secrets can't be decrypted without it.
-   - `S3_*`: the same bucket, since media rows reference its keys.
+   - `EMDASH_ENCRYPTION_KEY`: generate once with `npx emdash secrets generate` and back it up. Plugin and SMTP secrets can't be decrypted without it.
+   - `S3_*`: the same bucket, since media rows reference its keys. Use a **dedicated public-read** Space for CMS media, never the app's private documents bucket.
+   - `EMAIL_SMTP_*`: Resend's SMTP relay (see `.env.example`), so editors can sign in by magic link and be invited by email. Check it with **Send test email** under Settings → Email.
 4. **Per instance:**
    - `EMDASH_SITE_URL`: the origin users open, e.g. `https://www.dtstaffingsolutions.com` or the staging URL. It drives editor passkeys, CSRF and redirects.
    - The app URLs: staging points at staging apps.
