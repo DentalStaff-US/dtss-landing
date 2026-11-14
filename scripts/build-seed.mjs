@@ -95,7 +95,7 @@ const collections = [
 		description: "Articles for practices and dental professionals.",
 		icon: "newspaper",
 		sortOrder: 1,
-		supports: ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+		supports: ["drafts", "revisions", "preview", "search", "seo"],
 		urlPattern: "/blog/{slug}",
 		dateField: "published_at",
 		fields: [
