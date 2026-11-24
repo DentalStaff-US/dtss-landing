@@ -236,7 +236,7 @@ const FAQS = [
 	[
 		"general",
 		"What is Dental Temps Staffing Solutions?",
-		"DTSS is a dental staffing company that pairs proprietary staffing software with a personal, small-town touch. We place **temporary** and **permanent** dental professionals — hygienists, assistants, front office, lab techs and dentists — with practices that need them.",
+		"DTSS is a dental staffing company that pairs proprietary staffing software with a personal, small-town touch. We place **temporary** and **permanent** dental professionals — hygienists, assistants, front office and dentists — with practices that need them.",
 	],
 	[
 		"general",
@@ -272,7 +272,7 @@ const FAQS = [
 	[
 		"practice",
 		"Can you help us hire permanently?",
-		"Yes. Through **direct placement** we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. You can also list a **permanent position** and have qualified professionals apply, and if a temp you've worked with is a great fit, you can hire them permanently.",
+		"Yes. Post a **permanent position** and we help define the role, screen candidates, recommend the best fits and assist by orchestrating working interviews. You make the final call. And if a temp you've worked with is a great fit, you can hire them permanently.",
 	],
 	[
 		"practice",
@@ -303,7 +303,7 @@ const FAQS = [
 	[
 		"professional",
 		"What roles do you staff?",
-		"Dental hygienists, dental assistants, floaters, front office and insurance billing staff, dental lab technicians and dentists.",
+		"Dental hygienists, dental assistants, floaters, front office and insurance billing staff, and dentists.",
 	],
 	[
 		"professional",

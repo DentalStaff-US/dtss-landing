@@ -11,6 +11,7 @@ import Testimonials from "@/components/sections/Testimonials.astro";
 import TrustBar from "@/components/sections/TrustBar.astro";
 import FaqList from "@/components/sections/FaqList.astro";
 import CtaBand from "@/components/sections/CtaBand.astro";
+import ReferralBand from "@/components/sections/ReferralBand.astro";
 import ProductPreview from "@/components/sections/ProductPreview.astro";
 import LeadForm from "@/components/forms/LeadForm.astro";
 import { getFaqs, getTestimonials } from "@/lib/cms";
@@ -45,31 +46,18 @@ const services = [
 		title: "Hiring for the long term?",
 		body: "Post a permanent opening and qualified dental professionals apply through DTSS.",
 		points: [
-			"List a permanent role alongside your temp requests",
-			"Professionals apply, and our team helps screen them",
-			"You make the final call",
-			"Found a temp you love? You can hire them permanently",
-		],
-	},
-	{
-		id: "placement",
-		icon: "tabler:user-search",
-		eyebrow: "Direct placement",
-		title: "Can't find the right person?",
-		body: "Don't spend weeks or months searching. We act as your outsourced recruiter and do the legwork for you.",
-		points: [
 			"We help define the role and post it",
 			"We screen candidates and recommend the best fits",
+			"We assist by orchestrating Working Interviews",
 			"You make the final call",
-			"We back our placements with a guarantee",
 		],
 	},
 ];
 ---
 
 <Layout
-	title="Dental Staffing for Practices — Temp, Permanent & Direct Placement"
-	description="Cover call-outs with screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record, and also lists permanent positions and offers direct placement."
+	title="Dental Staffing for Practices — Temp & Permanent"
+	description="Cover call-outs with screened dental hygienists, assistants and front office staff. DTSS is the W-2 employer of record, and helps you hire for permanent positions."
 	breadcrumbs={[{ name: "For Practices", href: "/practices" }]}
 >
 	<PageHero
@@ -126,14 +114,13 @@ const services = [
 				title="The whole dental team, on demand"
 				description="From a single hygiene day to a new permanent office manager."
 			/>
-			<ul class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+			<ul class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
 				{
 					[
 						["tabler:dental", "Hygienists"],
 						["tabler:first-aid-kit", "Assistants"],
 						["tabler:arrows-shuffle", "Floaters"],
 						["tabler:headset", "Front office"],
-						["tabler:flask", "Lab technicians"],
 						["tabler:stethoscope", "Dentists"],
 					].map(([icon, label]) => (
 						<li
@@ -160,7 +147,7 @@ const services = [
 		<Container>
 			<SectionHeading
 				id="services-heading"
-				eyebrow="Three ways to work with us"
+				eyebrow="Two ways to work with us"
 				title="Staffing solutions that fit your practice"
 			/>
 			<div class="mt-14 space-y-8">
@@ -374,4 +361,6 @@ const services = [
 		title="Ready to stop worrying about call-outs?"
 		description="Create your free practice account and post your first request in minutes."
 	/>
+
+	<ReferralBand />
 </Layout>

@@ -38,6 +38,10 @@ export const LEGACY_REDIRECTS = {
 	"/jobs-old": { status: 301, destination: "/jobs" },
 	"/jobs-dev": { status: 301, destination: "/jobs" },
 	"/privacy-policy": { status: 301, destination: "/privacy" },
+	"/terms-and-conditions": { status: 301, destination: "/terms" },
+	"/terms-of-use": { status: 301, destination: "/terms" },
+	"/terms-of-service": { status: 301, destination: "/terms" },
+	"/disclaimer": { status: 301, destination: "/disclaimers" },
 	"/login": { status: 301, destination: "/sign-in" },
 	"/resources/tintero-creative-partner": {
 		status: 301,

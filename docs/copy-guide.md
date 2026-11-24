@@ -26,7 +26,8 @@ For anyone writing or editing copy on this site, in code or in the CMS.
 | Claim | Status | Note |
 |---|---|---|
 | "You pay only for approved hours" | Approved | Approval can be implicit, as the terms cover. Don't say "hours you've signed off on" or "every timesheet you review" |
-| "We back our placements with a guarantee" | Approved | From the previous site. **Direct placement only** |
+| "We back our placements with a guarantee" | Retired | Removed at the client's request, November 2026. Don't use |
+| Permanent positions: "We help define the role and post it", "We screen candidates and recommend the best fits", "We assist by orchestrating Working Interviews", "You make the final call" | Approved | The client's wording, November 2026 |
 | "Replacement at no charge" | Retired | Belonged to temp-to-perm, which is no longer an offering. Don't use |
 | "Every region has a staffing manager" | Approved | More dedicated managers are planned |
 | Weekly pay by direct deposit | Confirmed | |
@@ -39,5 +40,6 @@ For anyone writing or editing copy on this site, in code or in the CMS.
 - **Workforce management, HR consulting, benefits or payroll as a service for a practice's own staff.** Left out for now. Payroll for the temps DTSS employs is fine.
 - **General "incentives, rewards and perks" for working shifts.** Rewards means the referral program.
 - **Specific speed figures in mockups,** such as "filled 4 minutes after posting", unless they're measured.
-- **"Temp-to-perm" or "try before you hire".** The offerings are temporary staffing, permanent positions and direct placement. A temp becoming a permanent hire is something that can happen naturally, so say "if a temp turns out to be the one, you can hire them permanently", not a named service.
+- **"Temp-to-perm" or "try before you hire".** The offerings are temporary staffing and permanent positions. A temp becoming a permanent hire is something that can happen naturally, so say "if a temp turns out to be the one, you can hire them permanently", not a named service.
+- **"Direct placement" as an offering, and lab technicians as a role.** Both removed at the client's request, November 2026.
 - **A list of states in the home hero.** Service areas belong on `/locations` and in the FAQ.

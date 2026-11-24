@@ -224,7 +224,7 @@ const select =
 							aria-hidden="true"
 						/> More filters
 					</summary>
-					<div class="mt-3 grid gap-3 sm:grid-cols-3">
+					<div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 						<div>
 							<label
 								for="f-exp"
@@ -260,7 +260,7 @@ const select =
 								>
 							</select>
 						</div>
-						<div>
+						<div class="sm:col-span-2 lg:col-span-1">
 							<span
 								class="mb-1 block text-xs font-bold uppercase tracking-wide text-muted-foreground"
 								>Near me</span
@@ -280,12 +280,12 @@ const select =
 							<div class="flex gap-2">
 								<button
 									type="button"
-									class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-md border border-input bg-white text-sm font-semibold hover:bg-accent"
+									class="inline-flex h-11 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-white px-3 text-sm font-semibold hover:bg-accent"
 									data-geo-button
 								>
 									<Icon
 										name="tabler:current-location"
-										class="size-4"
+										class="size-4 shrink-0"
 										aria-hidden="true"
 									/>
 									<span data-geo-label
@@ -296,7 +296,7 @@ const select =
 								</button>
 								<select
 									name="radius"
-									class={`${select} w-24`}
+									class={select.replace("w-full", "w-24 shrink-0")}
 									aria-label="Radius in miles"
 								>
 									{

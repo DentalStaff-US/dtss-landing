@@ -70,7 +70,6 @@ const roles = [
 	"Assistants",
 	"Floaters",
 	"Front office",
-	"Lab technicians",
 	"Dentists",
 ];
 const youDo = [
@@ -281,8 +280,9 @@ const weDo = [
 				eyebrow="Ways to work with us"
 				title="Cover a day or hire for good"
 			/>
-			<div class="mt-14">
+			<div class="mx-auto mt-14 max-w-4xl">
 				<FeatureGrid
+					columns={2}
 					items={[
 						{
 							icon: "tabler:calendar-bolt",
@@ -292,12 +292,7 @@ const weDo = [
 						{
 							icon: "tabler:briefcase",
 							title: "Permanent positions",
-							body: "Post a permanent opening and qualified dental professionals apply. You choose who to hire.",
-						},
-						{
-							icon: "tabler:user-search",
-							title: "Direct placement",
-							body: "We act as your outsourced recruiter: we help define the role, post it, screen candidates and recommend the best fits. We back our placements with a guarantee.",
+							body: "We help define the role and post it, screen candidates and recommend the best fits, and assist by orchestrating Working Interviews. You make the final call.",
 						},
 					]}
 				/>

@@ -392,7 +392,7 @@
 								{
 									"_type": "span",
 									"_key": "k7n",
-									"text": " dental professionals — hygienists, assistants, front office, lab techs and dentists — with practices that need them.",
+									"text": " dental professionals — hygienists, assistants, front office and dentists — with practices that need them.",
 									"marks": []
 								}
 							],
@@ -622,26 +622,12 @@
 								{
 									"_type": "span",
 									"_key": "k88",
-									"text": "Yes. Through ",
+									"text": "Yes. Post a ",
 									"marks": []
 								},
 								{
 									"_type": "span",
 									"_key": "k89",
-									"text": "direct placement",
-									"marks": [
-										"strong"
-									]
-								},
-								{
-									"_type": "span",
-									"_key": "k8a",
-									"text": " we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. You can also list a ",
-									"marks": []
-								},
-								{
-									"_type": "span",
-									"_key": "k8b",
 									"text": "permanent position",
 									"marks": [
 										"strong"
@@ -649,8 +635,8 @@
 								},
 								{
 									"_type": "span",
-									"_key": "k8c",
-									"text": " and have qualified professionals apply, and if a temp you've worked with is a great fit, you can hire them permanently.",
+									"_key": "k8a",
+									"text": " and we help define the role, screen candidates, recommend the best fits and assist by orchestrating working interviews. You make the final call. And if a temp you've worked with is a great fit, you can hire them permanently.",
 									"marks": []
 								}
 							],
@@ -670,12 +656,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8d",
+							"_key": "k8b",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8e",
+									"_key": "k8c",
 									"text": "Professionals submit their hours in the app, you review and approve the timesheet in your practice portal, and invoices are generated from approved time — so you only ever pay for hours you've signed off on.",
 									"marks": []
 								}
@@ -696,12 +682,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8f",
+							"_key": "k8d",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8g",
+									"_key": "k8e",
 									"text": "Create a free profile, then complete onboarding: your experience, résumé, licenses and documents, and your availability. Once our team approves your profile you can start claiming shifts and applying for permanent roles.",
 									"marks": []
 								}
@@ -722,18 +708,18 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8h",
+							"_key": "k8f",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8i",
+									"_key": "k8g",
 									"text": "Weekly, by direct deposit. And because DTSS is your employer for temp work, you get ",
 									"marks": []
 								},
 								{
 									"_type": "span",
-									"_key": "k8j",
+									"_key": "k8h",
 									"text": "one W-2",
 									"marks": [
 										"strong"
@@ -741,7 +727,7 @@
 								},
 								{
 									"_type": "span",
-									"_key": "k8k",
+									"_key": "k8i",
 									"text": " at tax time — not one from every office you've worked in.",
 									"marks": []
 								}
@@ -762,12 +748,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8l",
+							"_key": "k8j",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8m",
+									"_key": "k8k",
 									"text": "Yes. You set your availability and pick the shifts and offices that suit you — one day, three days or five weeks. No early-morning calls begging you to get to an office ASAP.",
 									"marks": []
 								}
@@ -788,12 +774,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8n",
+							"_key": "k8l",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8o",
+									"_key": "k8m",
 									"text": "It can. Practices sometimes offer a permanent role to a temp they've worked with, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
 									"marks": []
 								}
@@ -814,13 +800,13 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8p",
+							"_key": "k8n",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8q",
-									"text": "Dental hygienists, dental assistants, floaters, front office and insurance billing staff, dental lab technicians and dentists.",
+									"_key": "k8o",
+									"text": "Dental hygienists, dental assistants, floaters, front office and insurance billing staff, and dentists.",
 									"marks": []
 								}
 							],
@@ -840,26 +826,26 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8r",
+							"_key": "k8p",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8s",
+									"_key": "k8q",
 									"text": "Yes — browse current temp shifts and permanent positions on our ",
 									"marks": []
 								},
 								{
 									"_type": "span",
-									"_key": "k8u",
+									"_key": "k8s",
 									"text": "job board",
 									"marks": [
-										"k8t"
+										"k8r"
 									]
 								},
 								{
 									"_type": "span",
-									"_key": "k8v",
+									"_key": "k8t",
 									"text": ". Practice details and exact locations are shared once you create a free account and are approved.",
 									"marks": []
 								}
@@ -867,7 +853,7 @@
 							"markDefs": [
 								{
 									"_type": "link",
-									"_key": "k8t",
+									"_key": "k8r",
 									"href": "/jobs"
 								}
 							]
@@ -886,12 +872,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8w",
+							"_key": "k8u",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8x",
+									"_key": "k8v",
 									"text": "Practices and professionals who already work with us can join from the settings page in their own portal. Dental schools, suppliers, consultants and other outside partners can apply for a partner account — every application is reviewed by our team.",
 									"marks": []
 								}
@@ -912,26 +898,26 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k8y",
+							"_key": "k8w",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k8z",
+									"_key": "k8x",
 									"text": "You earn a percentage of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. The current rate is on our ",
 									"marks": []
 								},
 								{
 									"_type": "span",
-									"_key": "k91",
+									"_key": "k8z",
 									"text": "affiliate program page",
 									"marks": [
-										"k90"
+										"k8y"
 									]
 								},
 								{
 									"_type": "span",
-									"_key": "k92",
+									"_key": "k90",
 									"text": ". Overtime hours and permanent placement fees aren't included.",
 									"marks": []
 								}
@@ -939,7 +925,7 @@
 							"markDefs": [
 								{
 									"_type": "link",
-									"_key": "k90",
+									"_key": "k8y",
 									"href": "/affiliates"
 								}
 							]
@@ -958,12 +944,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k93",
+							"_key": "k91",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k94",
+									"_key": "k92",
 									"text": "Share your personal referral link. When someone clicks it we remember the referral for 90 days, so if they sign up within that window — as a practice or a professional — they're credited to you. If someone was referred by more than one partner, the first referral wins.",
 									"marks": []
 								}
@@ -984,12 +970,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k95",
+							"_key": "k93",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k96",
+									"_key": "k94",
 									"text": "Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. Balances under the minimum payout roll over to the next cycle.",
 									"marks": []
 								}
@@ -1010,12 +996,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k97",
+							"_key": "k95",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k98",
+									"_key": "k96",
 									"text": "No. Self-referrals aren't credited, including referrals to an email address that's a variation of your own.",
 									"marks": []
 								}
@@ -1036,12 +1022,12 @@
 					"answer": [
 						{
 							"_type": "block",
-							"_key": "k99",
+							"_key": "k97",
 							"style": "normal",
 							"children": [
 								{
 									"_type": "span",
-									"_key": "k9a",
+									"_key": "k98",
 									"text": "In the Partner Portal, where you can see your referrals, commission earned, and payout history in real time.",
 									"marks": []
 								}
