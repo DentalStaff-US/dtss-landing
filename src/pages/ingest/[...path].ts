@@ -28,11 +28,21 @@ export const ALL: APIRoute = async ({ request, url, clientAddress }) => {
 	);
 
 	const hasBody = request.method !== "GET" && request.method !== "HEAD";
-	return fetch(target, {
+	const upstream = await fetch(target, {
 		method: request.method,
 		headers,
 		body: hasBody ? request.body : undefined,
 		// @ts-expect-error duplex is required for streaming request bodies in Node
 		duplex: hasBody ? "half" : undefined,
+	});
+
+	// A fetched response's headers are read-only, and middleware adds its own, so
+	// hand back a copy. fetch already decoded the body, so its encoding is stale.
+	const responseHeaders = new Headers(upstream.headers);
+	responseHeaders.delete("content-encoding");
+	responseHeaders.delete("content-length");
+	return new Response(upstream.body, {
+		status: upstream.status,
+		headers: responseHeaders,
 	});
 };

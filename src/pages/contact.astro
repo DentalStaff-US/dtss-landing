@@ -115,41 +115,39 @@ const locations = await getLocations();
 							>
 						</div>
 					</div>
-
-					{
-						locations.length > 0 && (
-							<div class="rounded-2xl border bg-white p-6 shadow-sm">
-								<h2 class="font-bold">Local staffing contacts</h2>
-								<ul class="mt-4 divide-y text-sm">
-									{locations.map((l) => (
-										<li class="flex items-start justify-between gap-4 py-3">
-											<span>
-												<span class="block font-semibold">{l.region}</span>
-												<span class="text-muted-foreground">
-													{l.contactName}
-												</span>
-											</span>
-											<span class="text-right text-muted-foreground">
-												{l.extension && (
-													<span class="block">ext. {l.extension}</span>
-												)}
-												{l.sms && (
-													<a
-														href={`sms:+1${l.sms.replace(/\D/g, "")}`}
-														class="block hover:text-primary"
-													>
-														SMS {l.sms}
-													</a>
-												)}
-											</span>
-										</li>
-									))}
-								</ul>
-							</div>
-						)
-					}
 				</aside>
 			</div>
+
+			{
+				locations.length > 0 && (
+					<div class="mt-12 rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
+						<h2 class="text-xl font-extrabold">Local staffing contacts</h2>
+						<ul class="mt-4 grid gap-x-10 divide-y text-sm sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3">
+							{locations.map((l) => (
+								<li class="flex items-start justify-between gap-4 py-3">
+									<span>
+										<span class="block font-semibold">{l.region}</span>
+										<span class="text-muted-foreground">{l.contactName}</span>
+									</span>
+									<span class="text-right text-muted-foreground">
+										{l.extension && (
+											<span class="block">ext. {l.extension}</span>
+										)}
+										{l.sms && (
+											<a
+												href={`sms:+1${l.sms.replace(/\D/g, "")}`}
+												class="block hover:text-primary"
+											>
+												SMS {l.sms}
+											</a>
+										)}
+									</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
 		</Container>
 	</section>
 </Layout>

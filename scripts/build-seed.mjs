@@ -95,7 +95,7 @@ const collections = [
 		description: "Articles for practices and dental professionals.",
 		icon: "newspaper",
 		sortOrder: 1,
-		supports: ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+		supports: ["drafts", "revisions", "preview", "search", "seo"],
 		urlPattern: "/blog/{slug}",
 		dateField: "published_at",
 		fields: [
@@ -236,7 +236,7 @@ const FAQS = [
 	[
 		"general",
 		"What is Dental Temps Staffing Solutions?",
-		"DTSS is a dental staffing company that pairs proprietary staffing software with a personal, small-town touch. We place **temporary** and **permanent** dental professionals — hygienists, assistants, front office, lab techs and dentists — with practices that need them.",
+		"DTSS is a dental staffing company that pairs proprietary staffing software with a personal, small-town touch. We place **temporary** and **permanent** dental professionals — hygienists, assistants, front office and dentists — with practices that need them.",
 	],
 	[
 		"general",
@@ -252,7 +252,7 @@ const FAQS = [
 	[
 		"practice",
 		"How quickly can you fill a shift?",
-		"Post a request in the practice portal and qualified, available professionals nearby are notified right away. Many shifts are assigned within minutes — it's just that simple.",
+		"Post a request in the practice portal and qualified, available professionals nearby are notified right away. When a shift is urgent, our team can step in and assign someone directly. How quickly a shift fills depends on the role, the location and how much notice we have.",
 	],
 	[
 		"practice",
@@ -272,7 +272,7 @@ const FAQS = [
 	[
 		"practice",
 		"Can you help us hire permanently?",
-		"Yes. Through **direct placement** we act as your outsourced recruiter — we help define the role, post it, screen candidates and recommend the best fits. With **temp-to-perm** you can try a professional on a temporary basis first, then hire them for an agreed fee.",
+		"Yes. Post a **permanent position** and we help define the role, screen candidates, recommend the best fits and assist by orchestrating working interviews. You make the final call. And if a temp you've worked with is a great fit, you can hire them permanently.",
 	],
 	[
 		"practice",
@@ -298,12 +298,12 @@ const FAQS = [
 	[
 		"professional",
 		"Can a temp job turn into a permanent position?",
-		"Absolutely. Many of our placements are temp-to-perm, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
+		"It can. Practices sometimes offer a permanent role to a temp they've worked with, and we also list permanent openings. If you want a permanent home office, we'll help you find it.",
 	],
 	[
 		"professional",
 		"What roles do you staff?",
-		"Dental hygienists, dental assistants, floaters, front office and insurance billing staff, dental lab technicians and dentists.",
+		"Dental hygienists, dental assistants, floaters, front office and insurance billing staff, and dentists.",
 	],
 	[
 		"professional",
@@ -319,7 +319,7 @@ const FAQS = [
 	[
 		"affiliate",
 		"How do I earn?",
-		"You earn a commission of **2.5%** of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. Overtime hours and permanent placement fees aren't included.",
+		"You earn a percentage of the regular hours billed on paid temporary-shift invoices for the practices and professionals you refer. The current rate is on our [affiliate program page](/affiliates). Overtime hours and permanent placement fees aren't included.",
 	],
 	[
 		"affiliate",
@@ -329,7 +329,7 @@ const FAQS = [
 	[
 		"affiliate",
 		"When and how am I paid?",
-		"Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. The minimum payout is $25 — smaller balances roll over to the next cycle.",
+		"Commission earned on invoices paid in a given month is paid out on the 1st of the month after next, directly to your bank account through our payments provider. Balances under the minimum payout roll over to the next cycle.",
 	],
 	[
 		"affiliate",

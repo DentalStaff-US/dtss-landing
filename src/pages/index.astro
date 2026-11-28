@@ -12,7 +12,10 @@ import Testimonials from "@/components/sections/Testimonials.astro";
 import TrustBar from "@/components/sections/TrustBar.astro";
 import PostCard from "@/components/sections/PostCard.astro";
 import CtaBand from "@/components/sections/CtaBand.astro";
+import ProductPreview from "@/components/sections/ProductPreview.astro";
+import ReferralBand from "@/components/sections/ReferralBand.astro";
 import JobCard from "@/components/jobs/JobCard.astro";
+import { CONTACT } from "@/config/site.mjs";
 import { getPosts, getTestimonials } from "@/lib/cms";
 import { getFacets, listJobs } from "@/lib/jobs";
 import { appLink } from "@/lib/links";
@@ -20,22 +23,76 @@ import { appLink } from "@/lib/links";
 const [testimonials, { posts }, jobsRes, facetsRes] = await Promise.all([
 	getTestimonials({ featuredOnly: true }),
 	getPosts({ perPage: 3 }),
-	listJobs({ sort: "newest" }, 6),
+	listJobs({ sort: "newest" }, 3),
 	getFacets(),
 ]);
 const jobs = jobsRes.ok ? jobsRes.data.jobs : [];
 const totalJobs = jobsRes.ok ? jobsRes.data.total : 0;
 const facets = facetsRes.ok ? facetsRes.data : null;
+const practiceQuotes = testimonials
+	.filter((t) => t.audience === "practice")
+	.slice(0, 3);
+const proQuotes = testimonials
+	.filter((t) => t.audience === "professional")
+	.slice(0, 3);
+
+const doors = [
+	{
+		href: "#for-practices",
+		audience: "practice",
+		icon: "tabler:building-hospital",
+		eyebrow: "For practices",
+		label: "I need dental staff",
+		classes:
+			"bg-primary text-primary-foreground hover:bg-primary-dark shadow-sky-900/15",
+	},
+	{
+		href: "#for-professionals",
+		audience: "pro",
+		icon: "tabler:stethoscope",
+		eyebrow: "For professionals",
+		label: "I'm looking for work",
+		classes: "bg-pro text-pro-foreground hover:bg-pro-dark shadow-teal-900/15",
+	},
+];
+const practiceChecks = [
+	"Free to create an account",
+	"You set the hourly rate",
+	"You pay only for approved hours",
+];
+const proChecks = [
+	"Free to join",
+	"Weekly direct deposit",
+	"Temp and permanent roles",
+];
+const roles = [
+	"Hygienists",
+	"Assistants",
+	"Floaters",
+	"Front office",
+	"Dentists",
+];
+const youDo = [
+	"Choose the role, dates and hourly rate",
+	"Welcome your temp on the day",
+	"Review the hours they submit",
+];
+const weDo = [
+	"Find and screen qualified professionals",
+	"Review licenses and credentials, and confirm eligibility through E-Verify",
+	"Employ your temp on a W-2",
+	"Handle payroll, payroll taxes, workers' comp and unemployment",
+	"Invoice you from approved hours",
+];
 ---
 
 <Layout
 	title="Dental Temp & Permanent Staffing | Dental Temps Staffing Solutions"
 	rawTitle
-	description="Dental staffing that feels personal. Book pre-screened hygienists, assistants and front office staff in minutes — or find flexible dental work with weekly pay. Free to join."
+	description="Dental temp and permanent staffing. Practices get screened hygienists, assistants and front office staff, with a team that steps in when a shift is urgent. Dental professionals choose their shifts and get paid weekly. Free to join."
 >
-	<!-- HERO -->
+	<!-- HERO: says what DTSS is, then sends each audience to its own story. -->
 	<section class="relative isolate overflow-hidden bg-white">
-		<!-- Like the original site: the photo dissolves into white behind the copy. -->
 		<div
 			class="absolute inset-0 -z-10 bg-gradient-to-br from-white via-sky-50/60 to-sky-100"
 			aria-hidden="true"
@@ -49,7 +106,7 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 				sizes="100vw"
 				loading="eager"
 				fetchpriority="high"
-				class="size-full object-cover object-left opacity-25 lg:opacity-100"
+				class="size-full object-cover object-[left_30%] opacity-25 lg:opacity-100 min-[1700px]:max-w-[1600px]"
 			/>
 			<div
 				class="absolute inset-0 hidden bg-gradient-to-r from-transparent from-30% via-white/85 via-55% to-sky-50/95 lg:block"
@@ -59,281 +116,333 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 		</div>
 
 		<Container
-			class="grid min-h-[620px] items-center py-16 lg:grid-cols-12 lg:py-24"
+			class="grid min-h-[560px] items-center py-16 lg:grid-cols-12 lg:py-24 xl:min-h-[min(46vw,780px)]"
 		>
 			<div class="lg:col-span-6 lg:col-start-7">
 				<p
 					class="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-dark shadow-sm ring-1 ring-primary/20"
 				>
-					<Icon name="tabler:sparkles" class="size-4" aria-hidden="true" /> Dental
-					staffing, reimagined
+					Dental temp &amp; permanent staffing
 				</p>
 				<h1
 					class="mt-5 text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl"
 				>
-					It's a whole new <span class="text-primary">staffing experience.</span
-					>
+					You do dentistry. <span class="text-primary">We do talent.</span>
 				</h1>
 				<p
 					class="mt-6 max-w-xl text-lg leading-relaxed text-foreground/75 sm:text-xl"
 				>
-					We've combined proprietary staffing software with a small-town feel.
-					Practices book vetted professionals in minutes; dental pros pick the
-					shifts that fit their life — with real people behind every placement.
+					We keep dental practices staffed with screened temps and permanent
+					hires, and give dental professionals flexible work with weekly pay.
 				</p>
 
 				<div class="mt-8 grid gap-3 sm:grid-cols-2">
-					<a
-						href={appLink("practice", "sign-up")}
-						class="group flex items-center gap-4 rounded-xl bg-primary p-4 text-primary-foreground shadow-lg shadow-sky-900/15 transition hover:bg-primary-dark"
-						data-track="signup_click"
-						data-track-props='{"audience":"practice","placement":"hero"}'
-					>
-						<span
-							class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white/15"
-						>
-							<Icon
-								name="tabler:building-hospital"
-								class="size-6"
-								aria-hidden="true"
-							/>
-						</span>
-						<span class="flex-1">
-							<span
-								class="block text-xs font-semibold uppercase tracking-wide text-white/75"
-								>For practices</span
+					{
+						doors.map((d) => (
+							<a
+								href={d.href}
+								class={`group flex items-center gap-4 rounded-xl p-4 shadow-lg transition ${d.classes}`}
+								data-track="hero_door"
+								data-track-props={JSON.stringify({ audience: d.audience })}
 							>
-							<span class="block font-bold">I need dental staff</span>
-						</span>
-						<Icon
-							name="tabler:arrow-right"
-							class="size-5 transition group-hover:translate-x-0.5"
-							aria-hidden="true"
-						/>
-					</a>
-					<a
-						href={appLink("pro", "sign-up")}
-						class="group flex items-center gap-4 rounded-xl bg-pro p-4 text-pro-foreground shadow-lg shadow-teal-900/15 transition hover:bg-pro-dark"
-						data-track="signup_click"
-						data-track-props='{"audience":"pro","placement":"hero"}'
-					>
-						<span
-							class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white/15"
-						>
-							<Icon
-								name="tabler:stethoscope"
-								class="size-6"
-								aria-hidden="true"
-							/>
-						</span>
-						<span class="flex-1">
-							<span
-								class="block text-xs font-semibold uppercase tracking-wide text-white/75"
-								>For professionals</span
-							>
-							<span class="block font-bold">I'm looking for work</span>
-						</span>
-						<Icon
-							name="tabler:arrow-right"
-							class="size-5 transition group-hover:translate-x-0.5"
-							aria-hidden="true"
-						/>
-					</a>
+								<span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white/15">
+									<Icon name={d.icon} class="size-6" aria-hidden="true" />
+								</span>
+								<span class="flex-1">
+									<span class="block text-xs font-semibold uppercase tracking-wide text-white/75">
+										{d.eyebrow}
+									</span>
+									<span class="block font-bold">{d.label}</span>
+								</span>
+								<Icon
+									name="tabler:arrow-down"
+									class="size-5 transition group-hover:translate-y-0.5"
+									aria-hidden="true"
+								/>
+							</a>
+						))
+					}
 				</div>
-
-				<form
-					action="/jobs"
-					method="get"
-					class="mt-4 flex flex-col gap-2 rounded-xl bg-white p-2 shadow-md ring-1 ring-border sm:flex-row"
-					role="search"
-					aria-label="Search open dental jobs"
-				>
-					<label class="sr-only" for="hero-discipline">Role</label>
-					<select
-						id="hero-discipline"
-						name="discipline"
-						class="h-11 flex-1 rounded-md border-0 bg-transparent px-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-ring/30"
-					>
-						<option value="">Any role</option>
-						{
-							facets?.disciplines.map((d) => (
-								<option value={d.id}>{d.name}</option>
-							))
-						}
-					</select>
-					<label class="sr-only" for="hero-state">State</label>
-					<select
-						id="hero-state"
-						name="state"
-						class="h-11 rounded-md border-0 bg-transparent px-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-ring/30 sm:w-36"
-					>
-						<option value="">Any state</option>
-						{
-							facets?.states.map((s) => (
-								<option value={s.state}>{s.state}</option>
-							))
-						}
-					</select>
-					<button
-						type="submit"
-						class="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-foreground px-5 text-sm font-bold text-white hover:bg-foreground/85"
-					>
-						<Icon name="tabler:search" class="size-4" aria-hidden="true" /> Find jobs
-					</button>
-				</form>
-				{
-					totalJobs > 0 && (
-						<p class="mt-2 text-sm text-muted-foreground">
-							<span class="font-bold text-pro-dark">
-								{totalJobs} open {totalJobs === 1 ? "job" : "jobs"}
-							</span>{" "}
-							right now
-						</p>
-					)
-				}
 			</div>
 		</Container>
 	</section>
 
-	<!-- PROOF POINTS -->
-	<section class="border-y bg-white">
+	<!-- ============ PRACTICES ============ -->
+	<section
+		id="for-practices"
+		class="scroll-mt-24 bg-gradient-to-b from-sky-50/70 to-white py-20 sm:py-24"
+		aria-labelledby="practices-heading"
+	>
 		<Container>
-			<dl
-				class="grid grid-cols-2 divide-x divide-y lg:grid-cols-4 lg:divide-y-0"
-			>
-				{
-					[
-						["Minutes", "to get a temp assigned through our software"],
-						["W-2", "we're the employer of record — no 1099 headaches"],
-						["Weekly", "direct-deposit pay for every professional"],
-						["Since 1981", "our founder's career in dentistry"],
-					].map(([stat, label]) => (
-						<div class="px-4 py-8 text-center sm:px-8" data-reveal>
-							<dt class="sr-only">{label}</dt>
-							<dd class="text-3xl font-extrabold text-primary">{stat}</dd>
-							<dd class="mt-1 text-sm text-muted-foreground">{label}</dd>
-						</div>
-					))
-				}
-			</dl>
+			<div class="grid items-center gap-14 lg:grid-cols-2">
+				<div data-reveal>
+					<SectionHeading
+						id="practices-heading"
+						align="left"
+						eyebrow="For dental practices"
+						title="A 7am call-out shouldn't cost you the whole day."
+						description="Post the shift and we get to work right away: qualified professionals nearby are notified, and our team can step in and assign someone directly. Every temp is screened before they work a shift, and we handle their payroll, taxes and paperwork."
+					/>
+					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+						<Button
+							href={appLink("practice", "sign-up")}
+							size="lg"
+							data-track="signup_click"
+							data-track-props='{"audience":"practice","placement":"home_practice_intro"}'
+							>Create a free practice account</Button
+						>
+						<Button href="/practices#request" variant="outline" size="lg"
+							>Talk to our team</Button
+						>
+					</div>
+					<ul
+						class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted-foreground"
+					>
+						{
+							practiceChecks.map((c) => (
+								<li class="flex items-center gap-1.5">
+									<Icon
+										name="tabler:check"
+										class="size-4 text-primary"
+										aria-hidden="true"
+									/>
+									{c}
+								</li>
+							))
+						}
+					</ul>
+					<p class="mt-6 text-sm text-muted-foreground">
+						Looking for work instead?
+						<a
+							href="#for-professionals"
+							class="font-bold text-pro-dark hover:underline"
+							>Skip to professionals</a
+						>
+					</p>
+				</div>
+				<ProductPreview variant="practice" />
+			</div>
+
+			<div class="mt-16 border-t pt-8" data-reveal>
+				<h3
+					class="text-center text-sm font-bold uppercase tracking-wide text-muted-foreground"
+				>
+					Who we staff
+				</h3>
+				<ul class="mt-4 flex flex-wrap justify-center gap-2">
+					{
+						roles.map((r) => (
+							<li class="rounded-full bg-white px-4 py-2 text-sm font-bold shadow-sm ring-1 ring-border">
+								{r}
+							</li>
+						))
+					}
+				</ul>
+			</div>
 		</Container>
 	</section>
 
-	<!-- AUDIENCE SPLIT -->
-	<section class="py-20 sm:py-24" aria-labelledby="split-heading">
+	<section class="py-20 sm:py-24" aria-labelledby="practice-how-heading">
 		<Container>
 			<SectionHeading
-				id="split-heading"
-				eyebrow="Two sides, one platform"
-				title="Built for practices and the professionals who power them"
+				id="practice-how-heading"
+				eyebrow="How it works for practices"
+				title="Covered in three steps"
 			/>
-			<div class="mt-14 grid gap-6 lg:grid-cols-2">
-				<article
-					class="flex flex-col rounded-2xl bg-gradient-to-br from-sky-50 via-white to-sky-100 p-8 ring-1 ring-primary/15 sm:p-10"
+			<div class="mt-14">
+				<Steps
+					steps={[
+						{
+							title: "Post your request",
+							body: "Choose the role, dates, hours and hourly rate in your practice portal.",
+						},
+						{
+							title: "Get someone assigned",
+							body: "Qualified professionals nearby are notified right away, and our team steps in when a shift needs filling fast.",
+						},
+						{
+							title: "We handle the rest",
+							body: "Your temp submits their hours. Once they're approved, we run payroll and send your invoice.",
+						},
+					]}
+				/>
+			</div>
+		</Container>
+	</section>
+
+	<section
+		class="bg-muted/50 py-20 sm:py-24"
+		aria-labelledby="services-heading"
+	>
+		<Container>
+			<SectionHeading
+				id="services-heading"
+				eyebrow="Ways to work with us"
+				title="Cover a day or hire for good"
+			/>
+			<div class="mx-auto mt-14 max-w-4xl">
+				<FeatureGrid
+					columns={2}
+					items={[
+						{
+							icon: "tabler:calendar-bolt",
+							title: "Temporary staffing",
+							body: "Experienced temps for call-outs, leave and busy seasons, without the employment paperwork. If a temp turns out to be the one, you can hire them permanently.",
+						},
+						{
+							icon: "tabler:briefcase",
+							title: "Permanent positions",
+							body: "We help define the role and post it, screen candidates and recommend the best fits, and assist by orchestrating Working Interviews. You make the final call.",
+						},
+					]}
+				/>
+			</div>
+			<div class="mt-10 text-center">
+				<Button href="/practices" variant="outline" size="lg"
+					>See how we work with practices</Button
+				>
+			</div>
+		</Container>
+	</section>
+
+	<section class="py-20 sm:py-24" aria-labelledby="split-heading">
+		<Container size="narrow">
+			<SectionHeading
+				id="split-heading"
+				eyebrow="Employer of record"
+				title="You run the practice. We handle the employment."
+				description="DTSS employs the temps we place, so there are no 1099s or employment paperwork for you."
+			/>
+			<div class="mt-12 grid gap-6 md:grid-cols-5">
+				<div
+					class="rounded-2xl border bg-white p-8 shadow-sm md:col-span-2"
 					data-reveal
 				>
-					<span
-						class="inline-flex size-12 items-center justify-center rounded-xl bg-primary text-white"
-					>
-						<Icon
-							name="tabler:building-hospital"
-							class="size-6"
-							aria-hidden="true"
-						/>
-					</span>
-					<h3 class="mt-5 text-2xl font-extrabold">Get connected</h3>
-					<p class="mt-2 text-muted-foreground">
-						Don't let a call-out cost you a full day of production.
-					</p>
-					<ul class="mt-6 space-y-3">
+					<h3 class="text-lg font-extrabold">What you do</h3>
+					<ul class="mt-5 space-y-3">
 						{
-							[
-								"Pre-screened hygienists, assistants, front office & more",
-								"Post a shift and get someone assigned in minutes",
-								"We handle payroll, workers' comp and payroll taxes",
-								"Direct placement and temp-to-perm when you're ready to hire",
-							].map((b) => (
+							youDo.map((item) => (
+								<li class="flex gap-3">
+									<Icon
+										name="tabler:point-filled"
+										class="mt-0.5 size-5 shrink-0 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									{item}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<div
+					class="rounded-2xl bg-gradient-to-br from-sky-50 via-white to-sky-100 p-8 ring-1 ring-primary/20 md:col-span-3"
+					data-reveal
+				>
+					<h3 class="text-lg font-extrabold text-primary-dark">What we do</h3>
+					<ul class="mt-5 space-y-3">
+						{
+							weDo.map((item) => (
 								<li class="flex gap-3">
 									<Icon
 										name="tabler:circle-check-filled"
 										class="mt-0.5 size-5 shrink-0 text-primary"
 										aria-hidden="true"
 									/>
-									{b}
+									{item}
 								</li>
 							))
 						}
 					</ul>
-					<div class="mt-8 flex flex-wrap gap-3 pt-2">
-						<Button
-							href={appLink("practice", "sign-up")}
-							size="lg"
-							data-track="signup_click"
-							data-track-props='{"audience":"practice","placement":"split"}'
-							>Create a practice account</Button
-						>
-						<Button href="/practices" variant="ghost" size="lg"
-							>How it works <Icon
-								name="tabler:arrow-right"
-								aria-hidden="true"
-							/></Button
-						>
+				</div>
+			</div>
+		</Container>
+	</section>
+
+	<TrustBar variant="compact" />
+
+	{
+		practiceQuotes.length > 0 && (
+			<section class="py-20 sm:py-24" aria-labelledby="practice-quotes-heading">
+				<Container>
+					<SectionHeading
+						id="practice-quotes-heading"
+						eyebrow="From practices"
+						title="What dental practices say"
+					/>
+					<div class="mt-12">
+						<Testimonials items={practiceQuotes} />
 					</div>
-				</article>
-				<article
-					class="flex flex-col rounded-2xl bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-8 ring-1 ring-pro/15 sm:p-10"
-					data-reveal
-				>
-					<span
-						class="inline-flex size-12 items-center justify-center rounded-xl bg-pro text-white"
-					>
-						<Icon name="tabler:stethoscope" class="size-6" aria-hidden="true" />
-					</span>
-					<h3 class="mt-5 text-2xl font-extrabold">Get to work</h3>
-					<p class="mt-2 text-muted-foreground">
-						One day, three days or five weeks — you decide.
-					</p>
-					<ul class="mt-6 space-y-3">
-						{
-							[
-								"Pick the shifts and offices that fit your schedule",
-								"Weekly pay by direct deposit, and just one W-2",
-								"Temp-to-perm and permanent roles when you want a home office",
-								"Incentives, rewards and a team that actually knows you",
-							].map((b) => (
-								<li class="flex gap-3">
-									<Icon
-										name="tabler:circle-check-filled"
-										class="mt-0.5 size-5 shrink-0 text-pro"
-										aria-hidden="true"
-									/>
-									{b}
-								</li>
-							))
-						}
-					</ul>
-					<div class="mt-8 flex flex-wrap gap-3 pt-2">
+				</Container>
+			</section>
+		)
+	}
+
+	<CtaBand
+		audience="practice"
+		title="Need someone on the schedule?"
+		description="Create your free practice account and post your first request."
+		placement="home_practice_close"
+	>
+		<p class="relative mt-5 text-white/85">
+			Prefer to talk it through? Call
+			<a href={CONTACT.phoneHref} class="font-bold text-white underline"
+				>{CONTACT.phone}</a
+			>
+		</p>
+	</CtaBand>
+
+	<!-- ============ PROFESSIONALS ============ -->
+	<section
+		id="for-professionals"
+		class="scroll-mt-24 bg-gradient-to-b from-teal-50/70 to-white py-20 sm:py-24"
+		aria-labelledby="pros-heading"
+	>
+		<Container>
+			<div class="grid items-center gap-14 lg:grid-cols-2">
+				<div data-reveal>
+					<SectionHeading
+						id="pros-heading"
+						align="left"
+						tone="pro"
+						eyebrow="For dental professionals"
+						title="Work as much or as little as you want."
+						description="One day, three days or five weeks. Pick the shifts and offices that fit your life, get paid every week by direct deposit, and get one W-2 at tax time."
+					/>
+					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
 						<Button
 							href={appLink("pro", "sign-up")}
 							variant="pro"
 							size="lg"
 							data-track="signup_click"
-							data-track-props='{"audience":"pro","placement":"split"}'
+							data-track-props='{"audience":"pro","placement":"home_pro_intro"}'
 							>Create your free profile</Button
 						>
-						<Button href="/jobs" variant="ghost" size="lg"
-							>Browse jobs <Icon
-								name="tabler:arrow-right"
-								aria-hidden="true"
-							/></Button
+						<Button href="/jobs" variant="outline" size="lg"
+							>Browse open jobs</Button
 						>
 					</div>
-				</article>
+					<ul
+						class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-muted-foreground"
+					>
+						{
+							proChecks.map((c) => (
+								<li class="flex items-center gap-1.5">
+									<Icon
+										name="tabler:check"
+										class="size-4 text-pro"
+										aria-hidden="true"
+									/>
+									{c}
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<ProductPreview variant="pro" />
 			</div>
 		</Container>
 	</section>
 
-	<!-- LIVE JOBS -->
 	{
 		jobs.length > 0 && (
 			<section
@@ -347,14 +456,55 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 							align="left"
 							tone="pro"
 							eyebrow="Hiring now"
-							title="Open shifts & positions"
-							description="A live look at roles practices need filled. Create a free profile to see the full details and apply."
+							title="See what's open near you"
+							description="Real openings from practices we staff. Create a free profile to see the full details and apply."
 						/>
 						<Button href="/jobs" variant="pro" size="lg">
-							See all {totalJobs} jobs
+							See all {totalJobs} {totalJobs === 1 ? "job" : "jobs"}
 						</Button>
 					</div>
-					<ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+					<form
+						action="/jobs"
+						method="get"
+						class="mt-8 flex flex-col gap-2 rounded-xl bg-white p-2 shadow-sm ring-1 ring-border sm:flex-row"
+						role="search"
+						aria-label="Search open dental jobs"
+					>
+						<label class="sr-only" for="home-discipline">
+							Role
+						</label>
+						<select
+							id="home-discipline"
+							name="discipline"
+							class="h-11 flex-1 rounded-md border-0 bg-transparent px-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-ring/30"
+						>
+							<option value="">Any role</option>
+							{facets?.disciplines.map((d) => (
+								<option value={d.id}>{d.name}</option>
+							))}
+						</select>
+						<label class="sr-only" for="home-state">
+							State
+						</label>
+						<select
+							id="home-state"
+							name="state"
+							class="h-11 rounded-md border-0 bg-transparent px-3 text-sm font-semibold outline-none focus:ring-2 focus:ring-ring/30 sm:w-36"
+						>
+							<option value="">Any state</option>
+							{facets?.states.map((s) => (
+								<option value={s.state}>{s.state}</option>
+							))}
+						</select>
+						<button
+							type="submit"
+							class="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-pro px-5 text-sm font-bold text-white hover:bg-pro-dark"
+						>
+							<Icon name="tabler:search" class="size-4" aria-hidden="true" />{" "}
+							Find jobs
+						</button>
+					</form>
+					<ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 						{jobs.map((job) => (
 							<JobCard job={job} />
 						))}
@@ -364,142 +514,104 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 		)
 	}
 
-	<!-- HOW IT WORKS -->
-	<section class="py-20 sm:py-24" aria-labelledby="how-heading">
+	<section class="py-20 sm:py-24" aria-labelledby="pro-how-heading">
 		<Container>
 			<SectionHeading
-				id="how-heading"
-				eyebrow="How it works"
-				title="Simple for everyone. Personal at every step."
-			/>
-			<div class="mt-14 grid gap-16 lg:grid-cols-2 lg:gap-12">
-				<div>
-					<h3
-						class="mb-8 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-primary-dark"
-					>
-						<Icon
-							name="tabler:building-hospital"
-							class="size-5"
-							aria-hidden="true"
-						/> For practices
-					</h3>
-					<Steps
-						steps={[
-							{
-								title: "Create your account",
-								body: "Add your practice, locations and team in a few minutes.",
-							},
-							{
-								title: "Post a request",
-								body: "Choose the role, dates, hours and rate you need.",
-							},
-							{
-								title: "Get matched",
-								body: "Qualified pros nearby are notified and assigned fast.",
-							},
-						]}
-					/>
-				</div>
-				<div>
-					<h3
-						class="mb-8 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-pro-dark"
-					>
-						<Icon name="tabler:stethoscope" class="size-5" aria-hidden="true" /> For
-						professionals
-					</h3>
-					<Steps
-						tone="pro"
-						steps={[
-							{
-								title: "Build your profile",
-								body: "Experience, licenses and availability — all in one place.",
-							},
-							{
-								title: "Get approved",
-								body: "Our team reviews your credentials and welcomes you aboard.",
-							},
-							{
-								title: "Pick your shifts",
-								body: "Claim the work you want and get paid weekly.",
-							},
-						]}
-					/>
-				</div>
-			</div>
-		</Container>
-	</section>
-
-	<!-- SERVICES -->
-	<section
-		class="bg-gradient-to-b from-sky-50/70 to-white py-20 sm:py-24"
-		aria-labelledby="services-heading"
-	>
-		<Container>
-			<SectionHeading
-				id="services-heading"
-				eyebrow="You do dentistry. We do talent."
-				title="Ways we help practices thrive"
+				id="pro-how-heading"
+				tone="pro"
+				eyebrow="How it works for professionals"
+				title="From sign-up to your first shift"
 			/>
 			<div class="mt-14">
-				<FeatureGrid
-					columns={4}
-					items={[
+				<Steps
+					tone="pro"
+					steps={[
 						{
-							icon: "tabler:calendar-bolt",
-							title: "Temporary staffing",
-							body: "Experienced temps on demand to cover call-outs, leave and busy seasons — without the employment paperwork.",
+							title: "Build your profile",
+							body: "Add your experience, licenses, résumé and availability.",
 						},
 						{
-							icon: "tabler:user-search",
-							title: "Direct placement",
-							body: "We're your outsourced recruiter: we define the role, post, screen and recommend — backed by a guarantee.",
+							title: "Get approved",
+							body: "Our team reviews your credentials and approves your profile.",
 						},
 						{
-							icon: "tabler:arrows-exchange",
-							title: "Temp-to-perm",
-							body: "Try before you hire. Bring someone on temporarily, then make it permanent for an agreed fee.",
-						},
-						{
-							icon: "tabler:briefcase-2",
-							title: "Workforce management",
-							body: "Outsource payroll, HR and benefits administration — we become your silent partner.",
+							title: "Pick your shifts",
+							body: "Claim temp shifts or apply for permanent roles, and get paid every week.",
 						},
 					]}
 				/>
 			</div>
-			<div class="mt-10 text-center">
-				<Button href="/practices" variant="outline" size="lg"
-					>Explore practice solutions</Button
-				>
+		</Container>
+	</section>
+
+	<section
+		class="bg-gradient-to-b from-teal-50/60 to-white py-20 sm:py-24"
+		aria-labelledby="pro-why-heading"
+	>
+		<Container>
+			<SectionHeading
+				id="pro-why-heading"
+				tone="pro"
+				eyebrow="Why work with DTSS"
+				title="Temp work without the usual headaches"
+			/>
+			<div class="mt-14">
+				<FeatureGrid
+					tone="pro"
+					columns={4}
+					items={[
+						{
+							icon: "tabler:calendar-heart",
+							title: "Your schedule",
+							body: "Set your availability and claim the shifts you want. No early-morning calls asking you to rush in.",
+						},
+						{
+							icon: "tabler:cash",
+							title: "Weekly pay",
+							body: "Direct deposit every week, for the hours you worked.",
+						},
+						{
+							icon: "tabler:file-invoice",
+							title: "One W-2",
+							body: "We're your employer for temp work, so tax time means one form, however many offices you work in.",
+						},
+						{
+							icon: "tabler:arrows-exchange",
+							title: "A path to permanent",
+							body: "Love an office? Temp work can lead to a permanent offer, and we list permanent roles when you want a home office.",
+						},
+					]}
+				/>
 			</div>
 		</Container>
 	</section>
 
-	<!-- TESTIMONIALS -->
 	{
-		testimonials.length > 0 && (
-			<section class="py-20 sm:py-24" aria-labelledby="testimonials-heading">
+		proQuotes.length > 0 && (
+			<section class="py-20 sm:py-24" aria-labelledby="pro-quotes-heading">
 				<Container>
 					<SectionHeading
-						id="testimonials-heading"
-						eyebrow="Testimonials"
-						title="What practices and professionals say"
+						id="pro-quotes-heading"
+						tone="pro"
+						eyebrow="From professionals"
+						title="What hygienists and assistants say"
 					/>
 					<div class="mt-12">
-						<Testimonials items={testimonials.slice(0, 6)} />
-					</div>
-					<div class="mt-8 text-center">
-						<Button href="/testimonials" variant="link">
-							Read more testimonials{" "}
-							<Icon name="tabler:arrow-right" aria-hidden="true" />
-						</Button>
+						<Testimonials items={proQuotes} />
 					</div>
 				</Container>
 			</section>
 		)
 	}
 
-	<TrustBar />
+	<CtaBand
+		audience="pro"
+		title="Your next shift is waiting."
+		description="Create your free profile and see what's open near you."
+		placement="home_pro_close"
+	/>
+
+	<ReferralBand />
 
 	<!-- BLOG -->
 	{
@@ -511,7 +623,7 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 							id="blog-heading"
 							align="left"
 							eyebrow="From the blog"
-							title="Tips for practices & dental pros"
+							title="Advice for practices and dental professionals"
 						/>
 						<Button href="/blog" variant="outline">
 							Visit the blog
@@ -526,6 +638,4 @@ const facets = facetsRes.ok ? facetsRes.data : null;
 			</section>
 		)
 	}
-
-	<CtaBand />
 </Layout>

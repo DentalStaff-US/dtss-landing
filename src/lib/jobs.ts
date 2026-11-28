@@ -4,7 +4,7 @@
  * built in dental-staff-app/src/lib/server/publicJobs/mask.ts — practice
  * identity, street address and coordinates never leave the admin app.
  */
-import { ENV } from "./env";
+import { getPublic as get } from "./publicApi";
 
 export interface PublicJobDate {
 	date: string; // YYYY-MM-DD
@@ -85,42 +85,6 @@ const PUBLIC_ID =
 	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const isPublicId = (v: string | undefined): v is string =>
 	!!v && PUBLIC_ID.test(v);
-
-type Result<T> = { ok: true; data: T } | { ok: false; status: number };
-
-// Tiny in-process cache: the admin endpoints are cacheable for 2 minutes and
-// facets change rarely; this keeps a burst of visitors from all hitting the API.
-const cache = new Map<string, { at: number; value: Result<unknown> }>();
-const TTL_MS = 60_000;
-
-async function get<T>(path: string): Promise<Result<T>> {
-	const hit = cache.get(path);
-	if (hit && Date.now() - hit.at < TTL_MS) return hit.value as Result<T>;
-
-	const headers: Record<string, string> = { Accept: "application/json" };
-	// Lets this server's fetches skip the admin API's per-IP rate limit (every
-	// visitor's request would otherwise come from this one IP).
-	const key = process.env.JOB_BOARD_SERVER_KEY;
-	if (key) headers["x-job-board-key"] = key;
-
-	let value: Result<T>;
-	try {
-		const res = await fetch(`${ENV.adminApiUrl}/api/public${path}`, {
-			headers,
-			signal: AbortSignal.timeout(8000),
-		});
-		value = res.ok
-			? { ok: true, data: (await res.json()) as T }
-			: { ok: false, status: res.status };
-	} catch (err) {
-		console.error("[jobs] fetch failed", path, err);
-		value = { ok: false, status: 503 };
-	}
-	if (value.ok || value.status === 404 || value.status === 410)
-		cache.set(path, { at: Date.now(), value });
-	if (cache.size > 500) cache.delete(cache.keys().next().value!);
-	return value;
-}
 
 export async function listJobs(filters: JobFilters, limit = 18) {
 	const qs = new URLSearchParams({ limit: String(limit) });
